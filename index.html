@@ -398,21 +398,22 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
       <div class="hs-node">
         <div class="hs-icon">
           <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-            <!-- dark bg -->
             <circle cx="26" cy="26" r="22" fill="#1a0905"/>
-            <!-- outer ring hint -->
-            <circle cx="26" cy="26" r="21" stroke="#D97706" stroke-width=".6" stroke-opacity=".25" fill="none"/>
-            <!-- Claude dot-ring mark (8 dots on a circle, r=13) -->
-            <circle cx="26"    cy="13"    r="4"   fill="#D97706"/>
-            <circle cx="35.2"  cy="16.8"  r="3.5" fill="#D97706" opacity=".92"/>
-            <circle cx="39"    cy="26"    r="4"   fill="#D97706" opacity=".96"/>
-            <circle cx="35.2"  cy="35.2"  r="3.5" fill="#D97706" opacity=".88"/>
-            <circle cx="26"    cy="39"    r="4"   fill="#D97706" opacity=".84"/>
-            <circle cx="16.8"  cy="35.2"  r="3.5" fill="#D97706" opacity=".88"/>
-            <circle cx="13"    cy="26"    r="4"   fill="#D97706" opacity=".96"/>
-            <circle cx="16.8"  cy="16.8"  r="3.5" fill="#D97706" opacity=".92"/>
-            <!-- soft centre glow -->
-            <circle cx="26" cy="26" r="7" fill="#D97706" opacity=".18"/>
+            <!-- Claude logo: 12 tapered rays radiating from centre (starburst) -->
+            <g fill="#D97860">
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(30,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(60,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(90,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(120,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(150,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(180,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(210,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(240,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(270,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(300,26,26)"/>
+              <path d="M23,19 L29,19 L27.5,5 L24.5,5 Z" transform="rotate(330,26,26)"/>
+            </g>
           </svg>
         </div>
         <span class="hs-label">Claude API</span>
