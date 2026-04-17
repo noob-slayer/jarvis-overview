@@ -168,8 +168,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .data-tname{flex:1;opacity:.85;}
 .data-tpurp{flex:2;opacity:.5;font-size:.58rem;}
 
+/* ── DATA + COST wrapper ── */
+.data-cost-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start;}
+
 /* ── COST ── */
-.cost-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.cost-reduce-row{display:flex;gap:14px;flex-wrap:wrap;}
 .cost-card{background:var(--white);border:1px solid var(--g2);border-radius:12px;padding:14px;text-align:center;}
 .cost-val{font-size:1.5rem;font-weight:900;color:var(--navy);letter-spacing:-.02em;}
 .cost-val span{font-size:.85rem;font-weight:600;}
@@ -207,7 +211,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
   /* schedule */
   .schedule-grid{grid-template-columns:1fr 1fr;}
 
-  /* data + cost */
+  /* data + cost — stack the two columns */
+  .data-cost-wrap{grid-template-columns:1fr;}
   .data-grid{grid-template-columns:1fr;}
   .cost-grid{grid-template-columns:1fr 1fr;}
 
@@ -818,7 +823,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 <!-- ═══════════════════  DATA + COST  ═══════════════════ -->
 <section class="section section-alt">
   <div class="page">
-    <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start;">
+    <div class="data-cost-wrap">
       <div>
         <div class="section-label">Data Layer</div>
         <h2 class="section-title">Hybrid storage</h2>
@@ -863,7 +868,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
         <div class="section-label">Cost Profile</div>
         <h2 class="section-title">₹25/day</h2>
         <p class="section-sub" style="margin-bottom:16px;">Full-time AI assistant at 35–44 messages/day.</p>
-        <div class="cost-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="cost-grid">
           <div class="cost-card"><div class="cost-val">₹<span>20–35</span></div><div class="cost-label">Per day</div><div class="cost-sub">70% cache hit</div></div>
           <div class="cost-card"><div class="cost-val">₹<span>0.01</span></div><div class="cost-label">Per classify</div><div class="cost-sub">Haiku · 64 tokens</div></div>
           <div class="cost-card"><div class="cost-val">₹<span>0.15</span></div><div class="cost-label">Cache hit</div><div class="cost-sub">~6900 cached tokens</div></div>
@@ -871,7 +876,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
         </div>
         <div style="margin-top:12px;background:var(--navy);color:white;border-radius:12px;padding:16px 18px;">
           <div style="font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Cost reductions applied</div>
-          <div style="display:flex;gap:14px;">
+          <div class="cost-reduce-row">
             <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">−40%</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">Tiered routing<br>Haiku classify</div></div>
             <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">−20%</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">History<br>10→6 msgs</div></div>
             <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">~₹0</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">Haiku for<br>oneshot tasks</div></div>
