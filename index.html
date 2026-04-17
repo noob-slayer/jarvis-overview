@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.A.R.V.I.S — System Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0a1628;--navy2:#112240;--blue:#1d6fa4;--teal:#0891b2;
+  --cyan:#06b6d4;--green:#059669;--amber:#d97706;--purple:#7c3aed;
+  --bg:#f0f4f8;--white:#ffffff;--g1:#f8fafc;--g2:#e2e8f0;--g3:#94a3b8;--g4:#64748b;--text:#0f172a;--text2:#334155;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;}
+.page{max-width:1100px;margin:0 auto;padding:0 28px;}
+.section{padding:44px 0;}.section-alt{background:var(--white);}
+.section-label{font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.section-title{font-size:1.75rem;font-weight:800;letter-spacing:-.02em;color:var(--navy);margin-bottom:6px;}
+.section-sub{font-size:.85rem;color:var(--g4);max-width:560px;margin-bottom:28px;}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,#060e1e 0%,#0a1628 45%,#0f2040 100%);
+  color:white;padding:0;overflow:hidden;position:relative;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(6,182,212,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,.04) 1px,transparent 1px);
+  background-size:40px 40px;pointer-events:none;
+}
+.hero-inner{
+  max-width:1100px;margin:0 auto;padding:40px 28px 36px;
+  display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center;
+  position:relative;z-index:1;
+}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--cyan);letter-spacing:.18em;margin-bottom:10px;}
+.hero-title{
+  font-family:'Orbitron',sans-serif;font-size:3.4rem;font-weight:900;
+  line-height:1;letter-spacing:.08em;margin-bottom:4px;
+  background:linear-gradient(135deg,#fff 30%,var(--cyan) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-full-name{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.3);letter-spacing:.12em;margin-bottom:16px;}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.6);max-width:420px;line-height:1.65;margin-bottom:24px;}
+.hero-stats{display:flex;gap:24px;flex-wrap:wrap;}
+.hstat-num{font-family:'Orbitron',sans-serif;font-size:1.6rem;font-weight:700;color:var(--cyan);line-height:1;}
+.hstat-label{font-size:.6rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;}
+
+/* arc reactor */
+.arc-reactor{position:relative;width:420px;height:420px;flex-shrink:0;}
+.arc-reactor svg{width:100%;height:100%;}
+.ring-1{animation:spin-cw 22s linear infinite;transform-origin:210px 210px;}
+.ring-2{animation:spin-ccw 14s linear infinite;transform-origin:210px 210px;}
+.ring-3{animation:spin-cw 8s linear infinite;transform-origin:210px 210px;}
+.core-pulse{animation:core-glow 2.5s ease-in-out infinite;}
+.node-pulse{animation:node-blink 3s ease-in-out infinite;}
+@keyframes spin-cw {from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes spin-ccw{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes core-glow{0%,100%{opacity:.85}50%{opacity:1}}
+@keyframes node-blink{0%,100%{opacity:.7}50%{opacity:1}}
+
+/* hero flow strip */
+.hero-strip{
+  border-top:1px solid rgba(6,182,212,.12);background:rgba(0,0,0,.2);
+  padding:18px 28px;
+}
+.hstrip-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:flex-start;justify-content:center;gap:0;overflow-x:auto;
+}
+.hs-node{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;width:105px;}
+.hs-icon{width:52px;height:52px;display:flex;align-items:center;justify-content:center;}
+.hs-label{font-size:.62rem;font-weight:600;color:rgba(255,255,255,.6);text-align:center;line-height:1.3;}
+.hs-sub{font-size:.52rem;color:rgba(255,255,255,.3);text-align:center;}
+.hs-arrow{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0 4px;margin-top:14px;}
+.hs-arrow-label{font-size:.5rem;color:rgba(255,255,255,.3);text-align:center;white-space:nowrap;}
+
+/* ── MODELS ── */
+.model-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.model-card{background:var(--g1);border:1px solid var(--g2);border-radius:14px;padding:22px;}
+.model-card.primary{background:linear-gradient(135deg,#0a1628,#1a3358);color:white;border-color:transparent;}
+.model-tag{font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;}
+.model-card.primary .model-tag{color:var(--cyan);}
+.model-name{font-size:1.15rem;font-weight:800;margin-bottom:6px;}
+.model-card.primary .model-name{color:white;}
+.model-desc{font-size:.78rem;color:var(--g4);line-height:1.55;}
+.model-card.primary .model-desc{color:rgba(255,255,255,.6);}
+.model-stat{margin-top:14px;display:flex;gap:16px;}
+.mstat-val{font-size:1rem;font-weight:800;color:var(--cyan);}
+.mstat-label{font-size:.56rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;}
+.model-card:not(.primary) .mstat-val{color:var(--teal);}
+.model-card:not(.primary) .mstat-label{color:var(--g3);}
+
+/* routing flow */
+.routing-flow{
+  background:var(--white);border:1px solid var(--g2);border-radius:14px;
+  padding:16px 20px;display:flex;align-items:stretch;gap:0;overflow-x:auto;
+}
+.rf-step{flex-shrink:0;display:flex;flex-direction:column;gap:3px;padding:10px 14px;border-radius:10px;min-width:0;}
+.rf-step.hl{background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.2);}
+.rf-tag{font-size:.54rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.rf-name{font-size:.82rem;font-weight:700;color:var(--navy);}
+.rf-sub{font-size:.6rem;color:var(--g4);line-height:1.5;}
+.rf-tools{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;}
+.rf-tool-pill{
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;
+  padding:2px 6px;border-radius:4px;background:var(--g1);
+  color:var(--g4);border:1px solid var(--g2);white-space:nowrap;
+}
+.rf-arrow{flex:1;display:flex;align-items:center;justify-content:center;min-width:20px;}
+
+/* ── TOOLS GRID ── */
+.tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.tool-card{background:var(--white);border-radius:12px;padding:16px;border:1px solid var(--g2);}
+.tool-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.tool-name{font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.tool-count{font-size:.58rem;font-weight:600;color:var(--g3);margin-bottom:6px;}
+.tool-items{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px;}
+.tool-tag{font-size:.54rem;font-weight:500;padding:2px 6px;border-radius:4px;background:var(--g1);color:var(--g4);font-family:'JetBrains Mono',monospace;}
+
+/* ── INTERACTIONS ── */
+.interactions{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.icard{background:var(--white);border:1px solid var(--g2);border-radius:14px;overflow:hidden;}
+.icard-header{padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--g2);}
+.icard-scenario{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;}
+.irow{padding:9px 14px;border-bottom:1px solid var(--g2);}
+.irow:last-child{border-bottom:none;}
+.irow-label{font-size:.54rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--g3);margin-bottom:4px;}
+.irow-trigger{font-size:.82rem;font-weight:600;color:var(--navy);background:var(--g1);border-left:3px solid var(--navy);padding:6px 10px;border-radius:0 6px 6px 0;font-style:italic;}
+.process-row{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.proc-classify{font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:20px;border:1.5px solid;}
+.proc-tool{font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:2px 8px;border-radius:6px;background:var(--g1);color:var(--g4);border:1px solid var(--g2);display:flex;align-items:center;gap:3px;}
+.proc-tool .arr{color:var(--teal);font-weight:700;}
+.proc-parallel{font-size:.54rem;font-weight:700;color:var(--teal);padding:2px 6px;border-radius:4px;background:rgba(8,145,178,.08);border:1px solid rgba(8,145,178,.2);}
+.irow-response{font-size:.8rem;color:var(--text2);line-height:1.55;border-left:3px solid var(--green);background:rgba(5,150,105,.04);padding:6px 10px;border-radius:0 6px 6px 0;}
+.irow-cost{font-size:.58rem;color:var(--g3);margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.cost-chip{padding:1px 6px;border-radius:3px;background:var(--g1);font-family:'JetBrains Mono',monospace;}
+
+/* ── SCHEDULE ── */
+.schedule-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.sched-card{border-radius:12px;padding:14px;border-left:3px solid;}
+.sched-card.daily {background:rgba(6,182,212,.05); border-left-color:var(--cyan);}
+.sched-card.weekly{background:rgba(124,58,237,.05);border-left-color:var(--purple);}
+.sched-card.free  {background:rgba(5,150,105,.05); border-left-color:var(--green);}
+.sched-card.amber {background:rgba(217,119,6,.05);  border-left-color:var(--amber);}
+.sched-time{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:600;margin-bottom:3px;}
+.sched-card.daily  .sched-time{color:var(--teal);}
+.sched-card.weekly .sched-time{color:var(--purple);}
+.sched-card.free   .sched-time{color:var(--green);}
+.sched-card.amber  .sched-time{color:var(--amber);}
+.sched-name{font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.sched-desc{font-size:.66rem;color:var(--g4);line-height:1.5;}
+.sched-cost{font-size:.58rem;font-weight:600;margin-top:6px;}
+
+/* ── DATA LAYER ── */
+.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.data-card{border-radius:14px;padding:20px;}
+.data-card.sqlite{background:linear-gradient(135deg,#1e3a5f,#2d5a8e);color:white;}
+.data-card.sheets{background:linear-gradient(135deg,#14532d,#166534);color:white;}
+.data-card-title{font-size:1rem;font-weight:800;margin-bottom:2px;}
+.data-card-sub{font-size:.7rem;opacity:.55;margin-bottom:12px;}
+.data-table{font-family:'JetBrains Mono',monospace;font-size:.64rem;}
+.data-row{display:flex;gap:10px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.data-row:last-child{border-bottom:none;}
+.data-tname{flex:1;opacity:.85;}
+.data-tpurp{flex:2;opacity:.5;font-size:.58rem;}
+
+/* ── COST ── */
+.cost-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.cost-card{background:var(--white);border:1px solid var(--g2);border-radius:12px;padding:14px;text-align:center;}
+.cost-val{font-size:1.5rem;font-weight:900;color:var(--navy);letter-spacing:-.02em;}
+.cost-val span{font-size:.85rem;font-weight:600;}
+.cost-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--g3);font-weight:600;margin-top:3px;}
+.cost-sub{font-size:.62rem;color:var(--g4);margin-top:4px;}
+
+.footer{background:var(--navy);color:rgba(255,255,255,.35);text-align:center;padding:18px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════  HERO  ═══════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <div>
+      <div class="hero-tag">// personal ai infrastructure · phase I · m10</div>
+      <h1 class="hero-title">J.A.R.V.I.S</h1>
+      <div class="hero-full-name">Just A Rather Very Intelligent System</div>
+      <p class="hero-sub">A single-user AI assistant that lives on your phone, thinks with Claude, and tracks every dimension of your life — finances, fitness, mood, learning, and more.</p>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-num">48</div><div class="hstat-label">Tools</div></div>
+        <div class="hstat"><div class="hstat-num">7</div><div class="hstat-label">Scheduled jobs</div></div>
+        <div class="hstat"><div class="hstat-num">22</div><div class="hstat-label">Data tabs</div></div>
+        <div class="hstat"><div class="hstat-num">₹25</div><div class="hstat-label">Avg/day</div></div>
+      </div>
+    </div>
+
+    <!-- ARC REACTOR -->
+    <div class="arc-reactor">
+      <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff" stop-opacity=".95"/>
+            <stop offset="30%" stop-color="#22d3ee" stop-opacity=".8"/>
+            <stop offset="100%" stop-color="#0a1628" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="mg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#06b6d4" stop-opacity=".15"/>
+            <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="gl" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="sg" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle cx="210" cy="210" r="190" fill="url(#mg)"/>
+        <g class="ring-1">
+          <circle cx="210" cy="210" r="190" fill="none" stroke="#06b6d4" stroke-width=".8" stroke-opacity=".2"/>
+          <circle cx="210" cy="210" r="190" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="6 30" stroke-opacity=".6" filter="url(#gl)"/>
+          <line x1="210" y1="20"  x2="210" y2="36"  stroke="#06b6d4" stroke-width="1.5" stroke-opacity=".8"/>
+          <line x1="210" y1="384" x2="210" y2="400" stroke="#06b6d4" stroke-width="1.5" stroke-opacity=".8"/>
+          <line x1="20"  y1="210" x2="36"  y2="210" stroke="#06b6d4" stroke-width="1.5" stroke-opacity=".8"/>
+          <line x1="384" y1="210" x2="400" y2="210" stroke="#06b6d4" stroke-width="1.5" stroke-opacity=".8"/>
+          <line x1="75" y1="75" x2="86" y2="86" stroke="#06b6d4" stroke-width="1" stroke-opacity=".5"/>
+          <line x1="345" y1="75" x2="334" y2="86" stroke="#06b6d4" stroke-width="1" stroke-opacity=".5"/>
+          <line x1="75" y1="345" x2="86" y2="334" stroke="#06b6d4" stroke-width="1" stroke-opacity=".5"/>
+          <line x1="345" y1="345" x2="334" y2="334" stroke="#06b6d4" stroke-width="1" stroke-opacity=".5"/>
+        </g>
+        <g class="ring-2">
+          <circle cx="210" cy="210" r="148" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="3 16" stroke-opacity=".45"/>
+          <circle cx="210" cy="62"  r="9" fill="#0e7490" stroke="#06b6d4"   stroke-width="1.5" filter="url(#gl)" class="node-pulse"/>
+          <circle cx="315" cy="105" r="8" fill="#6b21a8" stroke="#a78bfa"   stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:.4s"/>
+          <circle cx="358" cy="210" r="9" fill="#92400e" stroke="#fcd34d"   stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:.8s"/>
+          <circle cx="315" cy="315" r="8" fill="#065f46" stroke="#34d399"   stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:1.2s"/>
+          <circle cx="210" cy="358" r="9" fill="#1e3a8a" stroke="#60a5fa"   stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:1.6s"/>
+          <circle cx="105" cy="315" r="8" fill="#7f1d1d" stroke="#f87171"   stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:2.0s"/>
+          <circle cx="62"  cy="210" r="9" fill="#4c1d95" stroke="#c084fc"   stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:2.4s"/>
+          <circle cx="105" cy="105" r="8" fill="#0c4a6e" stroke="#38bdf8"   stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:2.8s"/>
+        </g>
+        <text x="210" y="50"  text-anchor="middle" fill="#06b6d4" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">FITNESS</text>
+        <text x="332" y="96"  text-anchor="start"  fill="#a78bfa" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">MOOD</text>
+        <text x="372" y="214" text-anchor="start"  fill="#fcd34d" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">FINANCE</text>
+        <text x="328" y="325" text-anchor="start"  fill="#34d399" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">LEARN</text>
+        <text x="210" y="380" text-anchor="middle" fill="#60a5fa" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">CALENDAR</text>
+        <text x="88"  y="325" text-anchor="end"    fill="#f87171" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">HABITS</text>
+        <text x="46"  y="214" text-anchor="end"    fill="#c084fc" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">MEDIA</text>
+        <text x="88"  y="96"  text-anchor="end"    fill="#38bdf8" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">LIFE LOG</text>
+        <g stroke="#06b6d4" stroke-width=".6" stroke-opacity=".2">
+          <line x1="210" y1="186" x2="210" y2="71"/><line x1="210" y1="186" x2="307" y2="113"/>
+          <line x1="210" y1="186" x2="349" y2="210"/><line x1="210" y1="186" x2="307" y2="307"/>
+          <line x1="210" y1="186" x2="210" y2="349"/><line x1="210" y1="186" x2="113" y2="307"/>
+          <line x1="210" y1="186" x2="71"  y2="210"/><line x1="210" y1="186" x2="113" y2="113"/>
+        </g>
+        <g class="ring-3">
+          <circle cx="210" cy="210" r="90" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="12 6 3 6" stroke-opacity=".7" filter="url(#gl)"/>
+        </g>
+        <g stroke="#06b6d4" stroke-width=".8" stroke-opacity=".35">
+          <line x1="210" y1="130" x2="210" y2="158"/><line x1="210" y1="262" x2="210" y2="290"/>
+          <line x1="130" y1="210" x2="158" y2="210"/><line x1="262" y1="210" x2="290" y2="210"/>
+          <line x1="147" y1="147" x2="166" y2="166"/><line x1="273" y1="147" x2="254" y2="166"/>
+          <line x1="147" y1="273" x2="166" y2="254"/><line x1="273" y1="273" x2="254" y2="254"/>
+        </g>
+        <circle cx="210" cy="210" r="68" fill="url(#cg)" filter="url(#sg)" class="core-pulse"/>
+        <text x="210" y="200" text-anchor="middle" font-family="Orbitron,sans-serif" font-size="18" font-weight="900" fill="white" filter="url(#gl)" letter-spacing="3">J.A.R.V.I.S</text>
+        <text x="210" y="218" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#06b6d4" opacity=".8" letter-spacing="2">AI · PHASE I · M10</text>
+        <circle cx="210" cy="210" r="5" fill="white" filter="url(#gl)" class="core-pulse"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- FLOW STRIP -->
+  <div class="hero-strip">
+    <div class="hstrip-inner">
+
+      <!-- YOU (text + voice) -->
+      <div class="hs-node" style="width:118px">
+        <div class="hs-icon">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <!-- person -->
+            <circle cx="19" cy="11" r="8" fill="#f0c080" stroke="#d4a060" stroke-width="1"/>
+            <path d="M11 11 Q19 3 27 11" fill="#3d2b1a"/>
+            <rect x="11" y="21" width="16" height="24" rx="5" fill="#2563eb"/>
+            <path d="M11 27 Q3 33 5 43" stroke="#2563eb" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <path d="M27 27 Q33 30 32 40" stroke="#2563eb" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <!-- phone -->
+            <rect x="28" y="32" width="11" height="17" rx="2.5" fill="#0a1628" stroke="#06b6d4" stroke-width="1"/>
+            <rect x="29.5" y="34" width="8" height="11" rx="1" fill="#0891b2" opacity=".5"/>
+            <!-- mic icon top right -->
+            <rect x="40" y="6"  width="7" height="11" rx="3.5" fill="#059669" stroke="#047857" stroke-width=".8"/>
+            <path d="M40 15 Q40 19 43.5 19 Q47 19 47 15" stroke="#059669" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <line x1="43.5" y1="19" x2="43.5" y2="22" stroke="#059669" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="hs-label">You</span>
+      </div>
+
+      <div class="hs-arrow">
+        <svg width="38" height="14" viewBox="0 0 38 14"><path d="M0 7 H32 M26 3 L36 7 L26 11" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <span class="hs-arrow-label">text or</span>
+        <span class="hs-arrow-label">voice note</span>
+      </div>
+
+      <!-- MAC / SERVER -->
+      <div class="hs-node">
+        <div class="hs-icon">
+          <svg width="52" height="46" viewBox="0 0 52 46" fill="none">
+            <path d="M0 42 Q26 38 52 42 L52 46 Q26 48 0 46 Z" fill="#334155"/>
+            <rect x="4" y="2" width="44" height="40" rx="3" fill="#0a1628" stroke="#334155" stroke-width="1.5"/>
+            <rect x="6" y="4" width="40" height="36" rx="2" fill="#060e1e"/>
+            <text x="9" y="13" fill="#06b6d4" font-family="JetBrains Mono" font-size="4.5">$ python main.py</text>
+            <text x="9" y="19" fill="#00ff88" font-family="JetBrains Mono" font-size="4">✓ Telegram online</text>
+            <text x="9" y="24" fill="#00ff88" font-family="JetBrains Mono" font-size="4">✓ FastAPI :8000</text>
+            <text x="9" y="29" fill="rgba(6,182,212,.6)" font-family="JetBrains Mono" font-size="4">▸ 48 tools ready</text>
+            <rect x="9" y="32" width="4" height="4" fill="#06b6d4" opacity=".9"/>
+          </svg>
+        </div>
+        <span class="hs-label">Your Mac</span>
+        <span class="hs-sub">FastAPI + APScheduler</span>
+      </div>
+
+      <div class="hs-arrow">
+        <svg width="38" height="14" viewBox="0 0 38 14"><path d="M0 7 H32 M26 3 L36 7 L26 11" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <span class="hs-arrow-label">HTTPS</span>
+        <span class="hs-arrow-label">Anthropic API</span>
+      </div>
+
+      <!-- CLAUDE -->
+      <div class="hs-node">
+        <div class="hs-icon">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="24" r="16" fill="#1e1b4b" stroke="#7c3aed" stroke-width="1.5"/>
+            <circle cx="14" cy="32" r="10" fill="#1e1b4b" stroke="#7c3aed" stroke-width="1.5"/>
+            <circle cx="38" cy="32" r="11" fill="#1e1b4b" stroke="#7c3aed" stroke-width="1.5"/>
+            <rect x="4" y="32" width="44" height="14" fill="#1e1b4b"/>
+            <!-- Claude "A" shape -->
+            <path d="M20 30 L26 18 L32 30 M22.5 26 H29.5" stroke="#D97706" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="hs-label">Claude API</span>
+      </div>
+
+      <div class="hs-arrow">
+        <svg width="38" height="14" viewBox="0 0 38 14"><path d="M0 7 H32 M26 3 L36 7 L26 11" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <span class="hs-arrow-label">tool</span>
+        <span class="hs-arrow-label">calls</span>
+      </div>
+
+      <!-- TOOLS -->
+      <div class="hs-node" style="width:118px">
+        <div class="hs-icon">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <rect x="2"  y="2"  width="21" height="14" rx="3" fill="#0f2040" stroke="#059669" stroke-width="1.2"/>
+            <rect x="29" y="2"  width="21" height="14" rx="3" fill="#0f2040" stroke="#d97706" stroke-width="1.2"/>
+            <rect x="2"  y="22" width="21" height="14" rx="3" fill="#0f2040" stroke="#7c3aed" stroke-width="1.2"/>
+            <rect x="29" y="22" width="21" height="14" rx="3" fill="#0f2040" stroke="#06b6d4" stroke-width="1.2"/>
+            <rect x="2"  y="40" width="21" height="10" rx="3" fill="#0f2040" stroke="#f87171" stroke-width="1.2"/>
+            <rect x="29" y="40" width="21" height="10" rx="3" fill="#0f2040" stroke="#c084fc" stroke-width="1.2"/>
+            <text x="12.5" y="12" text-anchor="middle" fill="#059669" font-family="JetBrains Mono" font-size="4.5">DB</text>
+            <text x="39.5" y="12" text-anchor="middle" fill="#d97706" font-family="JetBrains Mono" font-size="4.5">₹₹₹</text>
+            <text x="12.5" y="32" text-anchor="middle" fill="#7c3aed" font-family="JetBrains Mono" font-size="4">MOOD</text>
+            <text x="39.5" y="32" text-anchor="middle" fill="#06b6d4" font-family="JetBrains Mono" font-size="4.5">FIT</text>
+            <text x="12.5" y="48" text-anchor="middle" fill="#f87171" font-family="JetBrains Mono" font-size="4">TODO</text>
+            <text x="39.5" y="48" text-anchor="middle" fill="#c084fc" font-family="JetBrains Mono" font-size="4">CAL</text>
+          </svg>
+        </div>
+        <span class="hs-label">48 Tools</span>
+      </div>
+
+      <div class="hs-arrow">
+        <svg width="38" height="14" viewBox="0 0 38 14"><path d="M0 7 H32 M26 3 L36 7 L26 11" stroke="#00ff88" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <span class="hs-arrow-label">reply</span>
+        <span class="hs-arrow-label">sent</span>
+      </div>
+
+      <!-- REPLY -->
+      <div class="hs-node">
+        <div class="hs-icon">
+          <svg width="52" height="46" viewBox="0 0 52 46" fill="none">
+            <rect x="2" y="2" width="44" height="32" rx="7" fill="#0e7490" stroke="#06b6d4" stroke-width="1.5"/>
+            <path d="M2 28 L2 42 L14 30" fill="#0e7490" stroke="#06b6d4" stroke-width="1.2" stroke-linejoin="round"/>
+            <line x1="10" y1="10" x2="42" y2="10" stroke="#06b6d4" stroke-width="1" opacity=".7"/>
+            <line x1="10" y1="16" x2="36" y2="16" stroke="#06b6d4" stroke-width="1" opacity=".5"/>
+            <line x1="10" y1="22" x2="38" y2="22" stroke="#06b6d4" stroke-width="1" opacity=".5"/>
+          </svg>
+        </div>
+        <span class="hs-label">Telegram reply</span>
+        <span class="hs-sub">~2–3 seconds</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════  AI BRAIN  ═══════════════════ -->
+<section class="section section-alt">
+  <div class="page">
+    <div class="section-label">Intelligence Layer</div>
+    <h2 class="section-title">Two models, one pipeline</h2>
+    <p class="section-sub">Haiku classifies intent in 0.3s. Sonnet gets only the ~12 relevant tools — cutting token cost ~60%.</p>
+    <div class="model-grid">
+      <div class="model-card primary">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div>
+            <div class="model-tag">Primary · Agent Loop</div>
+            <div class="model-name">Claude Sonnet 4.6</div>
+          </div>
+        </div>
+        <p class="model-desc">Handles all user conversations. Receives the classified tool subset, runs multi-step tool loops, preserves 6-message history.</p>
+        <div class="model-stat">
+          <div class="mstat"><div class="mstat-val">~12</div><div class="mstat-label">tools / call</div></div>
+          <div class="mstat"><div class="mstat-val">6 msg</div><div class="mstat-label">history</div></div>
+          <div class="mstat"><div class="mstat-val">1024</div><div class="mstat-label">max tokens</div></div>
+        </div>
+      </div>
+      <div class="model-card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><div>
+            <div class="model-tag">Classifier + Oneshot</div>
+            <div class="model-name">Claude Haiku 4.5</div>
+          </div>
+        </div>
+        <p class="model-desc">Intent classification, media recommendations, portrait generation, vocab word generation, quiz answer grading.</p>
+        <div class="model-stat">
+          <div class="mstat"><div class="mstat-val">₹0.01</div><div class="mstat-label">per classify</div></div>
+          <div class="mstat"><div class="mstat-val">64 tok</div><div class="mstat-label">output</div></div>
+          <div class="mstat"><div class="mstat-val">0.3s</div><div class="mstat-label">latency</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="routing-flow">
+      <div class="rf-step">
+        <div class="rf-tag">User input</div>
+        <div class="rf-name">"ran 5km, spent ₹480"</div>
+        <div class="rf-sub">Raw Telegram message</div>
+      </div>
+      <div class="rf-arrow"><svg width="22" height="14" viewBox="0 0 22 14"><path d="M0 7 H16 M12 3 L20 7 L12 11" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+      <div class="rf-step hl">
+        <div class="rf-tag" style="display:flex;align-items:center;gap:5px;">
+        </div>
+        <div class="rf-name">["fitness", "expenses"]</div>
+        <div class="rf-sub">2 of 14 categories matched</div>
+      </div>
+      <div class="rf-arrow"><svg width="22" height="14" viewBox="0 0 22 14"><path d="M0 7 H16 M12 3 L20 7 L12 11" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+      <div class="rf-step" style="max-width:210px;">
+        <div class="rf-tag">Subset loaded — 6 of 48 tools</div>
+        <div class="rf-tools">
+          <span class="rf-tool-pill">log_habit()</span>
+          <span class="rf-tool-pill">query_habits()</span>
+          <span class="rf-tool-pill">add_expense()</span>
+          <span class="rf-tool-pill">query_expenses()</span>
+          <span class="rf-tool-pill">get_garmin_summary()</span>
+          <span class="rf-tool-pill">get_current_time()</span>
+        </div>
+      </div>
+      <div class="rf-arrow"><svg width="22" height="14" viewBox="0 0 22 14"><path d="M0 7 H16 M12 3 L20 7 L12 11" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+      <div class="rf-step hl">
+        <div class="rf-tag" style="display:flex;align-items:center;gap:5px;">
+        </div>
+        <div class="rf-name">2 parallel calls</div>
+        <div class="rf-sub">log_habit + add_expense fired together</div>
+      </div>
+      <div class="rf-arrow"><svg width="22" height="14" viewBox="0 0 22 14"><path d="M0 7 H16 M12 3 L20 7 L12 11" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+      <div class="rf-step">
+        <div class="rf-tag">Reply</div>
+        <div class="rf-name">"Logged. ₹8,240 left."</div>
+        <div class="rf-sub">~2.4s total</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════  TOOLS  ═══════════════════ -->
+<section class="section">
+  <div class="page">
+    <div class="section-label">Tool Ecosystem</div>
+    <h2 class="section-title">48 tools across 8 domains</h2>
+    <p class="section-sub">Every capability is a discrete tool. Adding more is near-free — definitions are cached.</p>
+    <div class="tools-grid">
+
+      <div class="tool-card">
+        <div class="tool-icon" style="background:#ecfeff;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="4" stroke="#0891b2" stroke-width="1.6"/><path d="M3 18 Q3 13 10 13 Q17 13 17 18" stroke="#0891b2" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+        </div>
+        <div class="tool-name">Health &amp; Fitness</div>
+        <div class="tool-count">3 tools</div>
+        <div class="tool-items">
+          <span class="tool-tag">get_garmin_summary</span>
+          <span class="tool-tag">get_recent_workouts</span>
+          <span class="tool-tag">suggest_workout</span>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon" style="background:#fffbeb;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#d97706" stroke-width="1.6"/><path d="M10 6 V10 L13 13" stroke="#d97706" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tool-name">Finances</div>
+        <div class="tool-count">2 tools · alerts 50/75/90/100%</div>
+        <div class="tool-items"><span class="tool-tag">add_expense</span><span class="tool-tag">query_expenses</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon" style="background:#fdf4ff;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="#9333ea" stroke-width="1.6" fill="none"/><path d="M6 10 Q10 6 14 10 Q10 14 6 10" fill="#9333ea" opacity=".3"/><circle cx="10" cy="10" r="2" fill="#9333ea"/></svg>
+        </div>
+        <div class="tool-name">Mood &amp; Energy</div>
+        <div class="tool-count">4 tools · qualitative triggers</div>
+        <div class="tool-items"><span class="tool-tag">log_mood</span><span class="tool-tag">log_energy</span><span class="tool-tag">query_mood</span><span class="tool-tag">analyze_mood_patterns</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon" style="background:#f0fdf4;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="12" rx="2.5" stroke="#059669" stroke-width="1.6"/><path d="M6 10 L9 13 L14 7" stroke="#059669" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="tool-name">Todos &amp; Goals</div>
+        <div class="tool-count">6 tools · evening check</div>
+        <div class="tool-items"><span class="tool-tag">add_todo</span><span class="tool-tag">complete_todo</span><span class="tool-tag">set_weekly_goals</span><span class="tool-tag">list_daily_goals</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon" style="background:#eff6ff;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="14" rx="2" stroke="#2563eb" stroke-width="1.6"/><line x1="2" y1="8" x2="18" y2="8" stroke="#2563eb" stroke-width="1.2"/><circle cx="7" cy="12" r="1.3" fill="#2563eb"/><circle cx="13" cy="12" r="1.3" fill="#2563eb" opacity=".4"/></svg>
+        </div>
+        <div class="tool-name">Calendar &amp; Habits</div>
+        <div class="tool-count">5 tools · append-only</div>
+        <div class="tool-items"><span class="tool-tag">query_calendar</span><span class="tool-tag">add_calendar_event</span><span class="tool-tag">log_habit</span><span class="tool-tag">query_habits</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon" style="background:#fff7ed;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="10" height="13" rx="2" stroke="#ea580c" stroke-width="1.6"/><path d="M12 3 L18 3 L18 15 L12 15" stroke="#ea580c" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+        </div>
+        <div class="tool-name">Media &amp; Vocab</div>
+        <div class="tool-count">8 tools · spaced repetition</div>
+        <div class="tool-items"><span class="tool-tag">log_watched</span><span class="tool-tag">recommend_media</span><span class="tool-tag">add_vocab_word</span><span class="tool-tag">check_vocab_answer</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon" style="background:#ecfeff;">
+          <!-- open-meteo / weather icon -->
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="14" cy="8" r="3.5" fill="#fbbf24" stroke="#f59e0b" stroke-width=".8"/>
+            <path d="M5 13 Q5 10 8 10 Q9 7 12 8 Q14 7 15 9 Q17 9 17 11 Q17 13 15 13 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width=".8"/>
+          </svg>
+        </div>
+        <div class="tool-name">Weather &amp; News</div>
+        <div class="tool-count">3 tools · no API key needed</div>
+        <div class="tool-items"><span class="tool-tag">get_weather</span><span class="tool-tag">news_digest</span><span class="tool-tag">get_literature_quote</span></div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon" style="background:#fdf2f8;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#db2777" stroke-width="1.6" fill="none"/><path d="M6 10 Q8 6 10 10 Q12 14 14 10" stroke="#db2777" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+        </div>
+        <div class="tool-name">Life Log</div>
+        <div class="tool-count">11 tools · 7 domains</div>
+        <div class="tool-items"><span class="tool-tag">log_idea</span><span class="tool-tag">log_decision</span><span class="tool-tag">log_social</span><span class="tool-tag">generate_self_portrait</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════  INTERACTIONS  ═══════════════════ -->
+<section class="section section-alt">
+  <div class="page">
+    <div class="section-label">In Practice</div>
+    <h2 class="section-title">What you can say</h2>
+    <p class="section-sub">Natural language — no commands. Each card shows trigger → internal pipeline → response.</p>
+    <div class="interactions">
+
+      <div class="icard">
+        <div class="icard-header" style="background:rgba(8,145,178,.05);">
+          <span class="icard-scenario" style="color:var(--teal)">Fitness logging</span>
+        </div>
+        <div>
+          <div class="irow">
+            <div class="irow-label">You say</div>
+            <div class="irow-trigger">"Just finished a 5.2km run in 28 mins. Felt strong."</div>
+          </div>
+          <div class="irow">
+            <div class="irow-label">Internally</div>
+            <div class="process-row">
+              <span class="proc-classify" style="color:#0891b2;border-color:rgba(8,145,178,.3);background:rgba(8,145,178,.06);">fitness</span>
+              <span class="proc-tool"><span class="arr">→</span>log_habit("exercise","5.2km 28min")</span>
+              <span class="proc-tool"><span class="arr">→</span>get_garmin_summary()</span>
+              <span class="proc-parallel">parallel</span>
+            </div>
+          </div>
+          <div class="irow">
+            <div class="irow-label">Jarvis replies</div>
+            <div class="irow-response">Logged. 5.2km / 28min — solid pace.<br>Body battery: 72 · HRV trending up. Recovery: good 🟢</div>
+            <div class="irow-cost">
+              <span class="cost-chip">2 tools</span>
+              <span class="cost-chip">~₹0.18</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="icard">
+        <div class="icard-header" style="background:rgba(217,119,6,.05);">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#d97706" stroke-width="1.2"/><text x="4.5" y="10" fill="#d97706" font-size="7" font-family="Inter">₹</text></svg>
+          <span class="icard-scenario" style="color:var(--amber)">Multi-action</span>
+        </div>
+        <div>
+          <div class="irow">
+            <div class="irow-label">You say</div>
+            <div class="irow-trigger">"₹480 lunch at Social, ₹120 Uber. Feeling drained."</div>
+          </div>
+          <div class="irow">
+            <div class="irow-label">Internally</div>
+            <div class="process-row">
+              <span class="proc-classify" style="color:#d97706;border-color:rgba(217,119,6,.3);background:rgba(217,119,6,.06);">expenses</span>
+              <span class="proc-classify" style="color:#9333ea;border-color:rgba(147,51,234,.3);background:rgba(147,51,234,.06);">mood</span>
+              <span class="proc-tool"><span class="arr">→</span>add_expense(480)</span>
+              <span class="proc-tool"><span class="arr">→</span>add_expense(120)</span>
+              <span class="proc-tool"><span class="arr">→</span>log_mood()</span>
+              <span class="proc-tool"><span class="arr">→</span>log_energy(2)</span>
+              <span class="proc-parallel">4 parallel</span>
+            </div>
+          </div>
+          <div class="irow">
+            <div class="irow-label">Jarvis replies</div>
+            <div class="irow-response">Logged. ₹600 today · ₹16,760 MTD (67% budget).<br>Mood + energy saved. Recovery low — light evening.</div>
+            <div class="irow-cost">
+              <span class="cost-chip">4 tools</span>
+              <span class="cost-chip">~₹0.22</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="icard">
+        <div class="icard-header" style="background:rgba(8,145,178,.04);">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 9 Q3 6 6 6 Q6.5 4 9 4.5 Q10.5 4 11 5.5 Q13 5.5 13 7 Q13 9 11 9 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width=".8"/>
+            <circle cx="10" cy="4" r="2" fill="#fbbf24" stroke="#f59e0b" stroke-width=".6"/>
+          </svg>
+          <span class="icard-scenario" style="color:var(--teal)">Morning context</span>
+        </div>
+        <div>
+          <div class="irow">
+            <div class="irow-label">You say</div>
+            <div class="irow-trigger">"What's my day looking like?"</div>
+          </div>
+          <div class="irow">
+            <div class="irow-label">Internally</div>
+            <div class="process-row">
+              <span class="proc-classify" style="color:#7c3aed;border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.06);">external</span>
+              <span class="proc-classify" style="color:#2563eb;border-color:rgba(37,99,235,.3);background:rgba(37,99,235,.06);">calendar</span>
+              <span class="proc-classify" style="color:#0891b2;border-color:rgba(8,145,178,.3);background:rgba(8,145,178,.06);">fitness</span>
+              <span class="proc-tool"><span class="arr">→</span>get_weather()</span>
+              <span class="proc-tool"><span class="arr">→</span>query_calendar(today)</span>
+              <span class="proc-tool"><span class="arr">→</span>list_todos()</span>
+              <span class="proc-tool"><span class="arr">→</span>get_garmin_summary()</span>
+              <span class="proc-tool"><span class="arr">→</span>list_daily_goals()</span>
+              <span class="proc-parallel">5 parallel</span>
+            </div>
+          </div>
+          <div class="irow">
+            <div class="irow-label">Jarvis replies</div>
+            <div class="irow-response">Fri Apr 18 · 32°C Mumbai · Recovery 72%.<br>📅 1:1 Rahul 10am · Review 2:30pm · Gym 6pm<br>✅ 3 todos (1 overdue) · Goals: Run ✓ · Study ○</div>
+            <div class="irow-cost">
+              <span class="cost-chip">5 tools</span>
+              <span class="cost-chip">~₹0.20</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="icard">
+        <div class="icard-header" style="background:rgba(0,0,0,.03);">
+          <span class="icard-scenario" style="color:#555">Voice message</span>
+        </div>
+        <div>
+          <div class="irow">
+            <div class="irow-label">You send a voice note 🎙</div>
+            <div class="irow-trigger">"Add 800 calories for lunch, chicken rice bowl."</div>
+          </div>
+          <div class="irow">
+            <div class="irow-label">Internally</div>
+            <div class="process-row">
+              <span class="proc-classify" style="color:#059669;border-color:rgba(5,150,105,.3);background:rgba(5,150,105,.06);">calories</span>
+              <span class="proc-tool"><span class="arr">→</span>log_calories(800,"lunch")</span>
+            </div>
+          </div>
+          <div class="irow">
+            <div class="irow-label">Jarvis replies</div>
+            <div class="irow-response">[Add 800 calories for lunch, chicken rice bowl.]<br><br>Logged. 800 kcal lunch · 1,840 total · NET −380 kcal</div>
+            <div class="irow-cost">
+              <span class="cost-chip">1 tool</span>
+              <span class="cost-chip">~₹0.16 total</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════  SCHEDULE  ═══════════════════ -->
+<section class="section">
+  <div class="page">
+    <div class="section-label">Always On</div>
+    <h2 class="section-title">7 jobs running in the background</h2>
+    <p class="section-sub">APScheduler drives a daily rhythm. Most jobs are free — only 3 involve Claude API calls.</p>
+    <div class="schedule-grid">
+      <div class="sched-card daily">
+        <div class="sched-time">07:00 · daily</div>
+        <div class="sched-name">Morning Brief</div>
+        <div class="sched-desc">Quote + weather + calendar + todos + Garmin recovery + yesterday spend + goals.</div>
+        <div class="sched-cost" style="color:var(--teal)">~₹0.40</div>
+      </div>
+      <div class="sched-card free">
+        <div class="sched-time">18:00 · daily</div>
+        <div class="sched-name">Evening Reminder</div>
+        <div class="sched-desc">Dinner pick from local list + due-today todos. Fully local, no API calls.</div>
+        <div class="sched-cost" style="color:var(--green)">₹0 · local only</div>
+      </div>
+      <div class="sched-card daily">
+        <div class="sched-time">21:00 · daily</div>
+        <div class="sched-name">Goals Check</div>
+        <div class="sched-desc">LLM checks each goal against data. Sends ✓/✗ with nudge for missed ones.</div>
+        <div class="sched-cost" style="color:var(--teal)">~₹0.20</div>
+      </div>
+      <div class="sched-card free">
+        <div class="sched-time">09:15 · daily</div>
+        <div class="sched-name">Budget Pace</div>
+        <div class="sched-desc">Projects month-end spend. Alerts when ≥90% of any budget. Pure math, no LLM.</div>
+        <div class="sched-cost" style="color:var(--green)">₹0 · math only</div>
+      </div>
+      <div class="sched-card free">
+        <div class="sched-time">hourly</div>
+        <div class="sched-name">Garmin Auto-Log</div>
+        <div class="sched-desc">Detects new workouts via activity ID dedup, auto-logs exercise habit + Telegram ping.</div>
+        <div class="sched-cost" style="color:var(--green)">₹0 · local</div>
+      </div>
+      <div class="sched-card weekly">
+        <div class="sched-time">Sun 21:00</div>
+        <div class="sched-name">Weekly Digest</div>
+        <div class="sched-desc">Full week — money, fitness, habits, mood, media, learning, goals.</div>
+        <div class="sched-cost" style="color:var(--purple)">~₹0.50</div>
+      </div>
+      <div class="sched-card amber">
+        <div class="sched-time">08:00 + 10/16/20:00</div>
+        <div class="sched-name">Vocab Learning</div>
+        <div class="sched-desc">Daily new word + 3 spaced-repetition quizzes. 3 correct = mastered.</div>
+        <div class="sched-cost" style="color:var(--amber)">~₹0.05/day</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════  DATA + COST  ═══════════════════ -->
+<section class="section section-alt">
+  <div class="page">
+    <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start;">
+      <div>
+        <div class="section-label">Data Layer</div>
+        <h2 class="section-title">Hybrid storage</h2>
+        <p class="section-sub" style="margin-bottom:16px;">SQLite owns agent state. Sheets owns tracking data — editable and reviewable.</p>
+        <div class="data-grid">
+          <div class="data-card sqlite">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="4" width="18" height="14" rx="3" stroke="#93c5fd" stroke-width="1.5"/><line x1="2" y1="9" x2="20" y2="9" stroke="#93c5fd" stroke-width="1.1"/><line x1="2" y1="14" x2="20" y2="14" stroke="#93c5fd" stroke-width="1.1" opacity=".5"/></svg>
+              <div><div class="data-card-title">SQLite</div><div class="data-card-sub">WAL · thread-safe · local</div></div>
+            </div>
+            <div class="data-table">
+              <div class="data-row"><span class="data-tname">conversations</span><span class="data-tpurp">Full turn history</span></div>
+              <div class="data-row"><span class="data-tname">token_usage</span><span class="data-tpurp">Per-call cost log</span></div>
+              <div class="data-row"><span class="data-tname">facts</span><span class="data-tpurp">Garmin dedup, KV store</span></div>
+              <div class="data-row"><span class="data-tname">daily_goals</span><span class="data-tpurp">Week-keyed goals</span></div>
+              <div class="data-row"><span class="data-tname">vocab_words</span><span class="data-tpurp">Deck + next_review</span></div>
+              <div class="data-row"><span class="data-tname">sheets_queue</span><span class="data-tpurp">Offline write buffer</span></div>
+            </div>
+          </div>
+          <div class="data-card sheets">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="3" stroke="#86efac" stroke-width="1.5"/><line x1="2" y1="8" x2="20" y2="8" stroke="#86efac" stroke-width="1.1"/><line x1="2" y1="14" x2="20" y2="14" stroke="#86efac" stroke-width="1.1" opacity=".5"/><line x1="9" y1="2" x2="9" y2="20" stroke="#86efac" stroke-width="1" opacity=".4"/></svg>
+              <div>
+                <div class="data-card-title" style="display:flex;align-items:center;gap:6px;">
+                  Google Sheets
+                </div>
+                <div class="data-card-sub">Auto-created on first write</div>
+              </div>
+            </div>
+            <div class="data-table">
+              <div class="data-row"><span class="data-tname">expenses</span><span class="data-tpurp">Amt, category, note</span></div>
+              <div class="data-row"><span class="data-tname">habits</span><span class="data-tpurp">Append-only log</span></div>
+              <div class="data-row"><span class="data-tname">mood / energy</span><span class="data-tpurp">Score + context</span></div>
+              <div class="data-row"><span class="data-tname">media</span><span class="data-tpurp">Watched + TMDb meta</span></div>
+              <div class="data-row"><span class="data-tname">ideas_log</span><span class="data-tpurp">Timestamped ideas</span></div>
+              <div class="data-row"><span class="data-tname">decisions_log</span><span class="data-tpurp">Decision + outcome</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Cost Profile</div>
+        <h2 class="section-title">₹25/day</h2>
+        <p class="section-sub" style="margin-bottom:16px;">Full-time AI assistant at 35–44 messages/day.</p>
+        <div class="cost-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="cost-card"><div class="cost-val">₹<span>20–35</span></div><div class="cost-label">Per day</div><div class="cost-sub">70% cache hit</div></div>
+          <div class="cost-card"><div class="cost-val">₹<span>0.01</span></div><div class="cost-label">Per classify</div><div class="cost-sub">Haiku · 64 tokens</div></div>
+          <div class="cost-card"><div class="cost-val">₹<span>0.15</span></div><div class="cost-label">Cache hit</div><div class="cost-sub">~6900 cached tokens</div></div>
+          <div class="cost-card"><div class="cost-val">₹<span>2.5</span></div><div class="cost-label">Cold start</div><div class="cost-sub">5-min idle miss</div></div>
+        </div>
+        <div style="margin-top:12px;background:var(--navy);color:white;border-radius:12px;padding:16px 18px;">
+          <div style="font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Cost reductions applied</div>
+          <div style="display:flex;gap:14px;">
+            <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">−40%</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">Tiered routing<br>Haiku classify</div></div>
+            <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">−20%</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">History<br>10→6 msgs</div></div>
+            <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">~₹0</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">Haiku for<br>oneshot tasks</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════  CONSOLE VIEW  ═══════════════════ -->
+<section class="section">
+  <div class="page">
+    <div class="section-label">Live Console</div>
+    <h2 class="section-title">Dashboard at localhost:8000</h2>
+    <p class="section-sub">Cyan-on-black Stark aesthetic. Real-time data via WebSocket + 30 s polling.</p>
+    <div class="hud-showcase">
+      <!-- Browser chrome -->
+      <div class="hud-chrome">
+        <div class="hud-chrome-bar">
+          <div class="hud-chrome-dots"><span></span><span></span><span></span></div>
+          <div class="hud-chrome-url">http://localhost:8000</div>
+          <div style="width:60px"></div>
+        </div>
+        <!-- ── HUD MOCKUP ── -->
+        <div class="hud-mock-wrap">
+        <div class="hud-mock">
+
+          <!-- bg layers -->
+          <div class="hm-grid"></div>
+          <div class="hm-scanlines"></div>
+
+          <!-- topbar -->
+          <div class="hm-topbar">
+            <div class="hm-status">
+              <span class="hm-dot"></span>
+              <span class="hm-status-lbl">IDLE</span>
+            </div>
+            <div class="hm-title">
+              <div class="hm-title-main">J · A · R · V · I · S</div>
+              <div class="hm-title-sub">personal assistant // phase I</div>
+            </div>
+            <div class="hm-clock">
+              <div class="hm-clock-time">08:42:31</div>
+              <div class="hm-clock-date">THU 17 APR 2026</div>
+            </div>
+          </div>
+
+          <!-- main 3-col -->
+          <div class="hm-main">
+
+            <!-- LEFT: transcript + agenda -->
+            <div class="hm-panel hm-panel-left">
+              <div class="hm-ph">
+                <span class="hm-ptag">//</span>
+                <span class="hm-ptitle">TRANSCRIPT</span>
+                <span class="hm-pcount">8</span>
+              </div>
+              <div class="hm-pbody">
+                <div class="hm-msg hm-msg-u">ran 5km today, heart rate avg 148</div>
+                <div class="hm-msg hm-msg-a">
+                  <span class="hm-tool">⚙ log_habit · get_garmin_summary</span>
+                  Logged run (5 km, avg HR 148). Body battery at 72 — solid effort. Recovery looks good for tomorrow.
+                </div>
+                <div class="hm-msg hm-msg-u">what did i spend yesterday?</div>
+                <div class="hm-msg hm-msg-a">
+                  <span class="hm-tool">⚙ query_expenses</span>
+                  Yesterday: ₹1,240 — Food ₹680, Transport ₹310, Misc ₹250.
+                </div>
+                <div class="hm-msg hm-msg-u">add milk and eggs to groceries todo</div>
+                <div class="hm-msg hm-msg-a">
+                  <span class="hm-tool">⚙ add_todo</span>
+                  Added: "Buy milk + eggs" · tagged groceries.
+                </div>
+              </div>
+              <div class="hm-ph" style="margin-top:10px">
+                <span class="hm-ptag">//</span>
+                <span class="hm-ptitle">TODAY'S AGENDA</span>
+                <span class="hm-pcount">3</span>
+              </div>
+              <div class="hm-pbody">
+                <div class="hm-cal-item"><span class="hm-cal-time">10:00</span> Standup sync</div>
+                <div class="hm-cal-item"><span class="hm-cal-time">14:30</span> Design review</div>
+                <div class="hm-cal-item"><span class="hm-cal-time">19:00</span> Gym session</div>
+              </div>
+            </div>
+
+            <!-- CENTER: orb + weather -->
+            <div class="hm-core">
+              <svg class="hm-orb" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="hmCoreGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.9"/>
+                    <stop offset="40%" stop-color="#0077b6" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#000814" stop-opacity="0"/>
+                  </radialGradient>
+                  <filter id="hmGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                </defs>
+                <circle cx="200" cy="200" r="180" fill="none" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.3"/>
+                <circle class="hm-ring-mid" cx="200" cy="200" r="150" fill="none" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="4 8" stroke-opacity="0.6"/>
+                <circle class="hm-ring-inner" cx="200" cy="200" r="120" fill="none" stroke="#00d4ff" stroke-width="1" stroke-dasharray="60 10 4 10" stroke-opacity="0.8"/>
+                <circle cx="200" cy="200" r="90" fill="url(#hmCoreGrad)" filter="url(#hmGlow)"/>
+                <circle cx="200" cy="200" r="8" fill="#00d4ff" filter="url(#hmGlow)"/>
+              </svg>
+              <div class="hm-core-lbl">STANDBY</div>
+              <div class="hm-weather">
+                <div class="hm-wtemp">31°C <span class="hm-wcond">Partly Cloudy</span></div>
+                <div class="hm-wsub">Humidity 74% · Feels 36°C · Mumbai</div>
+              </div>
+            </div>
+
+            <!-- RIGHT: system + HR + activity -->
+            <div class="hm-panel hm-panel-right">
+              <div class="hm-ph">
+                <span class="hm-ptag">//</span>
+                <span class="hm-ptitle">SYSTEM</span>
+              </div>
+              <div class="hm-stats">
+                <div class="hm-stat"><div class="hm-slabel">EVENTS</div><div class="hm-sval">147</div></div>
+                <div class="hm-stat"><div class="hm-slabel">TOOLS</div><div class="hm-sval">83</div></div>
+                <div class="hm-stat"><div class="hm-slabel">ERRORS</div><div class="hm-sval" style="color:#ff3366">0</div></div>
+                <div class="hm-stat"><div class="hm-slabel">WS</div><div class="hm-sval" style="color:#00d4ff">OK</div></div>
+              </div>
+              <div class="hm-ph" style="margin-top:10px">
+                <span class="hm-ptag">//</span>
+                <span class="hm-ptitle">HEART RATE</span>
+                <span class="hm-pcount">today</span>
+              </div>
+              <div class="hm-hr-grid">
+                <div class="hm-hr-cell"><div class="hm-hrlbl">REST</div><div class="hm-hrval">52</div></div>
+                <div class="hm-hr-cell"><div class="hm-hrlbl">AVG</div><div class="hm-hrval">71</div></div>
+                <div class="hm-hr-cell"><div class="hm-hrlbl">MAX</div><div class="hm-hrval">163</div></div>
+                <div class="hm-hr-cell"><div class="hm-hrlbl">LAST</div><div class="hm-hrval">64</div></div>
+              </div>
+              <div class="hm-ph" style="margin-top:10px">
+                <span class="hm-ptag">//</span>
+                <span class="hm-ptitle">ACTIVITY</span>
+              </div>
+              <div class="hm-pbody">
+                <div class="hm-act-item"><span class="hm-act-tag">RUN</span> 5.0 km · 28:14 · Z3</div>
+                <div class="hm-act-item"><span class="hm-act-tag">STEPS</span> 9,847 of 10k</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- data strip -->
+          <div class="hm-strip">
+            <!-- todos -->
+            <div class="hm-sp">
+              <div class="hm-sph"><span class="hm-ptag">//</span><span class="hm-ptitle">TODO</span><span class="hm-pcount">5 open</span></div>
+              <div class="hm-todo-item hm-todo-overdue">⚠ Review Q1 report <span class="hm-tod">overdue</span></div>
+              <div class="hm-todo-item">→ Buy milk + eggs</div>
+              <div class="hm-todo-item">→ Push vocab PR</div>
+              <div class="hm-todo-item hm-todo-dim">→ Book dentist</div>
+            </div>
+            <!-- nutrition -->
+            <div class="hm-sp">
+              <div class="hm-sph"><span class="hm-ptag">//</span><span class="hm-ptitle">NUTRITION TODAY</span><span class="hm-pcount">net −340</span></div>
+              <div class="hm-cal-big">1,840 <span class="hm-cal-unit">kcal</span></div>
+              <div class="hm-macros">
+                <div><div class="hm-mlabel">PROT</div><div class="hm-mval">112g</div></div>
+                <div><div class="hm-mlabel">CARB</div><div class="hm-mval">198g</div></div>
+                <div><div class="hm-mlabel">FAT</div><div class="hm-mval">54g</div></div>
+              </div>
+              <div class="hm-spark-row"><span class="hm-mlabel">MOOD 7D</span>
+                <svg width="90" height="22" viewBox="0 0 90 22"><polyline points="0,14 13,10 26,16 39,8 52,12 65,6 78,9 90,7" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity=".7"/><circle cx="90" cy="7" r="2.5" fill="#00d4ff"/></svg>
+              </div>
+            </div>
+            <!-- expenses -->
+            <div class="hm-sp">
+              <div class="hm-sph"><span class="hm-ptag">//</span><span class="hm-ptitle">EXPENSES</span><span class="hm-pcount">Apr</span></div>
+              <div class="hm-money-row">
+                <div><div class="hm-mlabel">TODAY</div><div class="hm-monval">₹480</div></div>
+                <div><div class="hm-mlabel">THIS MONTH</div><div class="hm-monval">₹18,240</div></div>
+              </div>
+              <div class="hm-bar-row"><span class="hm-mlabel">DAILY 62%</span><div class="hm-btrack"><div class="hm-bfill" style="width:62%"></div></div></div>
+              <div class="hm-bar-row"><span class="hm-mlabel">MONTHLY 73%</span><div class="hm-btrack"><div class="hm-bfill" style="width:73%;background:#ffaa00"></div></div></div>
+            </div>
+            <!-- api usage -->
+            <div class="hm-sp">
+              <div class="hm-sph"><span class="hm-ptag">//</span><span class="hm-ptitle">API USAGE</span><span class="hm-pcount">INR 83.4</span></div>
+              <div class="hm-money-row">
+                <div><div class="hm-mlabel">TODAY</div><div class="hm-monval">₹22.4</div><div class="hm-msub">38 calls</div></div>
+                <div><div class="hm-mlabel">THIS MONTH</div><div class="hm-monval">₹610</div><div class="hm-msub">1,047 calls</div></div>
+              </div>
+              <div class="hm-spark-row"><span class="hm-mlabel">COST 7D</span>
+                <svg width="90" height="22" viewBox="0 0 90 22"><polyline points="0,16 13,12 26,18 39,10 52,14 65,8 78,13 90,9" fill="none" stroke="#ffaa00" stroke-width="1.5" opacity=".7"/><circle cx="90" cy="9" r="2.5" fill="#ffaa00"/></svg>
+              </div>
+            </div>
+            <!-- recently watched -->
+            <div class="hm-sp">
+              <div class="hm-sph"><span class="hm-ptag">//</span><span class="hm-ptitle">RECENTLY WATCHED</span></div>
+              <div class="hm-watched-item"><span class="hm-watched-rating">★ 8.5</span> Dune: Part Two</div>
+              <div class="hm-watched-item"><span class="hm-watched-rating">★ 7.2</span> Severance S2</div>
+              <div class="hm-watched-item hm-todo-dim"><span class="hm-watched-rating">★ —</span> The Brutalist</div>
+            </div>
+          </div>
+
+          <!-- trends row -->
+          <div class="hm-trends">
+            <div class="hm-trends-hd"><span class="hm-ptag">//</span><span class="hm-ptitle">7-DAY TRENDS</span><span class="hm-pcount">Garmin · last synced 07:18</span></div>
+            <div class="hm-trend-grid">
+              <div class="hm-tcard">
+                <div class="hm-thead"><span class="hm-tname">SLEEP</span><span class="hm-tnow">7h 12m</span></div>
+                <svg width="100%" height="32" viewBox="0 0 120 32"><polyline points="0,22 17,18 34,24 51,14 68,20 85,12 102,16 120,14" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity=".8"/><circle cx="120" cy="14" r="2.5" fill="#00d4ff"/></svg>
+              </div>
+              <div class="hm-tcard">
+                <div class="hm-thead"><span class="hm-tname">HRV</span><span class="hm-tnow">58 ms</span></div>
+                <svg width="100%" height="32" viewBox="0 0 120 32"><polyline points="0,18 17,14 34,20 51,10 68,16 85,8 102,12 120,10" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity=".8"/><circle cx="120" cy="10" r="2.5" fill="#00d4ff"/></svg>
+              </div>
+              <div class="hm-tcard">
+                <div class="hm-thead"><span class="hm-tname">BODY BATTERY</span><span class="hm-tnow">72</span></div>
+                <svg width="100%" height="32" viewBox="0 0 120 32"><polyline points="0,24 17,20 34,16 51,22 68,12 85,18 102,10 120,14" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity=".8"/><circle cx="120" cy="14" r="2.5" fill="#00d4ff"/></svg>
+              </div>
+              <div class="hm-tcard">
+                <div class="hm-thead"><span class="hm-tname">DISTANCE</span><span class="hm-tnow">5.0 km</span></div>
+                <svg width="100%" height="32" viewBox="0 0 120 32"><polyline points="0,20 17,28 34,14 51,26 68,18 85,24 102,10 120,8" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity=".8"/><circle cx="120" cy="8" r="2.5" fill="#00d4ff"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- event stream footer -->
+          <div class="hm-eventbar">
+            <span class="hm-ptag">//</span>
+            <span class="hm-ptitle" style="margin-right:12px">EVENT STREAM</span>
+            <span class="hm-evt">08:42 tool:get_garmin_summary</span>
+            <span class="hm-evt-sep">·</span>
+            <span class="hm-evt">08:41 tool:log_habit[run]</span>
+            <span class="hm-evt-sep">·</span>
+            <span class="hm-evt">07:18 scheduler:morning_brief</span>
+            <span class="hm-evt-sep">·</span>
+            <span class="hm-evt hm-evt-dim">07:00 garmin:cache_refresh</span>
+          </div>
+
+        </div><!-- /hud-mock -->
+        </div><!-- /hud-mock-wrap -->
+      </div><!-- /hud-chrome -->
+    </div><!-- /hud-showcase -->
+  </div>
+</section>
+
+<style>
+/* ── HUD SHOWCASE ── */
+.hud-showcase{margin-top:0;}
+.hud-chrome{border-radius:10px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.25);border:1px solid #d1d5db;}
+.hud-chrome-bar{background:#e5e7eb;padding:9px 14px;display:flex;align-items:center;gap:12px;}
+.hud-chrome-dots{display:flex;gap:6px;}
+.hud-chrome-dots span{width:11px;height:11px;border-radius:50%;}
+.hud-chrome-dots span:nth-child(1){background:#ef4444;}
+.hud-chrome-dots span:nth-child(2){background:#f59e0b;}
+.hud-chrome-dots span:nth-child(3){background:#22c55e;}
+.hud-chrome-url{flex:1;text-align:center;background:white;border-radius:5px;padding:3px 12px;font-size:.72rem;color:#6b7280;font-family:'JetBrains Mono',monospace;}
+
+/* scale wrapper */
+.hud-mock-wrap{width:100%;overflow:hidden;}
+.hud-mock{
+  width:1280px;
+  transform:scale(var(--hm-scale,0.8));
+  transform-origin:top left;
+  background:#000814;
+  font-family:'JetBrains Mono',monospace;
+  color:#e0f7ff;
+  position:relative;
+  padding:18px 22px 12px;
+  display:grid;
+  grid-template-rows:auto auto auto auto auto;
+  gap:12px;
+}
+
+/* bg layers */
+.hm-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.05)1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.05)1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.hm-scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,212,255,.015)2px,rgba(0,212,255,.015)3px);pointer-events:none;}
+
+/* topbar */
+.hm-topbar{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding-bottom:10px;border-bottom:1px solid rgba(0,212,255,.25);}
+.hm-status{display:flex;align-items:center;gap:8px;font-size:.75rem;letter-spacing:.15em;}
+.hm-dot{width:9px;height:9px;border-radius:50%;background:#00d4ff;box-shadow:0 0 8px rgba(0,212,255,.7);animation:hm-pulse 2s ease-in-out infinite;}
+.hm-status-lbl{color:rgba(224,247,255,.6);}
+@keyframes hm-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
+.hm-title{text-align:center;}
+.hm-title-main{display:block;font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.2rem;letter-spacing:.35em;color:#00d4ff;text-shadow:0 0 10px rgba(0,212,255,.6),0 0 20px rgba(0,212,255,.3);}
+.hm-title-sub{display:block;font-size:.6rem;letter-spacing:.3em;color:rgba(224,247,255,.25);margin-top:2px;}
+.hm-clock{text-align:right;font-family:'Orbitron',sans-serif;}
+.hm-clock-time{font-size:1.2rem;font-weight:500;letter-spacing:.1em;color:#00d4ff;text-shadow:0 0 10px rgba(0,212,255,.6);}
+.hm-clock-date{font-size:.6rem;letter-spacing:.2em;color:rgba(224,247,255,.25);text-transform:uppercase;margin-top:2px;}
+
+/* main 3-col */
+.hm-main{position:relative;z-index:1;display:grid;grid-template-columns:1fr 300px 1fr;gap:14px;height:340px;}
+.hm-panel{display:flex;flex-direction:column;gap:4px;}
+.hm-ph{display:flex;align-items:center;gap:6px;padding-bottom:5px;border-bottom:1px solid rgba(0,212,255,.15);}
+.hm-ptag{font-size:.6rem;color:rgba(0,212,255,.4);}
+.hm-ptitle{font-size:.62rem;font-weight:700;letter-spacing:.15em;color:rgba(0,212,255,.7);flex:1;}
+.hm-pcount{font-size:.58rem;color:rgba(224,247,255,.3);}
+.hm-pbody{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:4px;padding-top:4px;}
+.hm-msg{font-size:.62rem;line-height:1.5;padding:5px 8px;border-radius:4px;}
+.hm-msg-u{color:rgba(224,247,255,.55);border-left:2px solid rgba(0,212,255,.2);background:rgba(0,212,255,.03);}
+.hm-msg-a{color:rgba(224,247,255,.8);border-left:2px solid rgba(0,212,255,.5);background:rgba(0,212,255,.05);}
+.hm-tool{display:block;font-size:.52rem;color:rgba(0,212,255,.5);margin-bottom:2px;}
+.hm-cal-item{font-size:.62rem;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(224,247,255,.6);}
+.hm-cal-time{color:#00d4ff;margin-right:8px;font-size:.58rem;}
+
+/* orb center */
+.hm-core{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+.hm-orb{width:220px;height:220px;}
+.hm-ring-mid{animation:hm-ring-spin 8s linear infinite;transform-origin:200px 200px;}
+.hm-ring-inner{animation:hm-ring-spin-r 5s linear infinite;transform-origin:200px 200px;}
+@keyframes hm-ring-spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes hm-ring-spin-r{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
+.hm-core-lbl{font-family:'Orbitron',sans-serif;font-size:.7rem;letter-spacing:.3em;color:rgba(0,212,255,.5);}
+.hm-weather{text-align:center;}
+.hm-wtemp{font-size:.8rem;color:rgba(224,247,255,.8);}
+.hm-wcond{font-size:.7rem;color:rgba(224,247,255,.45);margin-left:4px;}
+.hm-wsub{font-size:.58rem;color:rgba(224,247,255,.3);margin-top:2px;}
+
+/* right panel */
+.hm-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px 0;}
+.hm-stat{background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.1);border-radius:5px;padding:6px 10px;}
+.hm-slabel{font-size:.52rem;letter-spacing:.12em;color:rgba(224,247,255,.35);margin-bottom:2px;}
+.hm-sval{font-size:.9rem;font-weight:700;font-family:'Orbitron',sans-serif;color:#00d4ff;}
+.hm-hr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:5px 0;}
+.hm-hr-cell{text-align:center;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.1);border-radius:4px;padding:5px 3px;}
+.hm-hrlbl{font-size:.5rem;letter-spacing:.1em;color:rgba(224,247,255,.35);}
+.hm-hrval{font-size:.85rem;font-weight:700;font-family:'Orbitron',sans-serif;color:#00d4ff;}
+.hm-act-item{font-size:.62rem;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(224,247,255,.6);}
+.hm-act-tag{color:#00d4ff;font-size:.55rem;margin-right:6px;}
+
+/* data strip */
+.hm-strip{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;border-top:1px solid rgba(0,212,255,.12);padding-top:10px;}
+.hm-sp{display:flex;flex-direction:column;gap:4px;}
+.hm-sph{display:flex;align-items:center;gap:5px;padding-bottom:4px;border-bottom:1px solid rgba(0,212,255,.1);}
+.hm-todo-item{font-size:.6rem;color:rgba(224,247,255,.6);padding:2px 0;}
+.hm-todo-overdue{color:#ff3366;}
+.hm-tod{font-size:.5rem;color:#ff3366;margin-left:4px;}
+.hm-todo-dim{color:rgba(224,247,255,.3);}
+.hm-cal-big{font-size:1.4rem;font-weight:700;font-family:'Orbitron',sans-serif;color:#00d4ff;line-height:1.1;}
+.hm-cal-unit{font-size:.7rem;color:rgba(224,247,255,.4);margin-left:3px;}
+.hm-macros{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px;}
+.hm-macros>div{background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.08);border-radius:4px;padding:4px;text-align:center;}
+.hm-mlabel{font-size:.5rem;letter-spacing:.1em;color:rgba(224,247,255,.35);}
+.hm-mval{font-size:.7rem;font-weight:600;color:rgba(224,247,255,.75);}
+.hm-spark-row{display:flex;align-items:center;gap:6px;margin-top:4px;}
+.hm-money-row{display:flex;gap:10px;margin-top:4px;}
+.hm-monval{font-size:.9rem;font-weight:700;font-family:'Orbitron',sans-serif;color:#00d4ff;}
+.hm-msub{font-size:.52rem;color:rgba(224,247,255,.3);}
+.hm-bar-row{display:flex;align-items:center;gap:6px;margin-top:4px;}
+.hm-btrack{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;}
+.hm-bfill{height:100%;border-radius:2px;background:#00d4ff;}
+.hm-watched-item{font-size:.62rem;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(224,247,255,.65);}
+.hm-watched-rating{color:#ffaa00;font-size:.58rem;margin-right:6px;}
+
+/* trends */
+.hm-trends{position:relative;z-index:1;border-top:1px solid rgba(0,212,255,.12);padding-top:10px;}
+.hm-trends-hd{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.hm-trend-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.hm-tcard{background:rgba(0,212,255,.03);border:1px solid rgba(0,212,255,.1);border-radius:6px;padding:8px 10px;}
+.hm-thead{display:flex;justify-content:space-between;margin-bottom:4px;}
+.hm-tname{font-size:.55rem;letter-spacing:.12em;color:rgba(224,247,255,.4);}
+.hm-tnow{font-size:.62rem;font-weight:700;color:#00d4ff;}
+
+/* event bar */
+.hm-eventbar{position:relative;z-index:1;border-top:1px solid rgba(0,212,255,.12);padding-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.hm-evt{font-size:.58rem;color:rgba(224,247,255,.4);}
+.hm-evt-sep{color:rgba(0,212,255,.2);}
+.hm-evt-dim{color:rgba(224,247,255,.2);}
+</style>
+
+<script>
+/* Scale HUD mock to fill container width */
+(function scaleHud(){
+  function resize(){
+    const wrap = document.querySelector('.hud-mock-wrap');
+    const mock = document.querySelector('.hud-mock');
+    if(!wrap||!mock) return;
+    const scale = wrap.offsetWidth / 1280;
+    mock.style.setProperty('--hm-scale', scale);
+    mock.style.transform = `scale(${scale})`;
+    mock.style.transformOrigin = 'top left';
+    wrap.style.height = (mock.offsetHeight * scale) + 'px';
+  }
+  window.addEventListener('resize', resize);
+  document.addEventListener('DOMContentLoaded', resize);
+  setTimeout(resize, 100);
+})();
+</script>
+
+<footer class="footer">
+  J.A.R.V.I.S · Just A Rather Very Intelligent System · Phase I · M10 · Powered by
+  <span style="color:#D97706;"> Claude Sonnet 4.6 + Haiku 4.5</span> ·
+  <span style="color:#003087;"> Garmin</span> ·
+  <span style="color:#01b4e4;"> TMDb</span> ·
+  <span style="color:rgba(255,255,255,.4);"> open-meteo</span>
+</footer>
+
+
+</body>
+</html>
