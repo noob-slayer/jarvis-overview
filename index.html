@@ -692,20 +692,22 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
             <div class="irow-label">Internally</div>
             <div class="process-row">
               <span class="proc-classify" style="color:#d97706;border-color:rgba(217,119,6,.3);background:rgba(217,119,6,.06);">expenses</span>
+              <span class="proc-classify" style="color:#059669;border-color:rgba(5,150,105,.3);background:rgba(5,150,105,.06);">calories</span>
               <span class="proc-classify" style="color:#9333ea;border-color:rgba(147,51,234,.3);background:rgba(147,51,234,.06);">mood</span>
-              <span class="proc-tool"><span class="arr">→</span>add_expense(480)</span>
-              <span class="proc-tool"><span class="arr">→</span>add_expense(120)</span>
-              <span class="proc-tool"><span class="arr">→</span>log_mood()</span>
+              <span class="proc-tool"><span class="arr">→</span>add_expense(480,"food")</span>
+              <span class="proc-tool"><span class="arr">→</span>add_expense(120,"transport")</span>
+              <span class="proc-tool"><span class="arr">→</span>log_calories(720,"lunch")</span>
+              <span class="proc-tool"><span class="arr">→</span>log_mood(3)</span>
               <span class="proc-tool"><span class="arr">→</span>log_energy(2)</span>
-              <span class="proc-parallel">4 parallel</span>
+              <span class="proc-parallel">5 parallel</span>
             </div>
           </div>
           <div class="irow">
             <div class="irow-label">Jarvis replies</div>
-            <div class="irow-response">Logged. ₹600 today · ₹16,760 MTD (67% budget).<br>Mood + energy saved. Recovery low — light evening.</div>
+            <div class="irow-response">Logged. ₹480 food · ₹120 transport · ₹16,760/₹25,000 MTD (67%).<br>~720 kcal lunch · 1,240/2,200 today. Mood 3 · low energy saved.</div>
             <div class="irow-cost">
-              <span class="cost-chip">4 tools</span>
-              <span class="cost-chip">~₹0.22</span>
+              <span class="cost-chip">5 tools</span>
+              <span class="cost-chip">~₹0.24</span>
             </div>
           </div>
         </div>
