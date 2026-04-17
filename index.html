@@ -177,6 +177,70 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .cost-sub{font-size:.62rem;color:var(--g4);margin-top:4px;}
 
 .footer{background:var(--navy);color:rgba(255,255,255,.35);text-align:center;padding:18px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .page{padding:0 16px;}
+  .section{padding:32px 0;}
+  .section-title{font-size:1.4rem;}
+
+  /* hero */
+  .hero-inner{grid-template-columns:1fr;gap:24px;padding:28px 16px 24px;}
+  .hero-title{font-size:2.2rem;}
+  .arc-reactor{width:260px;height:260px;margin:0 auto;}
+  .arc-reactor svg{width:100%;height:100%;}
+  .ring-1{transform-origin:130px 130px;}
+  .ring-2{transform-origin:130px 130px;}
+  .ring-3{transform-origin:130px 130px;}
+  .hero-strip{padding:14px 16px;}
+  .hstrip-inner{justify-content:flex-start;}
+  .hs-node{width:88px;}
+
+  /* models + routing */
+  .model-grid{grid-template-columns:1fr;}
+  .routing-flow{flex-direction:column;gap:8px;}
+  .rf-arrow{transform:rotate(90deg);margin:0 auto;}
+
+  /* tools */
+  .tools-grid{grid-template-columns:1fr 1fr;}
+
+  /* interactions */
+  .interactions{grid-template-columns:1fr;}
+
+  /* schedule */
+  .schedule-grid{grid-template-columns:1fr 1fr;}
+
+  /* data + cost */
+  .data-grid{grid-template-columns:1fr;}
+  .cost-grid{grid-template-columns:1fr 1fr;}
+
+  /* hud mock */
+  .hud-mock{padding:12px 10px 8px;}
+  .hm-main{grid-template-columns:1fr;height:auto;gap:10px;}
+  .hm-panel-right{display:none;}
+  .hm-strip{grid-template-columns:1fr 1fr;gap:8px;}
+  .hm-trend-grid{grid-template-columns:1fr 1fr;}
+  .hm-sp:nth-child(n+4){display:none;}
+}
+
+@media(max-width:480px){
+  .hero-title{font-size:1.8rem;}
+  .hero-stats{gap:16px;}
+  .hstat-num{font-size:1.3rem;}
+  .tools-grid{grid-template-columns:1fr;}
+  .schedule-grid{grid-template-columns:1fr;}
+  .cost-grid{grid-template-columns:1fr 1fr;}
+  .interactions{grid-template-columns:1fr;}
+  .arc-reactor{width:200px;height:200px;}
+  .arc-reactor svg{width:100%;height:100%;}
+  .ring-1{transform-origin:100px 100px;}
+  .ring-2{transform-origin:100px 100px;}
+  .ring-3{transform-origin:100px 100px;}
+  .hm-main{display:none;}
+  .hm-strip{grid-template-columns:1fr;}
+  .hm-sp:nth-child(n+3){display:none;}
+  .hm-trend-grid{grid-template-columns:1fr 1fr;}
+}
 </style>
 </head>
 <body>
