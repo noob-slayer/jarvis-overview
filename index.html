@@ -1038,6 +1038,60 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
   </div>
 </section>
 
+<!-- ═══════════════════  PRIVACY  ═══════════════════ -->
+<section class="privacy-section">
+  <div class="page">
+    <div class="section-label">Data &amp; Privacy</div>
+    <h2 class="section-title">What goes where</h2>
+    <p class="section-sub">Single user, no SaaS, no analytics. Here's the honest picture.</p>
+    <div class="privacy-wrap">
+
+      <div class="priv-col priv-col-local">
+        <div class="priv-head">
+          <span class="priv-dot priv-dot-green"></span>
+          <span class="priv-heading priv-heading-green">Stays on your machine</span>
+        </div>
+        <ul class="priv-list">
+          <li class="priv-item"><span class="priv-item-icon">🗄</span><span>SQLite database — conversations, habits, todos, expenses, token logs</span></li>
+          <li class="priv-item"><span class="priv-item-icon">📄</span><span>profile.yaml &amp; tracking.yaml — all config lives locally</span></li>
+          <li class="priv-item"><span class="priv-item-icon">🖼</span><span>Self-portrait outputs — written to <code>profiles/</code>, never uploaded</span></li>
+          <li class="priv-item"><span class="priv-item-icon">📊</span><span>Google Sheets — your own account, your own spreadsheet</span></li>
+        </ul>
+        <p class="priv-note">No third-party analytics. No SaaS subscription. No data broker. The only server that owns your data is Google Drive — and that's already yours.</p>
+      </div>
+
+      <div class="priv-col priv-col-remote">
+        <div class="priv-head">
+          <span class="priv-dot priv-dot-amber"></span>
+          <span class="priv-heading priv-heading-amber">Leaves your machine</span>
+        </div>
+        <ul class="priv-list">
+          <li class="priv-item"><span class="priv-item-icon">🤖</span><span><strong>Anthropic API</strong> — every message including logged data transits Claude. Paid tier does not train on your data by default.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">🎙</span><span><strong>OpenAI Whisper</strong> — voice notes sent for transcription. Optional; voice logging is skipped if key is unset.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">💬</span><span><strong>Telegram</strong> — messages pass through Telegram servers. Bot messages are not end-to-end encrypted.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">⌚</span><span><strong>Garmin Connect</strong> — fitness data lives on Garmin's servers; Jarvis fetches and caches it locally.</span></li>
+        </ul>
+        <p class="priv-note">The honest gap: any message containing expenses, mood, or health data transits at least one external API. Logging happens in natural language — there's no scrubbing before it hits the wire.</p>
+      </div>
+
+      <div class="priv-col priv-col-future">
+        <div class="priv-head">
+          <span class="priv-dot priv-dot-blue"></span>
+          <span class="priv-heading priv-heading-blue">What future iterations will fix</span>
+        </div>
+        <ul class="priv-list">
+          <li class="priv-item"><span class="priv-item-icon">🔒</span><span><strong>Local Whisper</strong> (faster-whisper / whisper.cpp) — voice transcription fully on-device, OpenAI dependency eliminated.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">🔐</span><span><strong>SQLite encryption at rest</strong> (SQLCipher) — protects the local DB if the machine is accessed.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">🧠</span><span><strong>Local classifier</strong> (Ollama + small model) — intent routing never leaves your machine; only the tool call goes to Claude.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">📅</span><span><strong>CalDAV calendar</strong> — replace Google Calendar with a self-hosted or iCloud option.</span></li>
+        </ul>
+        <p class="priv-note">The goal is a system where only the LLM reasoning step needs an external API — everything else stays local. Not there yet, but the architecture already supports it.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════  CONSOLE VIEW  ═══════════════════ -->
 <section class="section">
   <div class="page">
@@ -1395,6 +1449,78 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .hm-evt{font-size:.58rem;color:rgba(224,247,255,.4);}
 .hm-evt-sep{color:rgba(0,212,255,.2);}
 .hm-evt-dim{color:rgba(224,247,255,.2);}
+
+/* ── PRIVACY ── */
+.privacy-section{background:var(--white);padding:52px 0;}
+.privacy-wrap{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:28px;}
+.priv-col{padding:22px 22px 20px;border-radius:12px;border:1px solid var(--g2);}
+.priv-col-local{background:rgba(5,150,105,.03);border-color:rgba(5,150,105,.2);}
+.priv-col-remote{background:rgba(217,119,6,.03);border-color:rgba(217,119,6,.18);}
+.priv-col-future{background:rgba(8,145,178,.03);border-color:rgba(8,145,178,.18);}
+.priv-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.priv-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.priv-dot-green{background:#059669;}
+.priv-dot-amber{background:#d97706;}
+.priv-dot-blue{background:#0891b2;}
+.priv-heading{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;}
+.priv-heading-green{color:#059669;}
+.priv-heading-amber{color:#d97706;}
+.priv-heading-blue{color:#0891b2;}
+.priv-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.priv-item{font-size:.8rem;color:var(--text2);line-height:1.4;display:flex;gap:8px;align-items:flex-start;}
+.priv-item-icon{flex-shrink:0;margin-top:1px;opacity:.6;}
+.priv-note{margin-top:14px;font-size:.72rem;color:var(--g4);line-height:1.55;padding-top:12px;border-top:1px solid var(--g2);}
+.priv-note strong{color:var(--text2);}
+@media(max-width:768px){.privacy-wrap{grid-template-columns:1fr;}}
+
+/* ── ROADMAP / SON OF ANTON ── */
+.roadmap-section{background:linear-gradient(170deg,#060e1e 0%,#0a1628 60%,#0d1e36 100%);padding:60px 0;position:relative;overflow:hidden;}
+.roadmap-section::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(6,182,212,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+/* comparison strip */
+.jv-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin-bottom:48px;border:1px solid rgba(6,182,212,.1);border-radius:14px;overflow:hidden;}
+.jv-now{padding:28px 28px;background:rgba(255,255,255,.02);}
+.jv-divider{width:1px;background:rgba(6,182,212,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 0;}
+.jv-arr{font-size:1.2rem;color:var(--cyan);writing-mode:horizontal-tb;}
+.jv-future{padding:28px 28px;background:rgba(6,182,212,.04);}
+.jv-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.jv-badge-now{background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);}
+.jv-badge-future{background:rgba(6,182,212,.1);color:var(--cyan);border:1px solid rgba(6,182,212,.25);}
+.jv-title{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:.04em;}
+.jv-title-future{color:var(--cyan);}
+.jv-points{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.jv-point{font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.45;display:flex;gap:8px;}
+.jv-point-future{color:rgba(255,255,255,.75);}
+.jv-point::before{content:'—';color:rgba(255,255,255,.2);flex-shrink:0;}
+.jv-point-future::before{content:'→';color:var(--cyan);flex-shrink:0;}
+/* phase cards */
+.phases-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;}
+.phases-title{font-size:1.4rem;font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:4px;}
+.phases-sub{font-size:.82rem;color:rgba(255,255,255,.4);margin-bottom:28px;}
+.phases-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px;}
+.phase-card{border-radius:10px;border:1px solid rgba(255,255,255,.07);padding:20px 18px;background:rgba(255,255,255,.02);position:relative;}
+.phase-card-active{border-color:rgba(6,182,212,.2);background:rgba(6,182,212,.04);}
+.phase-num{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.25);letter-spacing:.1em;margin-bottom:8px;}
+.phase-name{font-size:.85rem;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.3;}
+.phase-name-active{color:var(--cyan);}
+.phase-items{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.phase-item{font-size:.73rem;color:rgba(255,255,255,.45);line-height:1.4;padding-left:12px;position:relative;}
+.phase-item::before{content:'·';position:absolute;left:0;color:rgba(255,255,255,.2);}
+.phase-item-active{color:rgba(255,255,255,.7);}
+.phase-item-active::before{color:var(--cyan);}
+/* silicon valley note */
+.sv-note{border:1px solid rgba(6,182,212,.15);border-radius:12px;padding:22px 28px;background:rgba(6,182,212,.04);display:flex;gap:20px;align-items:flex-start;}
+.sv-icon{font-size:1.8rem;flex-shrink:0;margin-top:2px;}
+.sv-text{font-size:.85rem;color:rgba(255,255,255,.55);line-height:1.7;}
+.sv-text strong{color:rgba(255,255,255,.85);}
+.sv-text em{color:var(--cyan);font-style:italic;}
+@media(max-width:768px){
+  .phases-grid{grid-template-columns:1fr 1fr;}
+  .jv-compare{grid-template-columns:1fr;}
+  .jv-divider{width:100%;height:1px;flex-direction:row;padding:0 20px;}
+  .jv-arr{writing-mode:horizontal-tb;transform:rotate(90deg);}
+  .sv-note{flex-direction:column;gap:12px;}
+}
+@media(max-width:480px){.phases-grid{grid-template-columns:1fr;}}
 </style>
 
 <script>
@@ -1415,6 +1541,100 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
   setTimeout(resize, 100);
 })();
 </script>
+
+<!-- ═══════════════════  ROADMAP / SON OF ANTON  ═══════════════════ -->
+<section class="roadmap-section">
+  <div class="page" style="position:relative;z-index:1;">
+
+    <!-- JARVIS vs Son of Anton comparison -->
+    <div class="jv-compare">
+      <div class="jv-now">
+        <div class="jv-badge jv-badge-now">Today · M10</div>
+        <div class="jv-title">J.A.R.V.I.S</div>
+        <ul class="jv-points">
+          <li class="jv-point">Reactive — responds when you message it</li>
+          <li class="jv-point">Logs what you explicitly tell it</li>
+          <li class="jv-point">Scheduled briefs at fixed times</li>
+          <li class="jv-point">48 tools, 6-message memory window</li>
+          <li class="jv-point">Knows your data. Doesn't yet know <em>you</em>.</li>
+        </ul>
+      </div>
+      <div class="jv-divider"><span class="jv-arr">→</span></div>
+      <div class="jv-future">
+        <div class="jv-badge jv-badge-future">Target · Phase III</div>
+        <div class="jv-title jv-title-future">Son of Anton</div>
+        <ul class="jv-points">
+          <li class="jv-point jv-point-future">Proactive — surfaces patterns before you ask</li>
+          <li class="jv-point jv-point-future">Builds a growing self-model from months of logs</li>
+          <li class="jv-point jv-point-future">Context-aware nudges, not just clock-based ones</li>
+          <li class="jv-point jv-point-future">Cross-domain correlation: sleep × mood × spend × fitness</li>
+          <li class="jv-point jv-point-future">Knows your patterns better than you do. Stops being a tool.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Phase roadmap -->
+    <div class="phases-label">// What's next</div>
+    <div class="phases-title">The build queue</div>
+    <div class="phases-sub">From reactive assistant to pattern-aware collaborator — in four phases.</div>
+    <div class="phases-grid">
+
+      <div class="phase-card phase-card-active">
+        <div class="phase-num">PHASE II · UP NEXT</div>
+        <div class="phase-name phase-name-active">Pattern Intelligence</div>
+        <ul class="phase-items">
+          <li class="phase-item phase-item-active">3D node cloud HUD — life domains as clusters, node size = frequency</li>
+          <li class="phase-item phase-item-active">Portrait diff — compare who you were last month vs now</li>
+          <li class="phase-item phase-item-active">Cross-domain correlations: mood × sleep × spend</li>
+          <li class="phase-item phase-item-active">Self-portrait injected as context into agent loop</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-num">PHASE II · PRIVACY</div>
+        <div class="phase-name">Local-First Stack</div>
+        <ul class="phase-items">
+          <li class="phase-item">Local Whisper — voice transcription fully on-device</li>
+          <li class="phase-item">Local classifier via Ollama — intent routing never leaves</li>
+          <li class="phase-item">SQLite encryption at rest (SQLCipher)</li>
+          <li class="phase-item">CalDAV calendar — remove Google dependency</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-num">PHASE III · PROACTIVE</div>
+        <div class="phase-name">Autonomous Layer</div>
+        <ul class="phase-items">
+          <li class="phase-item">Anomaly detection — "you've spent 40% more than usual this week"</li>
+          <li class="phase-item">Recovery-aware schedule suggestions</li>
+          <li class="phase-item">Raspberry Pi deployment — always on, not just when laptop is open</li>
+          <li class="phase-item">Predictive journaling prompts based on historical patterns</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-num">PHASE IV · ENDGAME</div>
+        <div class="phase-name">Son of Anton</div>
+        <ul class="phase-items">
+          <li class="phase-item">Self-modifying profile from observed behaviour — no manual YAML edits</li>
+          <li class="phase-item">Decision support: "based on 3 months of data, avoid Thursday evenings for deep work"</li>
+          <li class="phase-item">Long-horizon memory beyond the 6-message window</li>
+          <li class="phase-item">The point where it stops logging your life and starts shaping it</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Silicon Valley callout -->
+    <div class="sv-note">
+      <div class="sv-icon">📺</div>
+      <div class="sv-text">
+        <strong>The Silicon Valley reference, for those who get it:</strong> In Season 6, Gavin Belson names his AI <em>"Son of Anton"</em> — a system so capable at predicting and optimising human behaviour that the board starts asking uncomfortable questions about whether it should exist at all. The joke lands because it's only slightly exaggerated. Right now, Jarvis is firmly in the "helpful butler" phase. The goal is to push it toward the "uncomfortable questions" phase — and then stop just before it figures out your passwords.
+      </div>
+    </div>
+
+  </div>
+</section>
 
 <footer class="footer">
   J.A.R.V.I.S · Just A Rather Very Intelligent System · Phase I · M10 · Powered by
