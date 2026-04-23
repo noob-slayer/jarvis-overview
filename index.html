@@ -122,7 +122,27 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .tool-tag{font-size:.54rem;font-weight:500;padding:2px 6px;border-radius:4px;background:var(--g1);color:var(--g4);font-family:'JetBrains Mono',monospace;}
 
 /* ── INTERACTIONS ── */
+.interactions-wrap{display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start;}
 .interactions{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.interactions-video{position:sticky;top:28px;}
+.video-phone{
+  background:#1a1a2e;border-radius:28px;padding:12px 8px 16px;
+  box-shadow:0 8px 40px rgba(0,0,0,.3);border:2px solid #333;
+  position:relative;overflow:hidden;
+}
+.video-phone-notch{
+  width:80px;height:6px;background:#333;border-radius:3px;
+  margin:0 auto 10px;
+}
+.video-phone video{
+  width:100%;border-radius:12px;display:block;
+}
+.video-phone-label{
+  text-align:center;font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;color:rgba(255,255,255,.35);letter-spacing:.1em;
+  margin-top:8px;text-transform:uppercase;
+}
+@media(max-width:900px){.interactions-wrap{grid-template-columns:1fr;}.interactions-video{position:static;}}
 .icard{background:var(--white);border:1px solid var(--g2);border-radius:14px;overflow:hidden;}
 .icard-header{padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--g2);}
 .icard-scenario{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;}
@@ -801,6 +821,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
     <div class="section-label">In Practice</div>
     <h2 class="section-title">What you can say</h2>
     <p class="section-sub">Natural language — no commands. Each card shows trigger → internal pipeline → response.</p>
+    <div class="interactions-wrap">
     <div class="interactions">
 
       <div class="icard">
@@ -933,216 +954,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
       </div>
 
     </div>
-  </div>
-</section>
-
-<!-- ═══════════════════  SCHEDULE  ═══════════════════ -->
-<section class="section">
-  <div class="page">
-    <div class="section-label">Always On</div>
-    <h2 class="section-title">13 jobs running in the background</h2>
-    <p class="section-sub">APScheduler drives a daily rhythm. Most jobs are free — only 4 involve Claude API calls.</p>
-    <div class="schedule-grid">
-      <div class="sched-card daily">
-        <div class="sched-time">07:00 · daily</div>
-        <div class="sched-name">Morning Brief</div>
-        <div class="sched-desc">Quote + weather + calendar + todos + Garmin recovery + yesterday spend + goals.</div>
-        <div class="sched-cost" style="color:var(--teal)">~₹0.40</div>
-      </div>
-      <div class="sched-card free">
-        <div class="sched-time">18:00 · daily</div>
-        <div class="sched-name">Evening Reminder</div>
-        <div class="sched-desc">Dinner pick from local list + due-today todos. Fully local, no API calls.</div>
-        <div class="sched-cost" style="color:var(--green)">₹0 · local only</div>
-      </div>
-      <div class="sched-card daily">
-        <div class="sched-time">21:00 · daily</div>
-        <div class="sched-name">Goals Check</div>
-        <div class="sched-desc">LLM checks each goal against data. Sends ✓/✗ with nudge for missed ones.</div>
-        <div class="sched-cost" style="color:var(--teal)">~₹0.20</div>
-      </div>
-      <div class="sched-card free">
-        <div class="sched-time">09:15 · daily</div>
-        <div class="sched-name">Budget Pace</div>
-        <div class="sched-desc">Projects month-end spend. Alerts when ≥90% of any budget. Pure math, no LLM.</div>
-        <div class="sched-cost" style="color:var(--green)">₹0 · math only</div>
-      </div>
-      <div class="sched-card free">
-        <div class="sched-time">hourly</div>
-        <div class="sched-name">Garmin Auto-Log</div>
-        <div class="sched-desc">Detects new workouts via activity ID dedup, auto-logs exercise habit + Telegram ping.</div>
-        <div class="sched-cost" style="color:var(--green)">₹0 · local</div>
-      </div>
-      <div class="sched-card weekly">
-        <div class="sched-time">Sun 21:00</div>
-        <div class="sched-name">Weekly Digest</div>
-        <div class="sched-desc">Full week — money, fitness, habits, mood, media, learning, goals.</div>
-        <div class="sched-cost" style="color:var(--purple)">~₹0.50</div>
-      </div>
-      <div class="sched-card amber">
-        <div class="sched-time">08:00 + 10/16/20:00</div>
-        <div class="sched-name">Vocab Learning</div>
-        <div class="sched-desc">Daily new word + 3 spaced-repetition quizzes. 3 correct = mastered.</div>
-        <div class="sched-cost" style="color:var(--amber)">~₹0.05/day</div>
-      </div>
-      <div class="sched-card daily">
-        <div class="sched-time">22:00 · daily</div>
-        <div class="sched-name">Evening Summary</div>
-        <div class="sched-desc">Day recap + mood prompt before bed. Reviews what got done.</div>
-        <div class="sched-cost" style="color:var(--teal)">~₹0.30</div>
-      </div>
-      <div class="sched-card free">
-        <div class="sched-time">per-habit · daily</div>
-        <div class="sched-name">Habit Reminders</div>
-        <div class="sched-desc">Nudge for each habit not logged today. Times from profile.yaml.</div>
-        <div class="sched-cost" style="color:var(--green)">₹0 · local</div>
-      </div>
-      <div class="sched-card weekly">
-        <div class="sched-time">Sun 20:00</div>
-        <div class="sched-name">Study Check-in</div>
-        <div class="sched-desc">Progress review on each study topic. Weekly accountability.</div>
-        <div class="sched-cost" style="color:var(--teal)">~₹0.40</div>
-      </div>
-      <div class="sched-card weekly">
-        <div class="sched-time">Sun 19:00</div>
-        <div class="sched-name">Mood Review</div>
-        <div class="sched-desc">Weekly mood + recovery insights. Patterns across the week.</div>
-        <div class="sched-cost" style="color:var(--purple)">~₹0.30</div>
-      </div>
-      <div class="sched-card free">
-        <div class="sched-time">user-defined</div>
-        <div class="sched-name">Dynamic Reminders</div>
-        <div class="sched-desc">Push notifications at custom times. Daily/weekdays/once. Created via tools.</div>
-        <div class="sched-cost" style="color:var(--green)">₹0 · local</div>
-      </div>
-      <div class="sched-card free">
-        <div class="sched-time">Sat 10:00</div>
-        <div class="sched-name">Personality Check-in</div>
-        <div class="sched-desc">Lists available personas, asks which profile you want for the week.</div>
-        <div class="sched-cost" style="color:var(--green)">₹0 · local</div>
+    <div class="interactions-video">
+      <div class="video-phone">
+        <div class="video-phone-notch"></div>
+        <video autoplay muted loop playsinline>
+          <source src="Telegram_jarvis.mp4" type="video/mp4">
+        </video>
+        <div class="video-phone-label">Live Telegram session</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ═══════════════════  DATA + COST  ═══════════════════ -->
-<section class="section section-alt">
-  <div class="page">
-    <div class="data-cost-wrap">
-      <div>
-        <div class="section-label">Data Layer</div>
-        <h2 class="section-title">Hybrid storage</h2>
-        <p class="section-sub" style="margin-bottom:16px;">SQLite owns agent state. Sheets owns tracking data — editable and reviewable.</p>
-        <div class="data-grid">
-          <div class="data-card sqlite">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="4" width="18" height="14" rx="3" stroke="#93c5fd" stroke-width="1.5"/><line x1="2" y1="9" x2="20" y2="9" stroke="#93c5fd" stroke-width="1.1"/><line x1="2" y1="14" x2="20" y2="14" stroke="#93c5fd" stroke-width="1.1" opacity=".5"/></svg>
-              <div><div class="data-card-title">SQLite</div><div class="data-card-sub">WAL · thread-safe · local</div></div>
-            </div>
-            <div class="data-table">
-              <div class="data-row"><span class="data-tname">conversations</span><span class="data-tpurp">Full turn history</span></div>
-              <div class="data-row"><span class="data-tname">token_usage</span><span class="data-tpurp">Per-call cost log</span></div>
-              <div class="data-row"><span class="data-tname">facts</span><span class="data-tpurp">Garmin dedup, KV store</span></div>
-              <div class="data-row"><span class="data-tname">daily_goals</span><span class="data-tpurp">Week-keyed goals</span></div>
-              <div class="data-row"><span class="data-tname">vocab_words</span><span class="data-tpurp">Deck + next_review</span></div>
-              <div class="data-row"><span class="data-tname">reminders</span><span class="data-tpurp">Timed push alerts</span></div>
-              <div class="data-row"><span class="data-tname">sheets_queue</span><span class="data-tpurp">Offline write buffer</span></div>
-            </div>
-          </div>
-          <div class="data-card sheets">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="3" stroke="#86efac" stroke-width="1.5"/><line x1="2" y1="8" x2="20" y2="8" stroke="#86efac" stroke-width="1.1"/><line x1="2" y1="14" x2="20" y2="14" stroke="#86efac" stroke-width="1.1" opacity=".5"/><line x1="9" y1="2" x2="9" y2="20" stroke="#86efac" stroke-width="1" opacity=".4"/></svg>
-              <div>
-                <div class="data-card-title" style="display:flex;align-items:center;gap:6px;">
-                  Google Sheets
-                </div>
-                <div class="data-card-sub">Auto-created on first write</div>
-              </div>
-            </div>
-            <div class="data-table">
-              <div class="data-row"><span class="data-tname">expenses</span><span class="data-tpurp">Amt, category, note</span></div>
-              <div class="data-row"><span class="data-tname">habits</span><span class="data-tpurp">Append-only log</span></div>
-              <div class="data-row"><span class="data-tname">mood / energy</span><span class="data-tpurp">Score + context</span></div>
-              <div class="data-row"><span class="data-tname">media</span><span class="data-tpurp">Watched + TMDb meta</span></div>
-              <div class="data-row"><span class="data-tname">ideas_log</span><span class="data-tpurp">Timestamped ideas</span></div>
-              <div class="data-row"><span class="data-tname">decisions_log</span><span class="data-tpurp">Decision + outcome</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="section-label">Cost Profile</div>
-        <h2 class="section-title">₹25/day</h2>
-        <p class="section-sub" style="margin-bottom:16px;">Full-time AI assistant at 35–44 messages/day.</p>
-        <div class="cost-grid">
-          <div class="cost-card"><div class="cost-val">₹<span>20–35</span></div><div class="cost-label">Per day</div><div class="cost-sub">70% cache hit</div></div>
-          <div class="cost-card"><div class="cost-val">₹<span>0.01</span></div><div class="cost-label">Per classify</div><div class="cost-sub">Haiku · 64 tokens</div></div>
-          <div class="cost-card"><div class="cost-val">₹<span>0.15</span></div><div class="cost-label">Cache hit</div><div class="cost-sub">~6900 cached tokens</div></div>
-          <div class="cost-card"><div class="cost-val">₹<span>2.5</span></div><div class="cost-label">Cold start</div><div class="cost-sub">5-min idle miss</div></div>
-        </div>
-        <div style="margin-top:12px;background:var(--navy);color:white;border-radius:12px;padding:16px 18px;">
-          <div style="font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Cost reductions applied</div>
-          <div class="cost-reduce-row">
-            <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">−40%</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">Tiered routing<br>Haiku classify</div></div>
-            <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">−20%</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">History<br>10→4 msgs</div></div>
-            <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">~₹0</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">Haiku for<br>oneshot tasks</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════  PRIVACY  ═══════════════════ -->
-<section class="privacy-section">
-  <div class="page">
-    <div class="section-label">Data &amp; Privacy</div>
-    <h2 class="section-title">What goes where</h2>
-    <p class="section-sub">Single user, no SaaS, no analytics. Here's the honest picture.</p>
-    <div class="privacy-wrap">
-
-      <div class="priv-col priv-col-local">
-        <div class="priv-head">
-          <span class="priv-dot priv-dot-green"></span>
-          <span class="priv-heading priv-heading-green">Stays on your machine</span>
-        </div>
-        <ul class="priv-list">
-          <li class="priv-item"><span class="priv-item-icon">🗄</span><span>SQLite database — conversations, habits, todos, expenses, token logs</span></li>
-          <li class="priv-item"><span class="priv-item-icon">📄</span><span>profile.yaml &amp; tracking.yaml — all config lives locally</span></li>
-          <li class="priv-item"><span class="priv-item-icon">🖼</span><span>Self-portrait outputs — written to <code>profiles/</code>, never uploaded</span></li>
-          <li class="priv-item"><span class="priv-item-icon">📊</span><span>Google Sheets — your own account, your own spreadsheet</span></li>
-        </ul>
-        <p class="priv-note">No third-party analytics. No SaaS subscription. No data broker. The only server that owns your data is Google Drive — and that's already yours.</p>
-      </div>
-
-      <div class="priv-col priv-col-remote">
-        <div class="priv-head">
-          <span class="priv-dot priv-dot-amber"></span>
-          <span class="priv-heading priv-heading-amber">Leaves your machine</span>
-        </div>
-        <ul class="priv-list">
-          <li class="priv-item"><span class="priv-item-icon">🤖</span><span><strong>Anthropic API</strong> — every message including logged data transits Claude. Paid tier does not train on your data by default.</span></li>
-          <li class="priv-item"><span class="priv-item-icon">🎙</span><span><strong>OpenAI Whisper</strong> — voice notes sent for transcription. Optional; voice logging is skipped if key is unset.</span></li>
-          <li class="priv-item"><span class="priv-item-icon">💬</span><span><strong>Telegram</strong> — messages pass through Telegram servers. Bot messages are not end-to-end encrypted.</span></li>
-          <li class="priv-item"><span class="priv-item-icon">⌚</span><span><strong>Garmin Connect</strong> — fitness data lives on Garmin's servers; Jarvis fetches and caches it locally.</span></li>
-        </ul>
-        <p class="priv-note">The honest gap: any message containing expenses, mood, or health data transits at least one external API. Logging happens in natural language — there's no scrubbing before it hits the wire.</p>
-      </div>
-
-      <div class="priv-col priv-col-future">
-        <div class="priv-head">
-          <span class="priv-dot priv-dot-blue"></span>
-          <span class="priv-heading priv-heading-blue">What future iterations will fix</span>
-        </div>
-        <ul class="priv-list">
-          <li class="priv-item"><span class="priv-item-icon">🔒</span><span><strong>Local Whisper</strong> (faster-whisper / whisper.cpp) — voice transcription fully on-device, OpenAI dependency eliminated.</span></li>
-          <li class="priv-item"><span class="priv-item-icon">🔐</span><span><strong>SQLite encryption at rest</strong> (SQLCipher) — protects the local DB if the machine is accessed.</span></li>
-          <li class="priv-item"><span class="priv-item-icon">🧠</span><span><strong>Local classifier</strong> (Ollama + small model) — intent routing never leaves your machine; only the tool call goes to Claude.</span></li>
-          <li class="priv-item"><span class="priv-item-icon">📅</span><span><strong>CalDAV calendar</strong> — replace Google Calendar with a self-hosted or iCloud option.</span></li>
-        </ul>
-        <p class="priv-note">The goal is a system where only the LLM reasoning step needs an external API — everything else stays local. Not there yet, but the architecture already supports it.</p>
-      </div>
-
     </div>
   </div>
 </section>
@@ -1596,6 +1416,212 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
   setTimeout(resize, 100);
 })();
 </script>
+
+
+<!-- ═══════════════════  SCHEDULE  ═══════════════════ -->
+<section class="section">
+  <div class="page">
+    <div class="section-label">Always On</div>
+    <h2 class="section-title">12 jobs running in the background</h2>
+    <p class="section-sub">APScheduler drives a daily rhythm. Most jobs are free — only 4 involve Claude API calls.</p>
+    <div class="schedule-grid">
+      <div class="sched-card daily">
+        <div class="sched-time">07:00 · daily</div>
+        <div class="sched-name">Morning Brief</div>
+        <div class="sched-desc">Quote + weather + calendar + todos + Garmin recovery + yesterday spend + goals.</div>
+        <div class="sched-cost" style="color:var(--teal)">~₹0.40</div>
+      </div>
+      <div class="sched-card free">
+        <div class="sched-time">18:00 · daily</div>
+        <div class="sched-name">Evening Reminder</div>
+        <div class="sched-desc">Dinner pick from local list + due-today todos. Fully local, no API calls.</div>
+        <div class="sched-cost" style="color:var(--green)">₹0 · local only</div>
+      </div>
+      <div class="sched-card daily">
+        <div class="sched-time">21:00 · daily</div>
+        <div class="sched-name">Goals Check</div>
+        <div class="sched-desc">LLM checks each goal against data. Sends ✓/✗ with nudge for missed ones.</div>
+        <div class="sched-cost" style="color:var(--teal)">~₹0.20</div>
+      </div>
+      <div class="sched-card free">
+        <div class="sched-time">09:15 · daily</div>
+        <div class="sched-name">Budget Pace</div>
+        <div class="sched-desc">Projects month-end spend. Alerts when ≥90% of any budget. Pure math, no LLM.</div>
+        <div class="sched-cost" style="color:var(--green)">₹0 · math only</div>
+      </div>
+      <div class="sched-card free">
+        <div class="sched-time">hourly</div>
+        <div class="sched-name">Garmin Auto-Log</div>
+        <div class="sched-desc">Detects new workouts via activity ID dedup, auto-logs exercise habit + Telegram ping.</div>
+        <div class="sched-cost" style="color:var(--green)">₹0 · local</div>
+      </div>
+      <div class="sched-card weekly">
+        <div class="sched-time">Sun 21:00</div>
+        <div class="sched-name">Weekly Digest</div>
+        <div class="sched-desc">Full week — money, fitness, habits, mood, media, learning, goals.</div>
+        <div class="sched-cost" style="color:var(--purple)">~₹0.50</div>
+      </div>
+      <div class="sched-card amber">
+        <div class="sched-time">08:00 + 10/16/20:00</div>
+        <div class="sched-name">Vocab Learning</div>
+        <div class="sched-desc">Daily new word + 3 spaced-repetition quizzes. 3 correct = mastered.</div>
+        <div class="sched-cost" style="color:var(--amber)">~₹0.05/day</div>
+      </div>
+      <div class="sched-card daily">
+        <div class="sched-time">22:00 · daily</div>
+        <div class="sched-name">Evening Summary</div>
+        <div class="sched-desc">Day recap + mood prompt before bed. Reviews what got done.</div>
+        <div class="sched-cost" style="color:var(--teal)">~₹0.30</div>
+      </div>
+      <div class="sched-card free">
+        <div class="sched-time">per-habit · daily</div>
+        <div class="sched-name">Habit Reminders</div>
+        <div class="sched-desc">Nudge for each habit not logged today. Times from profile.yaml.</div>
+        <div class="sched-cost" style="color:var(--green)">₹0 · local</div>
+      </div>
+      <div class="sched-card weekly">
+        <div class="sched-time">Sun 20:00</div>
+        <div class="sched-name">Study Check-in</div>
+        <div class="sched-desc">Progress review on each study topic. Weekly accountability.</div>
+        <div class="sched-cost" style="color:var(--teal)">~₹0.40</div>
+      </div>
+      <div class="sched-card weekly">
+        <div class="sched-time">Sun 19:00</div>
+        <div class="sched-name">Mood Review</div>
+        <div class="sched-desc">Weekly mood + recovery insights. Patterns across the week.</div>
+        <div class="sched-cost" style="color:var(--purple)">~₹0.30</div>
+      </div>
+      <div class="sched-card free">
+        <div class="sched-time">user-defined</div>
+        <div class="sched-name">Dynamic Reminders</div>
+        <div class="sched-desc">Push notifications at custom times. Daily/weekdays/once. Created via tools.</div>
+        <div class="sched-cost" style="color:var(--green)">₹0 · local</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════  DATA + COST  ═══════════════════ -->
+<section class="section section-alt">
+  <div class="page">
+    <div class="data-cost-wrap">
+      <div>
+        <div class="section-label">Data Layer</div>
+        <h2 class="section-title">Hybrid storage</h2>
+        <p class="section-sub" style="margin-bottom:16px;">SQLite owns agent state. Sheets owns tracking data — editable and reviewable.</p>
+        <div class="data-grid">
+          <div class="data-card sqlite">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="4" width="18" height="14" rx="3" stroke="#93c5fd" stroke-width="1.5"/><line x1="2" y1="9" x2="20" y2="9" stroke="#93c5fd" stroke-width="1.1"/><line x1="2" y1="14" x2="20" y2="14" stroke="#93c5fd" stroke-width="1.1" opacity=".5"/></svg>
+              <div><div class="data-card-title">SQLite</div><div class="data-card-sub">WAL · thread-safe · local</div></div>
+            </div>
+            <div class="data-table">
+              <div class="data-row"><span class="data-tname">conversations</span><span class="data-tpurp">Full turn history</span></div>
+              <div class="data-row"><span class="data-tname">token_usage</span><span class="data-tpurp">Per-call cost log</span></div>
+              <div class="data-row"><span class="data-tname">facts</span><span class="data-tpurp">Garmin dedup, KV store</span></div>
+              <div class="data-row"><span class="data-tname">daily_goals</span><span class="data-tpurp">Week-keyed goals</span></div>
+              <div class="data-row"><span class="data-tname">vocab_words</span><span class="data-tpurp">Deck + next_review</span></div>
+              <div class="data-row"><span class="data-tname">reminders</span><span class="data-tpurp">Timed push alerts</span></div>
+              <div class="data-row"><span class="data-tname">sheets_queue</span><span class="data-tpurp">Offline write buffer</span></div>
+            </div>
+          </div>
+          <div class="data-card sheets">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="3" stroke="#86efac" stroke-width="1.5"/><line x1="2" y1="8" x2="20" y2="8" stroke="#86efac" stroke-width="1.1"/><line x1="2" y1="14" x2="20" y2="14" stroke="#86efac" stroke-width="1.1" opacity=".5"/><line x1="9" y1="2" x2="9" y2="20" stroke="#86efac" stroke-width="1" opacity=".4"/></svg>
+              <div>
+                <div class="data-card-title" style="display:flex;align-items:center;gap:6px;">
+                  Google Sheets
+                </div>
+                <div class="data-card-sub">Auto-created on first write</div>
+              </div>
+            </div>
+            <div class="data-table">
+              <div class="data-row"><span class="data-tname">expenses</span><span class="data-tpurp">Amt, category, note</span></div>
+              <div class="data-row"><span class="data-tname">habits</span><span class="data-tpurp">Append-only log</span></div>
+              <div class="data-row"><span class="data-tname">mood / energy</span><span class="data-tpurp">Score + context</span></div>
+              <div class="data-row"><span class="data-tname">media</span><span class="data-tpurp">Watched + TMDb meta</span></div>
+              <div class="data-row"><span class="data-tname">ideas_log</span><span class="data-tpurp">Timestamped ideas</span></div>
+              <div class="data-row"><span class="data-tname">decisions_log</span><span class="data-tpurp">Decision + outcome</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Cost Profile</div>
+        <h2 class="section-title">₹25/day</h2>
+        <p class="section-sub" style="margin-bottom:16px;">Full-time AI assistant at 35–44 messages/day.</p>
+        <div class="cost-grid">
+          <div class="cost-card"><div class="cost-val">₹<span>20–35</span></div><div class="cost-label">Per day</div><div class="cost-sub">70% cache hit</div></div>
+          <div class="cost-card"><div class="cost-val">₹<span>0.01</span></div><div class="cost-label">Per classify</div><div class="cost-sub">Haiku · 64 tokens</div></div>
+          <div class="cost-card"><div class="cost-val">₹<span>0.15</span></div><div class="cost-label">Cache hit</div><div class="cost-sub">~6900 cached tokens</div></div>
+          <div class="cost-card"><div class="cost-val">₹<span>2.5</span></div><div class="cost-label">Cold start</div><div class="cost-sub">5-min idle miss</div></div>
+        </div>
+        <div style="margin-top:12px;background:var(--navy);color:white;border-radius:12px;padding:16px 18px;">
+          <div style="font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;">Cost reductions applied</div>
+          <div class="cost-reduce-row">
+            <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">−40%</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">Tiered routing<br>Haiku classify</div></div>
+            <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">−20%</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">History<br>10→4 msgs</div></div>
+            <div style="text-align:center;"><div style="font-size:1.1rem;font-weight:900;color:var(--cyan);">~₹0</div><div style="font-size:.56rem;color:rgba(255,255,255,.4);margin-top:1px;">Haiku for<br>oneshot tasks</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════  PRIVACY  ═══════════════════ -->
+<section class="privacy-section">
+  <div class="page">
+    <div class="section-label">Data &amp; Privacy</div>
+    <h2 class="section-title">What goes where</h2>
+    <p class="section-sub">Single user, no SaaS, no analytics. Here's the honest picture.</p>
+    <div class="privacy-wrap">
+
+      <div class="priv-col priv-col-local">
+        <div class="priv-head">
+          <span class="priv-dot priv-dot-green"></span>
+          <span class="priv-heading priv-heading-green">Stays on your machine</span>
+        </div>
+        <ul class="priv-list">
+          <li class="priv-item"><span class="priv-item-icon">🗄</span><span>SQLite database — conversations, habits, todos, expenses, token logs</span></li>
+          <li class="priv-item"><span class="priv-item-icon">📄</span><span>profile.yaml &amp; tracking.yaml — all config lives locally</span></li>
+          <li class="priv-item"><span class="priv-item-icon">🖼</span><span>Self-portrait outputs — written to <code>profiles/</code>, never uploaded</span></li>
+          <li class="priv-item"><span class="priv-item-icon">📊</span><span>Google Sheets — your own account, your own spreadsheet</span></li>
+        </ul>
+        <p class="priv-note">No third-party analytics. No SaaS subscription. No data broker. The only server that owns your data is Google Drive — and that's already yours.</p>
+      </div>
+
+      <div class="priv-col priv-col-remote">
+        <div class="priv-head">
+          <span class="priv-dot priv-dot-amber"></span>
+          <span class="priv-heading priv-heading-amber">Leaves your machine</span>
+        </div>
+        <ul class="priv-list">
+          <li class="priv-item"><span class="priv-item-icon">🤖</span><span><strong>Anthropic API</strong> — every message including logged data transits Claude. Paid tier does not train on your data by default.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">🎙</span><span><strong>OpenAI Whisper</strong> — voice notes sent for transcription. Optional; voice logging is skipped if key is unset.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">💬</span><span><strong>Telegram</strong> — messages pass through Telegram servers. Bot messages are not end-to-end encrypted.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">⌚</span><span><strong>Garmin Connect</strong> — fitness data lives on Garmin's servers; Jarvis fetches and caches it locally.</span></li>
+        </ul>
+        <p class="priv-note">The honest gap: any message containing expenses, mood, or health data transits at least one external API. Logging happens in natural language — there's no scrubbing before it hits the wire.</p>
+      </div>
+
+      <div class="priv-col priv-col-future">
+        <div class="priv-head">
+          <span class="priv-dot priv-dot-blue"></span>
+          <span class="priv-heading priv-heading-blue">What future iterations will fix</span>
+        </div>
+        <ul class="priv-list">
+          <li class="priv-item"><span class="priv-item-icon">🔒</span><span><strong>Local Whisper</strong> (faster-whisper / whisper.cpp) — voice transcription fully on-device, OpenAI dependency eliminated.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">🔐</span><span><strong>SQLite encryption at rest</strong> (SQLCipher) — protects the local DB if the machine is accessed.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">🧠</span><span><strong>Local classifier</strong> (Ollama + small model) — intent routing never leaves your machine; only the tool call goes to Claude.</span></li>
+          <li class="priv-item"><span class="priv-item-icon">📅</span><span><strong>CalDAV calendar</strong> — replace Google Calendar with a self-hosted or iCloud option.</span></li>
+        </ul>
+        <p class="priv-note">The goal is a system where only the LLM reasoning step needs an external API — everything else stays local. Not there yet, but the architecture already supports it.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- ═══════════════════  ROADMAP / SON OF ANTON  ═══════════════════ -->
 <section class="roadmap-section">
