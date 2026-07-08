@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.A.R.V.I.S — A private AI that runs your day</title>
+<meta name="description" content="One private AI, one Telegram chat — it runs the admin of a life: money, fitness, health, habits, learning. Runs on a Mac, costs about ₹20/day, and never leaves your control.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#112240;--ink:#0f172a;--ink2:#334155;
+  --cyan:#06b6d4;--cyan-d:#0891b2;
+  --bg:#ffffff;--paper:#f6f9fc;--line:#e2e8f0;--mute:#64748b;--mute2:#94a3b8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px;position:relative;z-index:1;}
+section{position:relative;}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan-d);margin-bottom:10px;}
+h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.025em;line-height:1.08;color:var(--ink);}
+.lead{font-size:1.05rem;color:var(--ink2);max-width:640px;line-height:1.6;margin-top:16px;}
+
+/* ─────────── HERO ─────────── */
+.hero{background:radial-gradient(1200px 600px at 70% 10%,#13294d 0%,#0a1628 55%,#060e1e 100%);color:#fff;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(6,182,212,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,.045) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;mask-image:radial-gradient(900px 500px at 60% 20%,#000 40%,transparent 90%);}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:auto 420px;justify-content:center;gap:44px;align-items:center;min-height:69vh;padding:96px 0 40px;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--cyan);letter-spacing:.2em;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;animation:blink 2.4s ease-in-out infinite;}
+.hero h1{font-size:clamp(2.3rem,4.6vw,3.4rem);font-weight:800;line-height:1.04;letter-spacing:-.03em;margin-bottom:16px;}
+.hero h1 .accent{background:linear-gradient(120deg,#fff 20%,#22d3ee 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:1.06rem;color:#aebfd4;max-width:470px;line-height:1.55;margin-bottom:26px;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:26px;}
+.hstat .n{font-family:'Orbitron',sans-serif;font-size:1.42rem;font-weight:700;color:#fff;}
+.hstat .l{font-size:.7rem;color:#7e93ae;text-transform:uppercase;letter-spacing:.1em;margin-top:3px;}
+.arc-reactor{position:relative;width:420px;height:420px;justify-self:center;}
+.arc-reactor svg{width:100%;height:100%;overflow:visible;}
+.ring-1,.ring-2,.ring-3{transform-box:fill-box;transform-origin:center;}
+.ring-1{animation:spin 64s linear infinite;}
+.ring-2{animation:spin 48s linear infinite reverse;}
+.ring-3{animation:spin 30s linear infinite;}
+.node-pulse{animation:np 3.2s ease-in-out infinite;}
+.core-pulse{animation:cp 4s ease-in-out infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes np{0%,100%{opacity:.5;}50%{opacity:1;}}
+@keyframes cp{0%,100%{opacity:.82;}50%{opacity:1;}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* ─────────── section rhythm (tighter) ─────────── */
+.slide{padding:100px 0;}
+.slide.paper{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.statement{font-size:clamp(1.55rem,3.1vw,2.25rem);font-weight:800;letter-spacing:-.025em;line-height:1.2;max-width:1080px;}
+.statement .dim{color:var(--mute2);}
+.statement .hi{color:var(--cyan-d);}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:38px;}
+.three .item{padding-top:15px;border-top:2px solid var(--ink);}
+.three.soft .item{border-top-color:var(--cyan);}
+.three .item h3{font-size:1.05rem;font-weight:700;margin-bottom:6px;}
+.three .item p{font-size:.93rem;color:var(--mute);line-height:1.55;}
+
+/* PROBLEM SECTION — dark quote card + problem-card grid (jarvis-overview reference) */
+#problem{padding:95px 0;}
+.problem-grid{display:grid;grid-template-columns:2fr 3fr;gap:33px;align-items:start;}
+.why-card{background:linear-gradient(145deg,#0d1e3a 0%,var(--navy) 100%);border:1px solid rgba(6,182,212,.18);border-radius:16px;padding:38px 33px;position:relative;overflow:hidden;height:100%;}
+.why-card::before{content:'';position:absolute;top:-50px;right:-50px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,.12) 0%,transparent 70%);pointer-events:none;}
+.why-card .kicker{color:var(--cyan);position:relative;z-index:1;}
+.why-quote{font-size:1.58rem;font-weight:700;line-height:1.4;letter-spacing:-.02em;color:#fff;margin:14px 0 18px;position:relative;z-index:1;}
+.why-quote em{color:var(--cyan);font-style:normal;}
+.why-body{font-size:.91rem;color:rgba(255,255,255,.6);line-height:1.7;position:relative;z-index:1;}
+.why-body p+p{margin-top:10px;}
+.problems-head{margin-bottom:18px;}
+.problems-title{font-size:1.34rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;margin-top:4px;}
+.problems-sub{font-size:.86rem;color:var(--mute);margin-top:4px;}
+.problems-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.prob-card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:18px 20px;transition:box-shadow .18s ease,border-color .18s ease;}
+.prob-card:hover{box-shadow:0 4px 16px rgba(8,145,178,.1);border-color:rgba(8,145,178,.35);}
+.prob-icon{font-size:1.29rem;margin-bottom:9px;}
+.prob-card h4{font-size:.97rem;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.prob-card p{font-size:.85rem;color:var(--mute);line-height:1.5;}
+@media(max-width:880px){
+  .problem-grid{grid-template-columns:1fr;}
+}
+@media(max-width:520px){
+  .problems-grid{grid-template-columns:1fr;}
+}
+
+/* SHIFT — copy + phone */
+.shift-grid{display:grid;grid-template-columns:1fr 560px;gap:44px;align-items:center;}
+.phones-row{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;}
+.three.stack{grid-template-columns:repeat(2,1fr);gap:10px;margin-top:20px;}
+.three.stack .item{padding:12px 14px;border-top:none;border:1px solid var(--line);border-radius:11px;background:var(--bg);}
+.three.stack .item h3{font-size:.86rem;margin-bottom:3px;}
+.three.stack .item p{font-size:.76rem;line-height:1.4;}
+.phone{width:min(250px,72vw);border-radius:30px;padding:9px;background:linear-gradient(160deg,#1b2942,#0a1628);border:1px solid rgba(6,182,212,.22);box-shadow:0 24px 60px rgba(10,22,40,.35);}
+.phone video{width:100%;display:block;border-radius:22px;}
+.phone-cap{margin-top:12px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.12em;color:var(--mute2);text-transform:uppercase;}
+
+/* SEE IT WORK */
+.sec-head{margin-bottom:18px;}
+#examples .title{font-size:clamp(1.55rem,2.65vw,2.1rem);}
+#examples .lead{font-size:.97rem;margin-top:9px;}
+.chat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.ex{background:var(--bg);border:1px solid var(--line);border-radius:13px;padding:15px 16px 13px;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:transform .18s ease,box-shadow .18s ease;display:flex;flex-direction:column;}
+.ex:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(15,23,42,.09);}
+.ex-tag{display:inline-flex;align-items:center;gap:7px;font-size:.66rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--cyan-d);margin-bottom:8px;}
+.ex-tag .ico{font-size:.9rem;}
+.bubbles{display:flex;flex-direction:column;gap:6px;}
+.b{max-width:88%;padding:6px 10px;border-radius:11px;font-size:.74rem;line-height:1.34;}
+.b.me{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:4px;}
+.b.j{align-self:flex-start;background:var(--paper);border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px;}
+.b.j b{color:var(--cyan-d);font-weight:600;}
+.ex-note{margin-top:auto;padding-top:8px;font-size:.66rem;color:var(--mute);line-height:1.34;}
+.ex-note span{color:var(--ink2);font-weight:600;}
+#examples{padding:70px 0;}
+
+/* A DAY — horizontal path */
+.track{margin-top:38px;display:flex;position:relative;}
+.track::before{content:'';position:absolute;top:6px;left:calc(100%/12);right:calc(100%/12);height:2px;background:var(--line);}
+.stop{flex:1 1 0;padding:0 12px;text-align:center;position:relative;}
+.stop .node{width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--cyan);margin:0 auto 16px;position:relative;z-index:1;box-shadow:0 0 0 5px var(--paper);}
+.stop.auto .node{background:var(--cyan);}
+.stop .t{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:500;color:var(--cyan-d);letter-spacing:.06em;}
+.stop h4{font-size:.92rem;font-weight:700;margin:3px 0 4px;}
+.stop p{font-size:.85rem;color:var(--mute);line-height:1.46;}
+.track-legend{margin-top:26px;display:flex;gap:24px;flex-wrap:wrap;font-size:.74rem;color:var(--mute);}
+.track-legend .k{display:inline-flex;align-items:center;gap:8px;}
+.track-legend .d{width:11px;height:11px;border-radius:50%;border:2px solid var(--cyan);flex-shrink:0;}
+.track-legend .d.fill{background:var(--cyan);}
+
+/* COCKPIT */
+.cockpit{background:radial-gradient(900px 500px at 30% 0%,#13294d 0%,#0a1628 60%,#060e1e 100%);color:#fff;padding:100px 0;}
+.cockpit .kicker{color:var(--cyan);}
+.cockpit h2.title{color:#fff;}
+.cockpit .lead{color:#aebfd4;}
+.frame{margin-top:28px;border-radius:14px;overflow:hidden;border:1px solid rgba(6,182,212,.25);box-shadow:0 30px 80px rgba(0,0,0,.5);background:#060e1e;}
+.frame img{width:100%;display:block;}
+.cap{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#5d7596;letter-spacing:.05em;text-align:center;}
+
+/* UNDER THE HOOD (tech) */
+.hood{background:#0b1220;color:#fff;padding:100px 0;}
+.hood .kicker{color:var(--cyan);}
+.hood h2.title{color:#fff;}
+.hood .lead{color:#9fb1c9;}
+.hood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:30px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;}
+.hcell{background:#0b1220;padding:28px 24px;}
+.hcell .hn{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:9px;}
+.hcell h3{font-size:1.05rem;font-weight:700;margin-bottom:6px;}
+.hcell p{font-size:.89rem;color:#9fb1c9;line-height:1.55;}
+.hcell-link{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;letter-spacing:.03em;color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(6,182,212,.35);padding-bottom:1px;transition:border-color .15s ease,color .15s ease;}
+.hcell-link:hover{color:#fff;border-color:#fff;}
+.hood-foot{margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#5d7596;letter-spacing:.04em;}
+.hood-foot b{color:#aebfd4;font-weight:500;}
+
+/* PRIVACY */
+#privacy .title{font-size:clamp(1.7rem,2.9vw,2.3rem);}
+#privacy .lead{font-size:1.05rem;margin-top:10px;}
+.priv{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px;}
+.priv .p{padding:18px;border:1px solid var(--line);border-radius:12px;background:var(--bg);}
+.priv .p .ic{font-size:1.2rem;margin-bottom:7px;}
+.priv .p h3{font-size:1.01rem;font-weight:700;margin-bottom:5px;}
+.priv .p p{font-size:.88rem;color:var(--mute);line-height:1.45;}
+.leaves{margin-top:22px;border:1px solid var(--line);border-radius:13px;background:var(--paper);padding:20px 22px;}
+.leaves h3{font-size:1.04rem;font-weight:800;letter-spacing:-.01em;margin-bottom:5px;}
+.leaves .lead-sm{font-size:.84rem;color:var(--mute);line-height:1.45;max-width:660px;margin-bottom:15px;}
+.leaves-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:11px 24px;}
+.leaves-list li{display:flex;gap:10px;align-items:flex-start;}
+.leaves-list .lico{font-size:1.04rem;line-height:1.25;flex-shrink:0;}
+.leaves-list b{font-size:.88rem;font-weight:700;}
+.leaves-list .opt{display:inline-block;margin-left:6px;font-size:.55rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--cyan-d);border:1px solid rgba(6,182,212,.4);padding:1px 6px;border-radius:20px;vertical-align:middle;}
+.leaves-list p{font-size:.84rem;color:var(--mute);line-height:1.45;margin-top:2px;}
+#privacy{padding:70px 0;}
+
+/* CLOSE */
+.close{background:var(--ink);color:#fff;padding:110px 0;text-align:center;}
+.close h2{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:800;letter-spacing:-.025em;line-height:1.15;max-width:760px;margin:0 auto 16px;}
+.close p{color:#9fb1c9;max-width:540px;margin:0 auto;font-size:.98rem;line-height:1.55;}
+.foot{margin-top:38px;padding-top:22px;border-top:1px solid rgba(255,255,255,.1);font-family:'JetBrains Mono',monospace;font-size:.64rem;color:#5d7596;letter-spacing:.04em;}
+.foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:center;}
+.foot-credit{display:inline-flex;align-items:center;gap:10px;}
+.foot-avatars{display:inline-flex;align-items:center;gap:10px;}
+.foot-avatars img{width:120px;height:auto;border-radius:8px;border:2px solid rgba(255,255,255,.18);display:block;}
+.close p.foot-signature{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:#5d7596;letter-spacing:.04em;max-width:none;margin:0 40px 0 0;}
+.foot-signature b{color:#aebfd4;font-weight:500;}
+
+/* ─────────── nav + scroll progress ─────────── */
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#22d3ee,#0891b2);z-index:200;width:0%;}
+.topnav{position:fixed;top:0;left:0;right:0;z-index:150;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:rgba(6,14,30,0);border-bottom:1px solid transparent;transition:background .25s ease,padding .25s ease,border-color .25s ease;}
+.topnav.scrolled{background:rgba(6,14,30,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom-color:rgba(6,182,212,.15);padding:11px 32px;}
+.topnav .brand{font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.08em;text-decoration:none;}
+.topnav .links{display:flex;gap:24px;list-style:none;}
+.topnav .links a{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:#aebfd4;text-decoration:none;transition:color .15s ease;}
+.topnav .links a:hover{color:#22d3ee;}
+
+/* ─────────── hero CTA ─────────── */
+.hero-cta{margin-top:32px;}
+.btn-primary{display:inline-flex;align-items:center;gap:9px;font-family:'Inter',sans-serif;font-size:.92rem;font-weight:700;padding:14px 26px;border-radius:32px;text-decoration:none;background:linear-gradient(120deg,#22d3ee,#0891b2);color:#04141d;box-shadow:0 10px 28px rgba(6,182,212,.35);transition:transform .18s ease,box-shadow .18s ease;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(6,182,212,.5);}
+.btn-primary .arrow{display:inline-block;animation:nudge 1.8s ease-in-out infinite;}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;padding:10px 20px;border-radius:28px;text-decoration:none;border:1.5px solid var(--cyan-d);color:var(--cyan-d);background:transparent;transition:background .18s ease,color .18s ease,transform .18s ease;}
+.btn-outline:hover{background:var(--cyan-d);color:#fff;transform:translateY(-2px);}
+.btn-outline .arrow{transition:transform .18s ease;}
+.btn-outline:hover .arrow{transform:translateX(3px);}
+@keyframes nudge{0%,100%{transform:translateY(0);}50%{transform:translateY(4px);}}
+
+/* ─────────── scroll reveal ─────────── */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ─────────── section numerals ─────────── */
+.sec-num{position:absolute;top:30px;right:32px;z-index:0;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(2.6rem,6vw,4.4rem);line-height:1;letter-spacing:-.02em;color:var(--line);opacity:.7;pointer-events:none;}
+.hood .sec-num,.cockpit .sec-num{color:rgba(255,255,255,.07);}
+
+/* ─────────── paper texture ─────────── */
+.slide.paper::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(6,182,212,.14) 1px,transparent 1px);background-size:28px 28px;-webkit-mask-image:linear-gradient(180deg,transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(180deg,transparent,#000 18%,#000 82%,transparent);pointer-events:none;}
+
+/* responsive */
+@media(max-width:880px){
+  .topnav .links{display:none;}
+  .hero-inner{grid-template-columns:1fr;text-align:center;min-height:auto;padding:88px 0 40px;gap:8px;}
+  .hero-tag{justify-content:center;}.hero-sub{margin-inline:auto;}.hero-stats{justify-content:center;}
+  .hero-cta{display:flex;justify-content:center;}
+  .arc-reactor{width:280px;height:280px;order:-1;margin-bottom:14px;}
+  .slide,.cockpit,.hood{padding:64px 0;}
+  .close{padding:76px 0;}
+  .sec-num{display:none;}
+  .three,.chat-grid,.priv,.hood-grid,.leaves-list,.three.stack{grid-template-columns:1fr;}
+  .shift-grid{grid-template-columns:1fr;gap:30px;}.phones-row{order:-1;}
+  .track{flex-direction:column;margin-top:26px;border-left:2px solid var(--line);}
+  .track::before{display:none;}
+  .stop{flex:none;text-align:left;padding:0 0 18px 24px;}
+  .stop .node{position:absolute;left:-8px;top:3px;margin:0;box-shadow:none;}
+}
+@media(max-width:520px){.wrap{padding:0 22px;}.arc-reactor{width:240px;height:240px;}}
+@media(prefers-reduced-motion:reduce){.ring-1,.ring-2,.ring-3,.node-pulse,.core-pulse,.hero-tag .dot,.btn-primary .arrow{animation:none;}.reveal{opacity:1!important;transform:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="progress"></div>
+<nav class="topnav">
+  <a href="#" class="brand">J.A.R.V.I.S</a>
+  <ul class="links">
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#examples">Examples</a></li>
+    <li><a href="#cockpit">Cockpit</a></li>
+    <li><a href="#tech">Tech</a></li>
+    <li><a href="#privacy">Privacy</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <div class="hero-tag"><span class="dot"></span></div>
+      <h1>One text.<br><span class="accent">Consider it done.</span></h1>
+      <p class="hero-sub">A private AI that logs my money, coaches my training, and runs my day — from a single message. It even answers like J.A.R.V.I.S.</p>
+      <div class="hero-stats">
+        <div class="hstat"><div class="n">1</div><div class="l">Built for one</div></div>
+        <div class="hstat"><div class="n">~₹20</div><div class="l">A day to run</div></div>
+        <div class="hstat"><div class="n">15</div><div class="l">Life areas tracked</div></div>
+        <div class="hstat"><div class="n">100%</div><div class="l">On my own Mac</div></div>
+      </div>
+      <div class="hero-cta"><a href="#demo" class="btn-primary">Watch it work <span class="arrow">↓</span></a></div>
+    </div>
+    <div class="arc-reactor">
+      <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff" stop-opacity=".95"/>
+            <stop offset="30%" stop-color="#22d3ee" stop-opacity=".8"/>
+            <stop offset="100%" stop-color="#0a1628" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="mg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#06b6d4" stop-opacity=".15"/>
+            <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="gl" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="sg" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle cx="210" cy="210" r="190" fill="url(#mg)"/>
+        <g class="ring-1">
+          <circle cx="210" cy="210" r="190" fill="none" stroke="#06b6d4" stroke-width=".8" stroke-opacity=".2"/>
+          <circle cx="210" cy="210" r="190" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="6 30" stroke-opacity=".6" filter="url(#gl)"/>
+          <line x1="210" y1="20"  x2="210" y2="36"  stroke="#06b6d4" stroke-width="1.5" stroke-opacity=".8"/>
+          <line x1="210" y1="384" x2="210" y2="400" stroke="#06b6d4" stroke-width="1.5" stroke-opacity=".8"/>
+          <line x1="20"  y1="210" x2="36"  y2="210" stroke="#06b6d4" stroke-width="1.5" stroke-opacity=".8"/>
+          <line x1="384" y1="210" x2="400" y2="210" stroke="#06b6d4" stroke-width="1.5" stroke-opacity=".8"/>
+        </g>
+        <g class="ring-2">
+          <circle cx="210" cy="210" r="148" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="3 16" stroke-opacity=".45"/>
+          <circle cx="210" cy="62"  r="9" fill="#0e7490" stroke="#06b6d4" stroke-width="1.5" filter="url(#gl)" class="node-pulse"/>
+          <circle cx="315" cy="105" r="8" fill="#6b21a8" stroke="#a78bfa" stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:.4s"/>
+          <circle cx="358" cy="210" r="9" fill="#92400e" stroke="#fcd34d" stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:.8s"/>
+          <circle cx="315" cy="315" r="8" fill="#065f46" stroke="#34d399" stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:1.2s"/>
+          <circle cx="210" cy="358" r="9" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:1.6s"/>
+          <circle cx="105" cy="315" r="8" fill="#7f1d1d" stroke="#f87171" stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:2.0s"/>
+          <circle cx="62"  cy="210" r="9" fill="#4c1d95" stroke="#c084fc" stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:2.4s"/>
+          <circle cx="105" cy="105" r="8" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5" filter="url(#gl)" class="node-pulse" style="animation-delay:2.8s"/>
+        </g>
+        <text x="210" y="50"  text-anchor="middle" fill="#06b6d4" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">FITNESS</text>
+        <text x="332" y="96"  text-anchor="start"  fill="#a78bfa" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">MOOD</text>
+        <text x="372" y="214" text-anchor="start"  fill="#fcd34d" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">FINANCE</text>
+        <text x="328" y="325" text-anchor="start"  fill="#34d399" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">LEARN</text>
+        <text x="210" y="380" text-anchor="middle" fill="#60a5fa" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">CALENDAR</text>
+        <text x="88"  y="325" text-anchor="end"    fill="#f87171" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">HABITS</text>
+        <text x="46"  y="214" text-anchor="end"    fill="#c084fc" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">MEDIA</text>
+        <text x="88"  y="96"  text-anchor="end"    fill="#38bdf8" font-family="JetBrains Mono" font-size="9" font-weight="600" opacity=".9">LIFE LOG</text>
+        <g stroke="#06b6d4" stroke-width=".6" stroke-opacity=".2">
+          <line x1="210" y1="186" x2="210" y2="71"/><line x1="210" y1="186" x2="307" y2="113"/>
+          <line x1="210" y1="186" x2="349" y2="210"/><line x1="210" y1="186" x2="307" y2="307"/>
+          <line x1="210" y1="186" x2="210" y2="349"/><line x1="210" y1="186" x2="113" y2="307"/>
+          <line x1="210" y1="186" x2="71"  y2="210"/><line x1="210" y1="186" x2="113" y2="113"/>
+        </g>
+        <g class="ring-3">
+          <circle cx="210" cy="210" r="90" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="12 6 3 6" stroke-opacity=".7" filter="url(#gl)"/>
+        </g>
+        <circle cx="210" cy="210" r="68" fill="url(#cg)" filter="url(#sg)" class="core-pulse"/>
+        <text x="210" y="200" text-anchor="middle" font-family="Orbitron,sans-serif" font-size="18" font-weight="900" fill="white" filter="url(#gl)" letter-spacing="3">J.A.R.V.I.S</text>
+        <text x="210" y="218" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#06b6d4" opacity=".8" letter-spacing="2">ONE MIND · EIGHT DOMAINS</text>
+        <circle cx="210" cy="210" r="5" fill="white" filter="url(#gl)" class="core-pulse"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ THE PROBLEM ══════════ -->
+<section class="slide" id="problem">
+  <span class="sec-num">01</span>
+  <div class="wrap reveal">
+    <div class="problem-grid">
+      <div class="why-card">
+        <div class="kicker">The problem</div>
+        <p class="why-quote">Most apps solve one problem.<br><em>Life isn't one problem.</em></p>
+        <div class="why-body">
+          <p>Your fitness tracker doesn't know you skipped sleep. Your budgeting app doesn't know you're stressed. Your todo list doesn't know your calendar is packed.</p>
+          <p>So you juggle a handful of apps, none of which talk to each other — and still feel like you're missing something.</p>
+        </div>
+      </div>
+      <div>
+        <div class="problems-head">
+          <div class="kicker">Day to day</div>
+          <h3 class="problems-title">Where it actually shows up</h3>
+          <p class="problems-sub">Four everyday frictions — the ones a single AI can quietly absorb.</p>
+        </div>
+        <div class="problems-grid">
+          <div class="prob-card"><div class="prob-icon">🧩</div><h4>Scattered silos</h4><p>Money here, sleep there, todos somewhere else. No single place that knows your whole day.</p></div>
+          <div class="prob-card"><div class="prob-icon">⚡</div><h4>Always logging</h4><p>Every app wants you to open it, tap through menus, and type. Friction wins; the tracking lapses.</p></div>
+          <div class="prob-card"><div class="prob-icon">🔗</div><h4>No one connects the dots</h4><p>Poor sleep dents your mood; a low mood loosens your spending. No app sees that chain.</p></div>
+          <div class="prob-card"><div class="prob-icon">💡</div><h4>Ideas that evaporate</h4><p>A stray thought, a decision, a reason — gone by evening. Nothing is open enough at 2am to catch it.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ THE SHIFT (with telegram demo) ══════════ -->
+<section class="slide paper" id="demo">
+  <span class="sec-num">02</span>
+  <div class="wrap shift-grid reveal">
+    <div>
+      <div class="kicker">The shift</div>
+      <p class="statement">Jarvis starts from the opposite assumption: <span class="hi">your data should know about each other.</span></p>
+      <p class="lead">One chat replaces the lot. You talk normally — it logs, reminds, coaches, and quietly connects what the others keep apart.</p>
+      <div class="three soft stack">
+        <div class="item"><h3>Say it, don't tap it</h3><p>“450 at lunch.” “Ran 12k.” Plain words — no forms, no menus.</p></div>
+        <div class="item"><h3>It comes to you</h3><p>Morning brief, nudges, evening recap — automatic, not remembered.</p></div>
+        <div class="item"><h3>It sees everything</h3><p>Money, health, habits, calendar — one brain that notices when they collide.</p></div>
+        <div class="item"><h3>One view, all of it</h3><p>Every log rolls into a live HUD — one glance, fully caught up.</p></div>
+      </div>
+      <a href="#cockpit" class="btn-outline">See the live HUD <span class="arrow">→</span></a>
+    </div>
+    <div>
+      <div class="phones-row">
+        <div class="phone"><video src="vide02.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+        <div class="phone"><video src="Telegram_jarvis.mp4" autoplay muted loop playsinline preload="auto"></video></div>
+      </div>
+      <p class="phone-cap">Live · in your Telegram</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SEE IT WORK ══════════ -->
+<section class="slide" id="examples">
+  <span class="sec-num">03</span>
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <div class="kicker">See it work</div>
+      <h2 class="title">Real exchanges. Nothing staged.</h2>
+      <p class="lead">Six actual moments — each a single message, and what it quietly did with it.</p>
+    </div>
+    <div class="chat-grid">
+
+      <div class="ex">
+        <div class="ex-tag"><span class="ico">💸</span> Money · catches itself</div>
+        <div class="bubbles">
+          <div class="b me">450 at Trishna for lunch</div>
+          <div class="b j">Logged, sir. ₹450 on food. You're at <b>78% of the food budget</b> with 11 days left — ₹1,320 remaining.</div>
+        </div>
+        <div class="ex-note">One line logs the expense <span>and</span> warns you before you blow the category — alerts fire at 50/75/90/100%.</div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-tag"><span class="ico">🏃</span> Fitness · two sources, one answer</div>
+        <div class="bubbles">
+          <div class="b me">ran 12k this morning</div>
+          <div class="b j">Nice work. Strava has it at 5:42/km. Garmin says recovery's green — <b>body battery 71, HRV steady</b>. Tomorrow: easy 6k, keep HR under 145.</div>
+        </div>
+        <div class="ex-note">It fuses <span>Strava performance + Garmin recovery</span> into one marathon-coach call — not two apps to read.</div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-tag"><span class="ico">🧠</span> Health · finds the pattern</div>
+        <div class="bubbles">
+          <div class="b me">why am I so tired this week?</div>
+          <div class="b j">A pattern, sir: your <b>sleep score averages 74 on days you exercise, 61 when you don't</b> — and you've skipped three of the last four.</div>
+        </div>
+        <div class="ex-note">Cross-domain correlation across 30 days of sleep, habits and mood — a link <span>no single tracker would surface.</span></div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-tag"><span class="ico">🎙️</span> Voice · it has a character</div>
+        <div class="bubbles">
+          <div class="b me">wake up daddy's home</div>
+          <div class="b j">At your service, sir. All systems nominal.</div>
+          <div class="b me">how's the day looking?</div>
+          <div class="b j">Two meetings, one overdue todo, and you're 1,400 calories in. Shall I read the rest?</div>
+        </div>
+        <div class="ex-note">A trigger word opens a <span>spoken</span> session — Mac mic in, J.A.R.V.I.S. voice out, full Iron-Man persona.</div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-tag"><span class="ico">🎬</span> Media · remembers for you</div>
+        <div class="bubbles">
+          <div class="b me">watched Oppenheimer, 9/10</div>
+          <div class="b j">Noted — 2023, Nolan, 3h. Added to your library at 9/10. That's your <b>highest-rated film this month</b>, sir.</div>
+        </div>
+        <div class="ex-note">Titles auto-enrich from TMDb — year, director, runtime — and feed a recommender that knows your taste.</div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-tag"><span class="ico">⏰</span> Reminders · just timing</div>
+        <div class="bubbles">
+          <div class="b me">remind me to call mom at 7</div>
+          <div class="b j">Done — 7:00 PM today, sir. I'll nudge you.</div>
+        </div>
+        <div class="ex-note">Real timed push notifications, separate from your todo list — daily, weekday, or one-off, all set in plain words.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ A DAY ══════════ -->
+<section class="slide paper" id="day">
+  <span class="sec-num">04</span>
+  <div class="wrap reveal">
+    <div class="kicker">A day with it</div>
+    <h2 class="title">It runs on a rhythm,<br>not on your willpower.</h2>
+    <p class="lead">Most of the day, you do nothing. It reaches out at the right moments and stays quiet the rest.</p>
+    <div class="track">
+      <div class="stop auto"><div class="node"></div><div class="t">07:00</div><h4>Morning brief</h4><p>Weather, calendar, todos, recovery, spend — before coffee.</p></div>
+      <div class="stop"><div class="node"></div><div class="t">all day</div><h4>You, in passing</h4><p>“200 on coffee.” “Did meditation.” One line, filed right.</p></div>
+      <div class="stop auto"><div class="node"></div><div class="t">every 2h</div><h4>Time check-in</h4><p>One tap — what you did, how long. Honest time-use.</p></div>
+      <div class="stop auto"><div class="node"></div><div class="t">20:00</div><h4>Marathon coach</h4><p>Tomorrow's session — pace + HR, off your real load.</p></div>
+      <div class="stop auto"><div class="node"></div><div class="t">22:00</div><h4>Evening recap</h4><p>Calories, money, habits, mood — the day in one card.</p></div>
+      <div class="stop auto"><div class="node"></div><div class="t">weekly</div><h4>The long view</h4><p>A Sunday digest ties the whole week together.</p></div>
+    </div>
+    <div class="track-legend">
+      <span class="k"><span class="d fill"></span> Automatic — it reaches out to you</span>
+      <span class="k"><span class="d"></span> You — a quick line or tap</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ THE COCKPIT ══════════ -->
+<section class="cockpit" id="cockpit">
+  <span class="sec-num">05</span>
+  <div class="wrap reveal">
+    <div class="kicker">The cockpit</div>
+    <h2 class="title">And a live dashboard,<br>for when you want the whole view.</h2>
+    <p class="lead">Everything the chat captures, rendered as one real-time heads-up display — money, nutrition, recovery, habits, time-use, all on one screen. Hand-drawn charts, no libraries, updating live.</p>
+    <div class="frame">
+      <img src="hud.png" alt="J.A.R.V.I.S live HUD dashboard — money, nutrition, recovery, habits and time-use on one screen">
+    </div>
+    <p class="cap">LIVE HUD · UPDATES IN REAL TIME · RUNS ON THE SAME MACHINE</p>
+  </div>
+</section>
+
+<!-- ══════════ UNDER THE HOOD ══════════ -->
+<section class="hood" id="tech">
+  <span class="sec-num">06</span>
+  <div class="wrap reveal">
+    <div class="kicker">Under the hood</div>
+    <h2 class="title">Simple to talk to.<br>Carefully built underneath.</h2>
+    <p class="lead">Engineered to be fast, cheap, and impossible to lose data to — without you ever seeing the machinery.</p>
+    <div class="hood-grid">
+      <div class="hcell"><div class="hn">Routing</div><h3>Two-model pipeline</h3><p>A fast, cheap model reads each message and routes intent; the stronger model runs only the handful of tools that matter. ~60% fewer tokens per reply.</p></div>
+      <div class="hcell"><div class="hn">Capabilities</div><h3>67 tools, one brain</h3><p>Every action — log an expense, query Garmin, set a reminder — is a discrete tool. Adding more is near-free; the model just picks the right one.</p><a href="tools.html" class="hcell-link">See all 67 tools →</a></div>
+      <div class="hcell"><div class="hn">Concurrency</div><h3>Fully async</h3><p>Chat, web dashboard and scheduler share one async event loop, so a long reply never freezes the screen or the nightly jobs.</p></div>
+      <div class="hcell"><div class="hn">Storage</div><h3>SQLite + Sheets</h3><p>Agent state in a local database; everything you'd want to read or edit by hand in a Google Sheet. Two stores, each doing what it's best at.</p></div>
+      <div class="hcell"><div class="hn">Resilience</div><h3>Self-healing</h3><p>Reconnects through network drops, a watchdog revives a frozen process, and writes queue locally if Sheets is unreachable — nothing is lost.</p></div>
+      <div class="hcell"><div class="hn">Cost</div><h3>Cheap on purpose</h3><p>Prompt caching, a tight history window, and the small model for every scheduled job keep it at roughly ₹15–25 a day, all in.</p></div>
+    </div>
+    <p class="hood-foot"><b>Stack —</b> Python · Telegram Bot API · FastAPI · APScheduler · Claude (Sonnet + Haiku) · Garmin · Strava · TMDb · OpenAI voice</p>
+  </div>
+</section>
+
+<!-- ══════════ WHERE IT'S HEADED ══════════ -->
+<section class="slide paper" id="headed">
+  <span class="sec-num">07</span>
+  <div class="wrap reveal">
+    <div class="kicker">Where it's headed</div>
+    <h2 class="title">From logging your life<br>to shaping it.</h2>
+    <p class="lead">The principle only compounds as the history grows. The arc it's on:</p>
+    <div class="three soft">
+      <div class="item"><h3>Today · it connects</h3><p>Already live: it links sleep, training, mood and money — “your sleep score averages 74 on days you exercise, 61 when you don't.”</p></div>
+      <div class="item"><h3>Next · it advises</h3><p>With months of decisions and their outcomes on record: “Based on three months of data, avoid Thursday evenings for deep work.”</p></div>
+      <div class="item"><h3>Then · it remembers</h3><p>Memory beyond the last few messages — a portrait that grows from your own history, so its advice reflects who you actually are.</p></div>
+    </div>
+    <p class="statement" style="margin-top:42px;font-size:clamp(1.4rem,2.8vw,2rem);">The line it's walking toward — <span class="hi">where it stops logging your life, and starts shaping it.</span></p>
+  </div>
+</section>
+
+<!-- ══════════ PRIVATE BY DESIGN ══════════ -->
+<section class="slide" id="privacy">
+  <span class="sec-num">08</span>
+  <div class="wrap reveal">
+    <div class="kicker">Private by design</div>
+    <h2 class="title">It's yours. Entirely.</h2>
+    <p class="lead">No accounts, no SaaS, no analytics, no other users. The honest picture:</p>
+    <div class="priv">
+      <div class="p"><div class="ic">🖥️</div><h3>Runs on your Mac</h3><p>The whole assistant lives on one machine you own. Nothing is hosted for you to depend on — or for anyone to mine.</p></div>
+      <div class="p"><div class="ic">🔒</div><h3>Your data stays put</h3><p>Records live in your own SQLite file and your own Google Sheet — readable, editable, deletable by you, any time.</p></div>
+      <div class="p"><div class="ic">👤</div><h3>Built for exactly one person</h3><p>No multi-user platform, no growth funnel. A tool sized to one life, which is the only reason it can be this personal.</p></div>
+    </div>
+    <div class="leaves">
+      <h3>What leaves your machine</h3>
+      <p class="lead-sm">Local-first isn't air-gapped. A few services see your data in transit — named plainly, nothing buried:</p>
+      <ul class="leaves-list">
+        <li><span class="lico">🤖</span><div><b>Anthropic API</b><p>Every message — including logged data — transits Claude. The paid tier doesn't train on your data by default.</p></div></li>
+        <li><span class="lico">💬</span><div><b>Telegram</b><p>Messages pass through Telegram's servers. Bot messages aren't end-to-end encrypted.</p></div></li>
+        <li><span class="lico">⌚</span><div><b>Garmin Connect</b><p>Your fitness data lives on Garmin's servers; Jarvis fetches and caches it locally.</p></div></li>
+        <li><span class="lico">🎙️</span><div><b>OpenAI Whisper + TTS</b><span class="opt">Optional</span><p>Voice notes go out for transcription, replies for speech. Skipped entirely if no key is set.</p></div></li>
+        <li><span class="lico">🚴</span><div><b>Strava</b><span class="opt">Optional</span><p>Read-only access to your activities, feeding the marathon coach. Skipped if not connected.</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CLOSE ══════════ -->
+<section class="close">
+  <div class="wrap reveal">
+    <h2>A second mind for the admin of your life — so your first one is free for everything else.</h2>
+    <p>One chat. One dashboard. Running quietly on a Mac in the corner, at about the price of a coffee a week.</p>
+    <div class="foot">
+      <div class="foot-row">
+        <div class="foot-credit">
+          <div class="foot-avatars"><img src="1-thumb.jpg" alt="Tony Stark"><img src="2-thumb.jpg" alt="Gilfoyle"></div>
+          <span>Inspired by Tony Stark (Actual Jarvis)<br>&amp; Gilfoyle (Son of Anton)</span>
+        </div>
+        <p class="foot-signature">Vibe coded by <b>Sid</b>, with ❤️</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var bar=document.querySelector('.progress');
+  var nav=document.querySelector('.topnav');
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    var pct=max>0?(h.scrollTop/max)*100:0;
+    if(bar) bar.style.width=pct+'%';
+    if(nav) nav.classList.toggle('scrolled', h.scrollTop>40);
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  var els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+      });
+    },{threshold:.12,rootMargin:'0px 0px -60px 0px'});
+    els.forEach(function(el){io.observe(el);});
+  } else {
+    els.forEach(function(el){el.classList.add('visible');});
+  }
+
+  document.querySelectorAll('video[autoplay]').forEach(function(v){
+    v.muted=true;
+    var tryPlay=function(){ v.play().catch(function(){}); };
+    if(v.readyState>=2){ tryPlay(); } else { v.addEventListener('loadeddata', tryPlay, {once:true}); }
+  });
+})();
+</script>
+</body>
+</html>

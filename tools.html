@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.A.R.V.I.S — Tool Index</title>
+<meta name="description" content="All 67 tools available to J.A.R.V.I.S, grouped by domain, with what each one does.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--ink:#0f172a;--ink2:#334155;
+  --cyan:#06b6d4;--cyan-d:#0891b2;
+  --bg:#ffffff;--paper:#f6f9fc;--line:#e2e8f0;--mute:#64748b;--mute2:#94a3b8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;}
+.wrap{max-width:900px;margin:0 auto;padding:0 32px;}
+
+.top{background:radial-gradient(1000px 400px at 70% 0%,#13294d 0%,#0a1628 55%,#060e1e 100%);color:#fff;padding:48px 0 40px;}
+.back{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:#7e93ae;text-decoration:none;margin-bottom:22px;transition:color .15s ease;}
+.back:hover{color:var(--cyan);}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;}
+.top h1{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:800;letter-spacing:-.025em;line-height:1.12;margin-bottom:10px;}
+.top p{font-size:.95rem;color:#aebfd4;max-width:560px;line-height:1.55;}
+.top-stats{display:flex;gap:26px;margin-top:24px;flex-wrap:wrap;}
+.tstat .n{font-family:'JetBrains Mono',monospace;font-size:1.15rem;font-weight:700;color:#fff;}
+.tstat .l{font-size:.68rem;color:#7e93ae;text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+
+.search-bar{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);padding:14px 0;}
+.search-bar input{width:100%;font-family:'Inter',sans-serif;font-size:.9rem;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);outline:none;transition:border-color .15s ease;}
+.search-bar input:focus{border-color:var(--cyan);}
+.search-count{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--mute2);margin-top:8px;letter-spacing:.03em;}
+
+.domains{padding:36px 0 80px;}
+.domain{margin-bottom:34px;}
+.domain-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--ink);}
+.domain-head h2{font-size:1.02rem;font-weight:800;letter-spacing:-.01em;}
+.domain-head .count{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--mute2);}
+.tool-row{padding:10px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start;}
+.tool-row:last-child{border-bottom:none;}
+.tool-name{font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:600;color:var(--cyan-d);word-break:break-word;}
+.tool-desc{font-size:.86rem;color:var(--mute);line-height:1.5;}
+.tool-row.hidden{display:none;}
+.domain.hidden{display:none;}
+
+@media(max-width:640px){
+  .wrap{padding:0 20px;}
+  .tool-row{grid-template-columns:1fr;gap:4px;}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <a href="index.html" class="back">← Back to overview</a>
+    <div class="kicker">Tool index</div>
+    <h1>Everything it can call, in one place.</h1>
+    <p>Every action J.A.R.V.I.S can take — logging, querying, coaching, reminding — is a discrete tool the model picks from. This is the full list.</p>
+    <div class="top-stats">
+      <div class="tstat"><div class="n">67</div><div class="l">Tools</div></div>
+      <div class="tstat"><div class="n">22</div><div class="l">Domains</div></div>
+      <div class="tstat"><div class="n">2</div><div class="l">Models routing them</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="search-bar">
+  <div class="wrap">
+    <input type="text" id="q" placeholder="Search tools — e.g. “expense”, “garmin”, “reminder”…" autocomplete="off">
+    <div class="search-count" id="count"></div>
+  </div>
+</div>
+
+<div class="domains wrap" id="domains">
+
+  <div class="domain">
+    <div class="domain-head"><h2>Time</h2><span class="count">1</span></div>
+    <div class="tool-row"><code class="tool-name">get_current_time</code><p class="tool-desc">Returns current date/time in the user's local timezone; used whenever reasoning about "now"/today or resolving relative times.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Expenses</h2><span class="count">3</span></div>
+    <div class="tool-row"><code class="tool-name">add_expense</code><p class="tool-desc">Records a new expense, infers category from context, auto-converts foreign currency to INR via live rates.</p></div>
+    <div class="tool-row"><code class="tool-name">query_expenses</code><p class="tool-desc">Queries expenses for a time period and optional category — spending breakdowns.</p></div>
+    <div class="tool-row"><code class="tool-name">update_category_budget</code><p class="tool-desc">Updates a per-category or total monthly budget cap, writing directly to the profile.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Calories</h2><span class="count">2</span></div>
+    <div class="tool-row"><code class="tool-name">log_calories</code><p class="tool-desc">Records a food/drink item and calories, always estimating protein/carbs/fat even if not given.</p></div>
+    <div class="tool-row"><code class="tool-name">query_calories</code><p class="tool-desc">Queries calories/macros for a time period.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Habits</h2><span class="count">3</span></div>
+    <div class="tool-row"><code class="tool-name">log_habit</code><p class="tool-desc">Records a habit session; append-only — multiple sessions a day become separate rows.</p></div>
+    <div class="tool-row"><code class="tool-name">query_habits</code><p class="tool-desc">Returns streaks (unique days), completion rates, and recent status.</p></div>
+    <div class="tool-row"><code class="tool-name">list_habit_reminders</code><p class="tool-desc">Lists habits with proactive reminders enabled in the profile.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Mood</h2><span class="count">3</span></div>
+    <div class="tool-row"><code class="tool-name">log_mood</code><p class="tool-desc">Records a mood entry or freeform journal note/thought.</p></div>
+    <div class="tool-row"><code class="tool-name">query_mood</code><p class="tool-desc">Returns recent mood/journal entries.</p></div>
+    <div class="tool-row"><code class="tool-name">analyze_mood_patterns</code><p class="tool-desc">Analyzes the last 14–30 days of mood against sleep, exercise and tags to describe patterns.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Todos</h2><span class="count">5</span></div>
+    <div class="tool-row"><code class="tool-name">add_todo</code><p class="tool-desc">Adds a new todo item, inferring priority (normal/high) from language cues.</p></div>
+    <div class="tool-row"><code class="tool-name">list_todos</code><p class="tool-desc">Lists todos — e.g. "what's on my list", overdue items.</p></div>
+    <div class="tool-row"><code class="tool-name">complete_todo</code><p class="tool-desc">Marks a todo done, by exact ID or text match.</p></div>
+    <div class="tool-row"><code class="tool-name">delete_todo</code><p class="tool-desc">Soft-deletes a todo, reversible in the underlying sheet.</p></div>
+    <div class="tool-row"><code class="tool-name">set_todo_quadrant</code><p class="tool-desc">Sets the Eisenhower matrix quadrant (do first / schedule / delegate / eliminate) for a todo.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Media</h2><span class="count">5</span></div>
+    <div class="tool-row"><code class="tool-name">log_watched</code><p class="tool-desc">Logs something watched for the first time, auto-enriched via TMDb — year, director, runtime.</p></div>
+    <div class="tool-row"><code class="tool-name">add_to_watchlist</code><p class="tool-desc">Adds a title to the watchlist — not yet watched.</p></div>
+    <div class="tool-row"><code class="tool-name">rate_media</code><p class="tool-desc">Rates or updates an already-logged title, fuzzy-matched by name.</p></div>
+    <div class="tool-row"><code class="tool-name">recommend_media</code><p class="tool-desc">Recommends something to watch — mood-aware, taste-similar, or from the watchlist.</p></div>
+    <div class="tool-row"><code class="tool-name">query_media</code><p class="tool-desc">Queries the media log by status, rating, favorites, date or type.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Calendar</h2><span class="count">2</span></div>
+    <div class="tool-row"><code class="tool-name">query_calendar</code><p class="tool-desc">Gets calendar events for a time range.</p></div>
+    <div class="tool-row"><code class="tool-name">add_calendar_event</code><p class="tool-desc">Creates a new calendar event, resolving relative times to absolute timestamps.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Fitness</h2><span class="count">4</span></div>
+    <div class="tool-row"><code class="tool-name">get_garmin_summary</code><p class="tool-desc">Gets a day's Garmin summary — sleep, HRV, body battery, steps, resting HR, stress, training readiness.</p></div>
+    <div class="tool-row"><code class="tool-name">get_recent_workouts</code><p class="tool-desc">Fetches recent Garmin activities and workouts.</p></div>
+    <div class="tool-row"><code class="tool-name">suggest_workout</code><p class="tool-desc">Pulls recovery metrics for the model to synthesize a workout recommendation.</p></div>
+    <div class="tool-row"><code class="tool-name">analyze_health_patterns</code><p class="tool-desc">Analyzes 30 days of sleep, habits, mood and energy to surface correlations.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Life log</h2><span class="count">11</span></div>
+    <div class="tool-row"><code class="tool-name">log_food</code><p class="tool-desc">Logs what was eaten — items, meal type, location, company, satisfaction.</p></div>
+    <div class="tool-row"><code class="tool-name">log_sleep</code><p class="tool-desc">Logs last night's sleep — subjective quality plus context, auto-filled with Garmin's sleep score.</p></div>
+    <div class="tool-row"><code class="tool-name">log_social</code><p class="tool-desc">Logs a social interaction — who, context, duration, energy afterward.</p></div>
+    <div class="tool-row"><code class="tool-name">query_person</code><p class="tool-desc">Queries interaction history for a person, or ranks top contacts by frequency.</p></div>
+    <div class="tool-row"><code class="tool-name">log_idea</code><p class="tool-desc">Logs a one-line idea, thought, observation or question, with tags.</p></div>
+    <div class="tool-row"><code class="tool-name">query_ideas</code><p class="tool-desc">Queries the ideas log by tag and/or status.</p></div>
+    <div class="tool-row"><code class="tool-name">log_decision</code><p class="tool-desc">Logs a decision with reasoning and confidence; outcome filled in later.</p></div>
+    <div class="tool-row"><code class="tool-name">update_decision_outcome</code><p class="tool-desc">Fills in the outcome of a previously logged decision, fuzzy-matched.</p></div>
+    <div class="tool-row"><code class="tool-name">log_energy</code><p class="tool-desc">Logs energy and focus levels, inferred from qualitative language.</p></div>
+    <div class="tool-row"><code class="tool-name">log_reading</code><p class="tool-desc">Logs a book, article or paper being read or finished, with status and rating.</p></div>
+    <div class="tool-row"><code class="tool-name">query_reading</code><p class="tool-desc">Queries the reading log by status or type.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>External</h2><span class="count">4</span></div>
+    <div class="tool-row"><code class="tool-name">get_weather</code><p class="tool-desc">Gets current weather and today's forecast for a location.</p></div>
+    <div class="tool-row"><code class="tool-name">news_digest</code><p class="tool-desc">Fetches a concise news digest on one or more topics via web search.</p></div>
+    <div class="tool-row"><code class="tool-name">get_literature_quote</code><p class="tool-desc">Returns a random public-domain literature quote; also used by the morning brief.</p></div>
+    <div class="tool-row"><code class="tool-name">dinner_roulette</code><p class="tool-desc">Picks a random episode for dinner viewing.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Study</h2><span class="count">3</span></div>
+    <div class="tool-row"><code class="tool-name">log_study_progress</code><p class="tool-desc">Records weekly progress on a study topic from the study plan.</p></div>
+    <div class="tool-row"><code class="tool-name">query_study_progress</code><p class="tool-desc">Queries study progress over a period — hours, topic breakdown, completion.</p></div>
+    <div class="tool-row"><code class="tool-name">list_study_topics</code><p class="tool-desc">Lists topics in the current study plan.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Portrait</h2><span class="count">1</span></div>
+    <div class="tool-row"><code class="tool-name">generate_self_portrait</code><p class="tool-desc">Generates a versioned self-portrait from the life log — week, month, quarter, or all; never overwrites prior versions.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Vocab</h2><span class="count">3</span></div>
+    <div class="tool-row"><code class="tool-name">check_vocab_answer</code><p class="tool-desc">Grades the answer to the active spaced-repetition vocab quiz.</p></div>
+    <div class="tool-row"><code class="tool-name">add_vocab_word</code><p class="tool-desc">Adds a word to the vocab deck, auto-looking up the meaning if omitted.</p></div>
+    <div class="tool-row"><code class="tool-name">query_vocab_stats</code><p class="tool-desc">Shows vocab learning progress — words, mastery, accuracy, streaks.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Goals</h2><span class="count">2</span></div>
+    <div class="tool-row"><code class="tool-name">set_weekly_goals</code><p class="tool-desc">Sets daily plain-text goals for the current week, replacing any existing set.</p></div>
+    <div class="tool-row"><code class="tool-name">list_daily_goals</code><p class="tool-desc">Shows this week's daily goals.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Reminders</h2><span class="count">3</span></div>
+    <div class="tool-row"><code class="tool-name">add_reminder</code><p class="tool-desc">Creates a scheduled Telegram push reminder — daily, weekdays, weekends, once, or a specific day.</p></div>
+    <div class="tool-row"><code class="tool-name">list_reminders</code><p class="tool-desc">Lists all active reminders.</p></div>
+    <div class="tool-row"><code class="tool-name">delete_reminder</code><p class="tool-desc">Deletes a reminder by ID or matching text.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Personality</h2><span class="count">2</span></div>
+    <div class="tool-row"><code class="tool-name">switch_personality</code><p class="tool-desc">Switches the assistant's active personality profile.</p></div>
+    <div class="tool-row"><code class="tool-name">list_personalities</code><p class="tool-desc">Lists all available personality profiles.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Birthdays</h2><span class="count">3</span></div>
+    <div class="tool-row"><code class="tool-name">add_birthday</code><p class="tool-desc">Adds a birthday, with optional birth year and relationship label.</p></div>
+    <div class="tool-row"><code class="tool-name">list_birthdays</code><p class="tool-desc">Lists all saved birthdays, sorted by date in year.</p></div>
+    <div class="tool-row"><code class="tool-name">delete_birthday</code><p class="tool-desc">Deletes a birthday by person's name.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Strava</h2><span class="count">1</span></div>
+    <div class="tool-row"><code class="tool-name">get_strava_activities</code><p class="tool-desc">Gets recent Strava activities — distance, pace, duration, avg HR, elevation — complementary to Garmin's recovery data.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Voice</h2><span class="count">3</span></div>
+    <div class="tool-row"><code class="tool-name">start_voice_session</code><p class="tool-desc">Activates the local Mac mic for a continuous voice conversation.</p></div>
+    <div class="tool-row"><code class="tool-name">stop_voice_session</code><p class="tool-desc">Stops the active voice session and deactivates the mic.</p></div>
+    <div class="tool-row"><code class="tool-name">voice_status</code><p class="tool-desc">Checks whether a voice session is currently active.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Activity</h2><span class="count">2</span></div>
+    <div class="tool-row"><code class="tool-name">log_activity</code><p class="tool-desc">Logs a time-use entry — category and duration, e.g. "scrolled Instagram for 40 min".</p></div>
+    <div class="tool-row"><code class="tool-name">query_activity</code><p class="tool-desc">Summarizes how time was spent on a date — hours per category and productive/neutral/sink tier.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Meta</h2><span class="count">1</span></div>
+    <div class="tool-row"><code class="tool-name">show_help</code><p class="tool-desc">Shows available tools, scheduled jobs, and usage examples.</p></div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var input=document.getElementById('q');
+  var domains=document.querySelectorAll('.domain');
+  var countEl=document.getElementById('count');
+  var total=document.querySelectorAll('.tool-row').length;
+
+  function filter(){
+    var q=input.value.trim().toLowerCase();
+    var visible=0;
+    domains.forEach(function(domain){
+      var rows=domain.querySelectorAll('.tool-row');
+      var domainHasMatch=false;
+      rows.forEach(function(row){
+        var text=row.textContent.toLowerCase();
+        var match=!q || text.indexOf(q)!==-1;
+        row.classList.toggle('hidden', !match);
+        if(match){ domainHasMatch=true; visible++; }
+      });
+      domain.classList.toggle('hidden', !domainHasMatch);
+    });
+    countEl.textContent=q ? (visible+' of '+total+' tools match "'+q+'"') : (total+' tools across 22 domains');
+  }
+  input.addEventListener('input', filter);
+  filter();
+})();
+</script>
+
+</body>
+</html>
