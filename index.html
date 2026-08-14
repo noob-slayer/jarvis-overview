@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>J.A.R.V.I.S — A private AI that runs your day</title>
 <meta name="description" content="One private AI, one Telegram chat — it runs the admin of a life: money, fitness, health, habits, learning. Runs on a Mac, costs about ₹20/day, and never leaves your control.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://noob-slayer.github.io/jarvis-overview/">
+<meta property="og:title" content="J.A.R.V.I.S — A private AI that runs your day">
+<meta property="og:description" content="One private AI, one Telegram chat — it runs the admin of a life: money, fitness, health, habits, learning. Runs on a Mac, costs about ₹20/day, and never leaves your control.">
+<meta property="og:image" content="https://noob-slayer.github.io/jarvis-overview/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="J.A.R.V.I.S — A private AI that runs your day">
+<meta name="twitter:description" content="One private AI, one Telegram chat — it runs the admin of a life: money, fitness, health, habits, learning.">
+<meta name="twitter:image" content="https://noob-slayer.github.io/jarvis-overview/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -183,6 +194,10 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
 .foot-avatars img{width:120px;height:auto;border-radius:8px;border:2px solid rgba(255,255,255,.18);display:block;}
 .close p.foot-signature{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:#5d7596;letter-spacing:.04em;max-width:none;margin:0 40px 0 0;}
 .foot-signature b{color:#aebfd4;font-weight:500;}
+.connect-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px;}
+.connect-link{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;letter-spacing:.02em;padding:11px 20px;border-radius:26px;border:1.5px solid rgba(6,182,212,.4);color:#22d3ee;text-decoration:none;transition:background .18s ease,color .18s ease,transform .18s ease,border-color .18s ease;}
+.connect-link:hover{background:var(--cyan-d);border-color:var(--cyan-d);color:#fff;transform:translateY(-2px);}
+.connect-ico{font-size:.92rem;line-height:1;}
 
 /* ─────────── nav + scroll progress ─────────── */
 .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#22d3ee,#0891b2);z-index:200;width:0%;}
@@ -242,11 +257,11 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
 <nav class="topnav">
   <a href="#" class="brand">J.A.R.V.I.S</a>
   <ul class="links">
-    <li><a href="#demo">Demo</a></li>
     <li><a href="#examples">Examples</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#privacy">Privacy</a></li>
     <li><a href="#cockpit">Cockpit</a></li>
     <li><a href="#tech">Tech</a></li>
-    <li><a href="#privacy">Privacy</a></li>
   </ul>
 </nav>
 
@@ -263,7 +278,7 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
         <div class="hstat"><div class="n">15</div><div class="l">Life areas tracked</div></div>
         <div class="hstat"><div class="n">100%</div><div class="l">On my own Mac</div></div>
       </div>
-      <div class="hero-cta"><a href="#demo" class="btn-primary">Watch it work <span class="arrow">↓</span></a></div>
+      <div class="hero-cta"><a href="#examples" class="btn-primary">Watch it work <span class="arrow">↓</span></a></div>
     </div>
     <div class="arc-reactor">
       <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
@@ -330,65 +345,9 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
   </div>
 </section>
 
-<!-- ══════════ THE PROBLEM ══════════ -->
-<section class="slide" id="problem">
-  <span class="sec-num">01</span>
-  <div class="wrap reveal">
-    <div class="problem-grid">
-      <div class="why-card">
-        <div class="kicker">The problem</div>
-        <p class="why-quote">Most apps solve one problem.<br><em>Life isn't one problem.</em></p>
-        <div class="why-body">
-          <p>Your fitness tracker doesn't know you skipped sleep. Your budgeting app doesn't know you're stressed. Your todo list doesn't know your calendar is packed.</p>
-          <p>So you juggle a handful of apps, none of which talk to each other — and still feel like you're missing something.</p>
-        </div>
-      </div>
-      <div>
-        <div class="problems-head">
-          <div class="kicker">Day to day</div>
-          <h3 class="problems-title">Where it actually shows up</h3>
-          <p class="problems-sub">Four everyday frictions — the ones a single AI can quietly absorb.</p>
-        </div>
-        <div class="problems-grid">
-          <div class="prob-card"><div class="prob-icon">🧩</div><h4>Scattered silos</h4><p>Money here, sleep there, todos somewhere else. No single place that knows your whole day.</p></div>
-          <div class="prob-card"><div class="prob-icon">⚡</div><h4>Always logging</h4><p>Every app wants you to open it, tap through menus, and type. Friction wins; the tracking lapses.</p></div>
-          <div class="prob-card"><div class="prob-icon">🔗</div><h4>No one connects the dots</h4><p>Poor sleep dents your mood; a low mood loosens your spending. No app sees that chain.</p></div>
-          <div class="prob-card"><div class="prob-icon">💡</div><h4>Ideas that evaporate</h4><p>A stray thought, a decision, a reason — gone by evening. Nothing is open enough at 2am to catch it.</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ THE SHIFT (with telegram demo) ══════════ -->
-<section class="slide paper" id="demo">
-  <span class="sec-num">02</span>
-  <div class="wrap shift-grid reveal">
-    <div>
-      <div class="kicker">The shift</div>
-      <p class="statement">Jarvis starts from the opposite assumption: <span class="hi">your data should know about each other.</span></p>
-      <p class="lead">One chat replaces the lot. You talk normally — it logs, reminds, coaches, and quietly connects what the others keep apart.</p>
-      <div class="three soft stack">
-        <div class="item"><h3>Say it, don't tap it</h3><p>“450 at lunch.” “Ran 12k.” Plain words — no forms, no menus.</p></div>
-        <div class="item"><h3>It comes to you</h3><p>Morning brief, nudges, evening recap — automatic, not remembered.</p></div>
-        <div class="item"><h3>It sees everything</h3><p>Money, health, habits, calendar — one brain that notices when they collide.</p></div>
-        <div class="item"><h3>One view, all of it</h3><p>Every log rolls into a live HUD — one glance, fully caught up.</p></div>
-      </div>
-      <a href="#cockpit" class="btn-outline">See the live HUD <span class="arrow">→</span></a>
-    </div>
-    <div>
-      <div class="phones-row">
-        <div class="phone"><video src="vide02.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video></div>
-        <div class="phone"><video src="Telegram_jarvis.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video></div>
-      </div>
-      <p class="phone-cap">Live · in your Telegram</p>
-    </div>
-  </div>
-</section>
-
 <!-- ══════════ SEE IT WORK ══════════ -->
 <section class="slide" id="examples">
-  <span class="sec-num">03</span>
+  <span class="sec-num">01</span>
   <div class="wrap reveal">
     <div class="sec-head">
       <div class="kicker">See it work</div>
@@ -457,6 +416,62 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
   </div>
 </section>
 
+<!-- ══════════ THE PROBLEM ══════════ -->
+<section class="slide" id="problem">
+  <span class="sec-num">02</span>
+  <div class="wrap reveal">
+    <div class="problem-grid">
+      <div class="why-card">
+        <div class="kicker">The problem</div>
+        <p class="why-quote">Most apps solve one problem.<br><em>Life isn't one problem.</em></p>
+        <div class="why-body">
+          <p>Your fitness tracker doesn't know you skipped sleep. Your budgeting app doesn't know you're stressed. Your todo list doesn't know your calendar is packed.</p>
+          <p>So you juggle five apps, re-explain your day to each one separately — and still miss the one pattern that actually mattered.</p>
+        </div>
+      </div>
+      <div>
+        <div class="problems-head">
+          <div class="kicker">Day to day</div>
+          <h3 class="problems-title">Where it actually shows up</h3>
+          <p class="problems-sub">Four everyday frictions — the ones a single AI can quietly absorb.</p>
+        </div>
+        <div class="problems-grid">
+          <div class="prob-card"><div class="prob-icon">🧩</div><h4>Scattered silos</h4><p>Money here, sleep there, todos somewhere else. No single place that knows your whole day.</p></div>
+          <div class="prob-card"><div class="prob-icon">⚡</div><h4>Always logging</h4><p>Every app wants you to open it, tap through menus, and type. Friction wins; the tracking lapses.</p></div>
+          <div class="prob-card"><div class="prob-icon">🔗</div><h4>No one connects the dots</h4><p>Poor sleep dents your mood; a low mood loosens your spending. No app sees that chain.</p></div>
+          <div class="prob-card"><div class="prob-icon">💡</div><h4>Ideas that evaporate</h4><p>A stray thought, a decision, a reason — gone by evening. Nothing is open enough at 2am to catch it.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ THE SHIFT (with telegram demo) ══════════ -->
+<section class="slide paper" id="demo">
+  <span class="sec-num">03</span>
+  <div class="wrap shift-grid reveal">
+    <div>
+      <div class="kicker">The shift</div>
+      <p class="statement">Jarvis starts from the opposite assumption: <span class="hi">your data should know about each other.</span></p>
+      <p class="lead">One chat replaces the lot. You talk normally — it logs, reminds, coaches, and quietly connects what the others keep apart.</p>
+      <div class="three soft stack">
+        <div class="item"><h3>Say it, don't tap it</h3><p>“450 at lunch.” “Ran 12k.” Plain words — no forms, no menus.</p></div>
+        <div class="item"><h3>It comes to you</h3><p>Morning brief, nudges, evening recap — automatic, not remembered.</p></div>
+        <div class="item"><h3>It sees everything</h3><p>Money, health, habits, calendar — one brain that notices when they collide.</p></div>
+        <div class="item"><h3>One view, all of it</h3><p>Every log rolls into a live HUD — one glance, fully caught up.</p></div>
+      </div>
+      <a href="#cockpit" class="btn-outline">See the live HUD <span class="arrow">→</span></a>
+    </div>
+    <div>
+      <div class="phones-row">
+        <div class="phone"><video src="vide02.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video></div>
+        <div class="phone"><video src="Telegram_jarvis.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video></div>
+      </div>
+      <p class="phone-cap">Live · in your Telegram</p>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════ A DAY ══════════ -->
 <section class="slide paper" id="day">
   <span class="sec-num">04</span>
@@ -479,58 +494,9 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
   </div>
 </section>
 
-<!-- ══════════ THE COCKPIT ══════════ -->
-<section class="cockpit" id="cockpit">
-  <span class="sec-num">05</span>
-  <div class="wrap reveal">
-    <div class="kicker">The cockpit</div>
-    <h2 class="title">And a live dashboard,<br>for when you want the whole view.</h2>
-    <p class="lead">Everything the chat captures, rendered as one real-time heads-up display — money, nutrition, recovery, habits, time-use, all on one screen. Hand-drawn charts, no libraries, updating live.</p>
-    <div class="frame">
-      <img src="hud.png" alt="J.A.R.V.I.S live HUD dashboard — money, nutrition, recovery, habits and time-use on one screen">
-    </div>
-    <p class="cap">LIVE HUD · UPDATES IN REAL TIME · RUNS ON THE SAME MACHINE</p>
-  </div>
-</section>
-
-<!-- ══════════ UNDER THE HOOD ══════════ -->
-<section class="hood" id="tech">
-  <span class="sec-num">06</span>
-  <div class="wrap reveal">
-    <div class="kicker">Under the hood</div>
-    <h2 class="title">Simple to talk to.<br>Carefully built underneath.</h2>
-    <p class="lead">Engineered to be fast, cheap, and impossible to lose data to — without you ever seeing the machinery.</p>
-    <div class="hood-grid">
-      <div class="hcell"><div class="hn">Routing</div><h3>Two-model pipeline</h3><p>A fast, cheap model reads each message and routes intent; the stronger model runs only the handful of tools that matter. ~60% fewer tokens per reply.</p></div>
-      <div class="hcell"><div class="hn">Capabilities</div><h3>67 tools, one brain</h3><p>Every action — log an expense, query Garmin, set a reminder — is a discrete tool. Adding more is near-free; the model just picks the right one.</p><a href="tools.html" class="hcell-link">See all 67 tools →</a></div>
-      <div class="hcell"><div class="hn">Concurrency</div><h3>Fully async</h3><p>Chat, web dashboard and scheduler share one async event loop, so a long reply never freezes the screen or the nightly jobs.</p></div>
-      <div class="hcell"><div class="hn">Storage</div><h3>SQLite + Sheets</h3><p>Agent state in a local database; everything you'd want to read or edit by hand in a Google Sheet. Two stores, each doing what it's best at.</p></div>
-      <div class="hcell"><div class="hn">Resilience</div><h3>Self-healing</h3><p>Reconnects through network drops, a watchdog revives a frozen process, and writes queue locally if Sheets is unreachable — nothing is lost.</p></div>
-      <div class="hcell"><div class="hn">Cost</div><h3>Cheap on purpose</h3><p>Prompt caching, a tight history window, and the small model for every scheduled job keep it at roughly ₹15–25 a day, all in.</p></div>
-    </div>
-    <p class="hood-foot"><b>Stack —</b> Python · Telegram Bot API · FastAPI · APScheduler · Claude (Sonnet + Haiku) · Garmin · Strava · TMDb · OpenAI voice</p>
-  </div>
-</section>
-
-<!-- ══════════ WHERE IT'S HEADED ══════════ -->
-<section class="slide paper" id="headed">
-  <span class="sec-num">07</span>
-  <div class="wrap reveal">
-    <div class="kicker">Where it's headed</div>
-    <h2 class="title">From logging your life<br>to shaping it.</h2>
-    <p class="lead">The principle only compounds as the history grows. The arc it's on:</p>
-    <div class="three soft">
-      <div class="item"><h3>Today · it connects</h3><p>Already live: it links sleep, training, mood and money — “your sleep score averages 74 on days you exercise, 61 when you don't.”</p></div>
-      <div class="item"><h3>Next · it advises</h3><p>With months of decisions and their outcomes on record: “Based on three months of data, avoid Thursday evenings for deep work.”</p></div>
-      <div class="item"><h3>Then · it remembers</h3><p>Memory beyond the last few messages — a portrait that grows from your own history, so its advice reflects who you actually are.</p></div>
-    </div>
-    <p class="statement" style="margin-top:42px;font-size:clamp(1.4rem,2.8vw,2rem);">The line it's walking toward — <span class="hi">where it stops logging your life, and starts shaping it.</span></p>
-  </div>
-</section>
-
 <!-- ══════════ PRIVATE BY DESIGN ══════════ -->
 <section class="slide" id="privacy">
-  <span class="sec-num">08</span>
+  <span class="sec-num">05</span>
   <div class="wrap reveal">
     <div class="kicker">Private by design</div>
     <h2 class="title">It's yours. Entirely.</h2>
@@ -554,11 +520,64 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
   </div>
 </section>
 
+<!-- ══════════ THE COCKPIT ══════════ -->
+<section class="cockpit" id="cockpit">
+  <span class="sec-num">06</span>
+  <div class="wrap reveal">
+    <div class="kicker">The cockpit</div>
+    <h2 class="title">And a live dashboard,<br>for when you want the whole view.</h2>
+    <p class="lead">Everything the chat captures, rendered as one real-time heads-up display — money, nutrition, recovery, habits, time-use, all on one screen. Hand-drawn charts, no libraries, updating live.</p>
+    <div class="frame">
+      <img src="hud.png" alt="J.A.R.V.I.S live HUD dashboard — money, nutrition, recovery, habits and time-use on one screen">
+    </div>
+    <p class="cap">LIVE HUD · UPDATES IN REAL TIME · RUNS ON THE SAME MACHINE</p>
+  </div>
+</section>
+
+<!-- ══════════ UNDER THE HOOD ══════════ -->
+<section class="hood" id="tech">
+  <span class="sec-num">07</span>
+  <div class="wrap reveal">
+    <div class="kicker">Under the hood</div>
+    <h2 class="title">Simple to talk to.<br>Carefully built underneath.</h2>
+    <p class="lead">Engineered to be fast, cheap, and impossible to lose data to — without you ever seeing the machinery.</p>
+    <div class="hood-grid">
+      <div class="hcell"><div class="hn">Routing</div><h3>Two-model pipeline</h3><p>A fast, cheap model reads each message and routes intent; the stronger model runs only the handful of tools that matter. ~60% fewer tokens per reply.</p></div>
+      <div class="hcell"><div class="hn">Capabilities</div><h3>67 tools, one brain</h3><p>Every action — log an expense, query Garmin, set a reminder — is a discrete tool. Adding more is near-free; the model just picks the right one.</p><a href="tools.html" class="hcell-link">See all 67 tools →</a></div>
+      <div class="hcell"><div class="hn">Concurrency</div><h3>Fully async</h3><p>Chat, web dashboard and scheduler share one async event loop, so a long reply never freezes the screen or the nightly jobs.</p></div>
+      <div class="hcell"><div class="hn">Storage</div><h3>SQLite + Sheets</h3><p>Agent state in a local database; everything you'd want to read or edit by hand in a Google Sheet. Two stores, each doing what it's best at.</p></div>
+      <div class="hcell"><div class="hn">Resilience</div><h3>Self-healing</h3><p>Reconnects through network drops, a watchdog revives a frozen process, and writes queue locally if Sheets is unreachable — nothing is lost.</p></div>
+      <div class="hcell"><div class="hn">Cost</div><h3>Cheap on purpose</h3><p>Prompt caching, a tight history window, and the small model for every scheduled job keep it at roughly ₹15–25 a day, all in.</p></div>
+    </div>
+    <p class="hood-foot"><b>Stack —</b> Python · Telegram Bot API · FastAPI · APScheduler · Claude (Sonnet + Haiku) · Garmin · Strava · TMDb · OpenAI voice</p>
+  </div>
+</section>
+
+<!-- ══════════ WHERE IT'S HEADED ══════════ -->
+<section class="slide paper" id="headed">
+  <span class="sec-num">08</span>
+  <div class="wrap reveal">
+    <div class="kicker">Where it's headed</div>
+    <h2 class="title">From logging your life<br>to shaping it.</h2>
+    <p class="lead">The principle only compounds as the history grows. The arc it's on:</p>
+    <div class="three soft">
+      <div class="item"><h3>Today · it connects</h3><p>Already live: it links sleep, training, mood and money — “your sleep score averages 74 on days you exercise, 61 when you don't.”</p></div>
+      <div class="item"><h3>Next · it advises</h3><p>With months of decisions and their outcomes on record: “Based on three months of data, avoid Thursday evenings for deep work.”</p></div>
+      <div class="item"><h3>Then · it remembers</h3><p>Memory beyond the last few messages — a portrait that grows from your own history, so its advice reflects who you actually are.</p></div>
+    </div>
+    <p class="statement" style="margin-top:42px;font-size:clamp(1.4rem,2.8vw,2rem);">The line it's walking toward — <span class="hi">where it stops logging your life, and starts shaping it.</span></p>
+  </div>
+</section>
+
 <!-- ══════════ CLOSE ══════════ -->
 <section class="close">
   <div class="wrap reveal">
     <h2>A second mind for the admin of your life — so your first one is free for everything else.</h2>
     <p>One chat. One dashboard. Running quietly on a Mac in the corner, at about the price of a coffee a week.</p>
+    <div class="connect-row">
+      <a href="mailto:rajpriye.siddharth@gmail.com" class="connect-link"><span class="connect-ico">✉️</span> rajpriye.siddharth@gmail.com</a>
+      <a href="https://www.linkedin.com/in/rajpriyesiddharth/" target="_blank" rel="noopener" class="connect-link"><span class="connect-ico">in</span> Connect on LinkedIn</a>
+    </div>
     <div class="foot">
       <div class="foot-row">
         <div class="foot-credit">
