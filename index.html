@@ -60,7 +60,7 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
 
 /* ─────────── section rhythm (tighter) ─────────── */
-.slide{padding:100px 0;}
+.slide{padding:100px 0;border-top:1px solid var(--line);}
 .slide.paper{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
 .statement{font-size:clamp(1.55rem,3.1vw,2.25rem);font-weight:800;letter-spacing:-.025em;line-height:1.2;max-width:1080px;}
 .statement .dim{color:var(--mute2);}
@@ -142,6 +142,14 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
 
 /* COCKPIT */
 .cockpit{background:radial-gradient(900px 500px at 30% 0%,#13294d 0%,#0a1628 60%,#060e1e 100%);color:#fff;padding:100px 0;}
+#day{background:radial-gradient(900px 500px at 30% 0%,#13294d 0%,#0a1628 60%,#060e1e 100%);color:#fff;}
+#day h2.title{color:#fff;}
+#day .lead{color:#aebfd4;}
+#day .stop h4{color:#fff;}
+#day .stop p{color:#9fb1c9;}
+#day .stop .node{box-shadow:0 0 0 5px #0a1628;}
+#day .track::before{background:rgba(255,255,255,.15);}
+#day .track-legend{color:#9fb1c9;}
 .cockpit .kicker{color:var(--cyan);}
 .cockpit h2.title{color:#fff;}
 .cockpit .lead{color:#aebfd4;}
@@ -505,7 +513,7 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
 </section>
 
 <!-- ══════════ A DAY ══════════ -->
-<section class="slide paper" id="day">
+<section class="slide" id="day">
   <span class="sec-num">04</span>
   <div class="wrap reveal">
     <div class="kicker">A day with it</div>

@@ -66,6 +66,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-h
 
   <div class="entry">
     <div class="entry-date">17 Aug 2026</div>
+    <div class="entry-tags"><span class="tag fix">Fix</span></div>
+    <h3>Pomodoro and the time-use check-in no longer double-count</h3>
+    <p>The Pomodoro timer and the every-two-hours "what were you up to" Telegram check-in both log to the same time-use record, but had no awareness of each other — a Pomodoro running during a check-in window didn't stop the check-in from offering to log that same stretch of time again. Now each check-in looks up how much of its window a finished Pomodoro already covered and shrinks the duration buttons it offers accordingly (so a 25-minute Pomodoro in a 2-hour window leaves buttons for the remaining 95 minutes, not the full 120), and says so directly in the message. Not a hard block — the smallest option always stays available — just no easy way to accidentally log the same minutes twice.</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">17 Aug 2026</div>
+    <div class="entry-tags"><span class="tag new">New tool</span></div>
+    <h3>Pomodoro focus timer</h3>
+    <p>Start a focus session over Telegram — default 25 minutes, the classic Pomodoro length, but any duration works. When it ends, J.A.R.V.I.S sends a message and automatically logs the session to the time-use activity log, so focused work shows up in the existing daily time breakdown without typing it in twice. Built on the same scheduling system reminders already use (<code>APScheduler</code>), just one-shot instead of recurring. Can be stopped early too — the partial time still gets logged rather than thrown away.</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">17 Aug 2026</div>
     <div class="entry-tags"><span class="tag sec">Security</span><span class="tag fix">Fix</span></div>
     <h3>Reliability pass</h3>
     <p>Closed a gap in the web dashboard's login: if a username was set but the password was left blank, it would accept the blank password instead of rejecting it. Fixed a bug where asking to delete two to-dos in one message could silently lose the first one — both are now confirmed and deleted independently, not just the last one requested. And fixed a bug that had made <code>set_todo_quadrant</code> — the command that sorts a to-do into an urgent/important priority quadrant — completely unreachable from chat, even though it existed in the code.</p>
