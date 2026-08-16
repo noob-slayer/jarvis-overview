@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>J.A.R.V.I.S — Tool Index</title>
-<meta name="description" content="All 67 tools available to J.A.R.V.I.S, grouped by domain, with what each one does.">
+<meta name="description" content="All 71 tools available to J.A.R.V.I.S, grouped by domain, with what each one does.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,8 +62,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-h
     <h1>Everything it can call, in one place.</h1>
     <p>Every action J.A.R.V.I.S can take — logging, querying, coaching, reminding — is a discrete tool the model picks from. This is the full list.</p>
     <div class="top-stats">
-      <div class="tstat"><div class="n">67</div><div class="l">Tools</div></div>
-      <div class="tstat"><div class="n">22</div><div class="l">Domains</div></div>
+      <div class="tstat"><div class="n">71</div><div class="l">Tools</div></div>
+      <div class="tstat"><div class="n">24</div><div class="l">Domains</div></div>
       <div class="tstat"><div class="n">2</div><div class="l">Models routing them</div></div>
     </div>
   </div>
@@ -158,11 +158,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-h
   </div>
 
   <div class="domain">
-    <div class="domain-head"><h2>External</h2><span class="count">4</span></div>
+    <div class="domain-head"><h2>External</h2><span class="count">5</span></div>
     <div class="tool-row"><code class="tool-name">get_weather</code><p class="tool-desc">Gets current weather and today's forecast for a location.</p></div>
     <div class="tool-row"><code class="tool-name">news_digest</code><p class="tool-desc">Fetches a concise news digest on one or more topics via web search.</p></div>
     <div class="tool-row"><code class="tool-name">get_literature_quote</code><p class="tool-desc">Returns a random public-domain literature quote; also used by the morning brief.</p></div>
     <div class="tool-row"><code class="tool-name">dinner_roulette</code><p class="tool-desc">Picks a random episode for dinner viewing.</p></div>
+    <div class="tool-row"><code class="tool-name">food_roulette</code><p class="tool-desc">Recommends a real restaurant or cafe from live Google Places data — Claude weighs rating, price, cuisine fit, and open status rather than picking at random.</p></div>
   </div>
 
   <div class="domain">
@@ -216,16 +217,27 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-h
   </div>
 
   <div class="domain">
-    <div class="domain-head"><h2>Voice</h2><span class="count">3</span></div>
+    <div class="domain-head"><h2>Voice</h2><span class="count">4</span></div>
     <div class="tool-row"><code class="tool-name">start_voice_session</code><p class="tool-desc">Activates the local Mac mic for a continuous voice conversation.</p></div>
     <div class="tool-row"><code class="tool-name">stop_voice_session</code><p class="tool-desc">Stops the active voice session and deactivates the mic.</p></div>
     <div class="tool-row"><code class="tool-name">voice_status</code><p class="tool-desc">Checks whether a voice session is currently active.</p></div>
+    <div class="tool-row"><code class="tool-name">enroll_voice</code><p class="tool-desc">Records a few repetitions of the wake phrase and saves a local voice-embedding profile, so the always-on listener can verify it's actually you before starting a session.</p></div>
   </div>
 
   <div class="domain">
     <div class="domain-head"><h2>Activity</h2><span class="count">2</span></div>
     <div class="tool-row"><code class="tool-name">log_activity</code><p class="tool-desc">Logs a time-use entry — category and duration, e.g. "scrolled Instagram for 40 min".</p></div>
     <div class="tool-row"><code class="tool-name">query_activity</code><p class="tool-desc">Summarizes how time was spent on a date — hours per category and productive/neutral/sink tier.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Travel</h2><span class="count">1</span></div>
+    <div class="tool-row"><code class="tool-name">search_flights</code><p class="tool-desc">Searches one-way flight prices, ranked by price, nonstop preference, and time-of-day window — cross-checks the calendar for conflicts on the travel date.</p></div>
+  </div>
+
+  <div class="domain">
+    <div class="domain-head"><h2>Flights</h2><span class="count">1</span></div>
+    <div class="tool-row"><code class="tool-name">query_flights</code><p class="tool-desc">Live aircraft tracking via OpenSky — "what's flying over X", "any planes near me right now." Real-time positions, not schedules or booking.</p></div>
   </div>
 
   <div class="domain">
@@ -256,7 +268,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-h
       });
       domain.classList.toggle('hidden', !domainHasMatch);
     });
-    countEl.textContent=q ? (visible+' of '+total+' tools match "'+q+'"') : (total+' tools across 22 domains');
+    countEl.textContent=q ? (visible+' of '+total+' tools match "'+q+'"') : (total+' tools across '+domains.length+' domains');
   }
   input.addEventListener('input', filter);
   filter();

@@ -207,6 +207,9 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
 .topnav .links{display:flex;gap:24px;list-style:none;}
 .topnav .links a{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:#aebfd4;text-decoration:none;transition:color .15s ease;}
 .topnav .links a:hover{color:#22d3ee;}
+.topnav .nav-devlog{display:inline-flex;align-items:center;gap:6px;}
+.nav-dot{width:5px;height:5px;border-radius:50%;background:#22d3ee;box-shadow:0 0 0 0 rgba(34,211,238,.6);animation:navpulse 2s infinite;}
+@keyframes navpulse{0%{box-shadow:0 0 0 0 rgba(34,211,238,.5);}70%{box-shadow:0 0 0 5px rgba(34,211,238,0);}100%{box-shadow:0 0 0 0 rgba(34,211,238,0);}}
 
 /* ─────────── hero CTA ─────────── */
 .hero-cta{margin-top:32px;}
@@ -262,6 +265,8 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
     <li><a href="#privacy">Privacy</a></li>
     <li><a href="#cockpit">Cockpit</a></li>
     <li><a href="#tech">Tech</a></li>
+    <li><a href="tools.html">Tools</a></li>
+    <li><a href="devlog.html" class="nav-devlog"><span class="nav-dot"></span>Dev log</a></li>
   </ul>
 </nav>
 
@@ -352,7 +357,7 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
     <div class="sec-head">
       <div class="kicker">See it work</div>
       <h2 class="title">Real exchanges. Nothing staged.</h2>
-      <p class="lead">Six actual moments — each a single message, and what it quietly did with it.</p>
+      <p class="lead">Nine actual moments — each a single message, and what it quietly did with it.</p>
     </div>
     <div class="chat-grid">
 
@@ -410,6 +415,33 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
           <div class="b j">Done — 7:00 PM today, sir. I'll nudge you.</div>
         </div>
         <div class="ex-note">Real timed push notifications, separate from your todo list — daily, weekday, or one-off, all set in plain words.</div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-tag"><span class="ico">✈️</span> Flights · ranked, not just listed</div>
+        <div class="bubbles">
+          <div class="b me">flights to Delhi next Friday, nonstop, morning</div>
+          <div class="b j">Top pick: IndiGo 6E-272, <b>₹5,774</b> — 12:15 PM → 2:25 PM, nonstop. Four more below, cheapest first. Nothing on your calendar that day.</div>
+        </div>
+        <div class="ex-note">Real fares, ranked by <span>your time window, nonstop preference, and price</span> — then checked against your calendar for conflicts.</div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-tag"><span class="ico">🍽️</span> Food · a real pick, not a coin flip</div>
+        <div class="bubbles">
+          <div class="b me">where should I eat in Bandra tonight</div>
+          <div class="b j">Earth Café, Waterfield Road — <b>4.6★</b>, fully vegan menu, open till 11. Best fit for a low-key evening, sir.</div>
+        </div>
+        <div class="ex-note">Live Google Places data, but <span>Claude weighs rating, price, and fit</span> before answering — not a random draw off the list.</div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-tag"><span class="ico">✅</span> Todos · sorts urgency for you</div>
+        <div class="bubbles">
+          <div class="b me">add "renew passport" and "reply to Priya"</div>
+          <div class="b j">Both added. Passport's <b>do_first</b> — time-boxed, easy to forget. Priya's a quick win, slotted in.</div>
+        </div>
+        <div class="ex-note">Every todo gets an <span>Eisenhower quadrant</span> — urgent/important sorted automatically, not just a flat list.</div>
       </div>
 
     </div>
@@ -543,7 +575,7 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.85rem);font-weight:800;letter-spacing:-.
     <p class="lead">Engineered to be fast, cheap, and impossible to lose data to — without you ever seeing the machinery.</p>
     <div class="hood-grid">
       <div class="hcell"><div class="hn">Routing</div><h3>Two-model pipeline</h3><p>A fast, cheap model reads each message and routes intent; the stronger model runs only the handful of tools that matter. ~60% fewer tokens per reply.</p></div>
-      <div class="hcell"><div class="hn">Capabilities</div><h3>67 tools, one brain</h3><p>Every action — log an expense, query Garmin, set a reminder — is a discrete tool. Adding more is near-free; the model just picks the right one.</p><a href="tools.html" class="hcell-link">See all 67 tools →</a></div>
+      <div class="hcell"><div class="hn">Capabilities</div><h3>71 tools, one brain</h3><p>Every action — log an expense, query Garmin, set a reminder — is a discrete tool. Adding more is near-free; the model just picks the right one.</p><a href="tools.html" class="hcell-link">See all 71 tools →</a></div>
       <div class="hcell"><div class="hn">Concurrency</div><h3>Fully async</h3><p>Chat, web dashboard and scheduler share one async event loop, so a long reply never freezes the screen or the nightly jobs.</p></div>
       <div class="hcell"><div class="hn">Storage</div><h3>SQLite + Sheets</h3><p>Agent state in a local database; everything you'd want to read or edit by hand in a Google Sheet. Two stores, each doing what it's best at.</p></div>
       <div class="hcell"><div class="hn">Resilience</div><h3>Self-healing</h3><p>Reconnects through network drops, a watchdog revives a frozen process, and writes queue locally if Sheets is unreachable — nothing is lost.</p></div>
