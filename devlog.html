@@ -67,6 +67,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-h
   <div class="entry">
     <div class="entry-date">17 Aug 2026</div>
     <div class="entry-tags"><span class="tag fix">Fix</span></div>
+    <h3>Fixed a ~30% failure rate in the intent classifier</h3>
+    <p>The small, fast model (Claude Haiku) that decides which of Jarvis's tools a message might need was, unmeasured, failing roughly one time in three on real messages — it would sometimes wrap its answer in a markdown code block despite being told plainly not to, which broke the strict parsing step that read it. When that happened, Jarvis silently fell back to a generic default tool set that doesn't cover most categories, so a message like "enroll my voice" could get "that's beyond my capabilities" for no real reason. Fixed by stripping the code-block wrapping before parsing, rather than just accepting the failure and retrying. Verified against 15 live calls before (5 failures) and after (0 failures).</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">17 Aug 2026</div>
+    <div class="entry-tags"><span class="tag sec">Security</span></div>
+    <h3>Silently-lost voice enrollment now warns loudly instead of failing open quietly</h3>
+    <p>Traced a real overnight incident: the always-on voice listener picked up a YouTube video playing in the room, mistook a phrase in it for the wake word, and — because voice-enrollment verification had silently reverted to "not enrolled" at some point after it was originally set up — treated the video's narration as real conversation for 82 minutes, sending real replies and racking up real API cost, all while asleep. The enrollment itself was fine, and un-related code changes elsewhere had quietly dropped it days earlier with nothing surfacing that loss. Now, if the listener is ever running unenrolled, it logs a clear warning and sends one Telegram message at startup saying so — instead of just quietly accepting any voice, discoverable only by digging through logs after the fact.</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">17 Aug 2026</div>
+    <div class="entry-tags"><span class="tag fix">Fix</span></div>
     <h3>Pomodoro and the time-use check-in no longer double-count</h3>
     <p>The Pomodoro timer and the every-two-hours "what were you up to" Telegram check-in both log to the same time-use record, but had no awareness of each other — a Pomodoro running during a check-in window didn't stop the check-in from offering to log that same stretch of time again. Now each check-in looks up how much of its window a finished Pomodoro already covered and shrinks the duration buttons it offers accordingly (so a 25-minute Pomodoro in a 2-hour window leaves buttons for the remaining 95 minutes, not the full 120), and says so directly in the message. Not a hard block — the smallest option always stays available — just no easy way to accidentally log the same minutes twice.</p>
   </div>
