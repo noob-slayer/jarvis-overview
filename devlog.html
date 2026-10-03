@@ -65,6 +65,55 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-h
 <div class="log wrap">
 
   <div class="entry">
+    <div class="entry-date">3 Oct 2026</div>
+    <div class="entry-tags"><span class="tag fix">Fix</span></div>
+    <h3>Quieted the daily notifications — six scheduled pings and three reminders switched off</h3>
+    <p>The daily drumbeat had grown louder than it was useful, so a batch of notifications got turned off. Six of the automatic scheduled jobs are now silenced: the budget-pace projection (9:15am), the vocabulary word-of-the-day plus its three quiz pings (one flag, <code>vocab_enabled: false</code>, covers both), the 6pm dinner/overdue-todo reminder, the marathon recovery check-in (8pm) — while the full Sunday marathon plan stays on — and the 9pm goals check. Each now reads its own on/off flag in <code>config/profile.yaml</code> (e.g. <code>budget_pace_enabled: false</code>), the same pattern the activity check-ins already used, so any one can be flipped back on individually. Three of the manual reminders also went quiet — the 5:45pm run nudge, the 11am "own the room" push, and the 10am "explore the new Claude models" note — by marking their database rows inactive; unlike the scheduled jobs, those stop firing the moment the flag is set rather than on the next restart, because the reminder code checks the <code>active</code> flag before it sends. The scheduled-job changes take effect when Jarvis next restarts, which also clears their saved copies from the job database.</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">26 Sep 2026</div>
+    <div class="entry-tags"><span class="tag fix">Fix</span></div>
+    <h3>Turned off the "what are you up to?" check-ins — and fixed why "off" wasn't sticking</h3>
+    <p>Jarvis was pinging every two hours from 8am to midnight — nine taps-to-log prompts a day — asking what you'd been doing. That volume tipped over from helpful into spam and made the whole assistant feel like a chore to open, so the feature is now switched off via a single flag (<code>activity_checkin_enabled: false</code> in <code>config/profile.yaml</code>); the original nine-slot schedule is left intact, so flipping the flag back and restarting brings it back exactly as it was. But disabling it the obvious way didn't actually stop the pings, which turned out to be a real bug: Jarvis saves its scheduled jobs to a database so they survive restarts (an <code>APScheduler</code> SQLite jobstore), and simply not re-adding a job on startup doesn't delete the copy already saved there — the startup log even said "skipped," yet the old saved copy kept firing at its scheduled times. The fix makes startup actively delete any saved copy of a job that's now switched off, and it has to happen <em>after</em> the scheduler loads its saved jobs, not before, or there's nothing there yet to delete. This applies to every optional job, not just this one, so toggling any of them off now genuinely stops it.</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">5 Sep 2026</div>
+    <div class="entry-tags"><span class="tag new">New</span><span class="tag fix">Fix</span></div>
+    <h3>A phone app for talking to Jarvis — no wake word to miss or misfire</h3>
+    <p>The always-on "hey jarvis" listener kept being unreliable in practice — sometimes it didn't wake up, sometimes it fired on nothing, and when it did catch a real command the transcription could come out mangled. So instead of only chasing wake-word accuracy, there's now an installable phone web app at <code>/voice</code> with a plain push-to-talk button: tap to record, tap to stop, no wake phrase involved at all, so there's nothing to miss or falsely trigger on. It runs through the same transcribe → think → speak pipeline as the mic listener (<code>POST /api/voice/turn</code> in <code>web/app.py</code>), except it lets Whisper auto-detect the spoken language instead of forcing English — the forced <code>language="en"</code> setting was very likely the cause of the "wrong translation" complaints, since it makes Whisper render Hindi/Hinglish speech as garbled phonetic English. The always-on mic keeps forcing English for now, since that setting was added on purpose to stop background noise from "transcribing" as fluent foreign-language text. Reaching the app from outside home wifi needs Tailscale's HTTPS certs (phone browsers refuse microphone access on a plain HTTP address) — one-time setup is in <code>web/VOICE_PWA_README.md</code>.</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">17 Aug 2026</div>
+    <div class="entry-tags"><span class="tag fix">Fix</span></div>
+    <h3>A failed data fetch no longer looks like data loss</h3>
+    <p>When the dashboard couldn't reach Google Sheets — a real outage, traced to a burst of heavy API testing hitting a rate limit — it silently showed "0 pending to-dos" and empty spending/calorie numbers, indistinguishable from those actually being zero. Nothing was ever deleted, but there was no way to tell that from the screen, which is its own kind of bug. The dashboard now tracks whether each section's last fetch actually succeeded, and on a failure it leaves whatever was already showing alone and flags it ("couldn't refresh — showing last known") instead of confidently displaying a false zero.</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">17 Aug 2026</div>
+    <div class="entry-tags"><span class="tag new">New</span></div>
+    <h3>A mic on/off button on the live dashboard</h3>
+    <p>The always-on voice listener could already be paused or resumed by texting "jarvis stop" / "jarvis listen" over Telegram — now there's also a small toggle right on the dashboard itself, next to the status indicator, so turning the mic off doesn't need opening a chat at all. Same underlying switch either way; whichever one you use, the other reflects the change within a few seconds.</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">17 Aug 2026</div>
+    <div class="entry-tags"><span class="tag fix">Fix</span></div>
+    <h3>Tried raising wake-word sensitivity, reverted within the hour</h3>
+    <p>With voice verification working again, a false wake-word trigger became cheap (quietly rejected instead of starting a real session), so raised the detection bar to cut down on ambient-noise false positives. Real-world result arrived fast: two genuine "hey jarvis" attempts missed the new bar before a third one finally registered — the original low setting existed for a real, measured reason (this laptop's mic scores genuine attempts as low as 0.169 depending on distance), and that reason still held. Reverted back the same evening. Net lesson: false positives get handled by voice verification now, not by sensitivity — no need to trade wake reliability for it.</p>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">17 Aug 2026</div>
+    <div class="entry-tags"><span class="tag sec">Security</span></div>
+    <h3>Shrunk the voice window a stranger's voice could speak into</h3>
+    <p>Only the wake phrase itself ("hey jarvis") gets checked against your voice — everything said after that, while a session is open, is trusted without re-checking (the same tradeoff Alexa and Google Home make, because checking every follow-up phrase turned out to be unreliable when it was tried here before). That's an accepted gap, not a bug, but the window it stayed open for was generous: up to 30 seconds per pause, and it would keep resetting for as long as *something* kept getting said. Cut to 8 seconds per pause — still enough room for a natural break before your next sentence, but a much smaller opening for anyone else nearby to get a stray comment treated as a real command.</p>
+  </div>
+
+  <div class="entry">
     <div class="entry-date">17 Aug 2026</div>
     <div class="entry-tags"><span class="tag fix">Fix</span></div>
     <h3>Fixed a ~30% failure rate in the intent classifier</h3>
