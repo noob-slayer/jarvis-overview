@@ -65,6 +65,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-h
 <div class="log wrap">
 
   <div class="entry">
+    <div class="entry-date">4 Oct 2026</div>
+    <div class="entry-tags"><span class="tag fix">Fix</span></div>
+    <h3>The weekly review stopped inventing weeks — and stopped talking to itself</h3>
+    <p>Sunday evening's automatic messages went wrong in two visible ways. The weekly review claimed an average of 18,061 calories a day, two runs in a week with none, and "12 titles watched since June"; and both it and the study check-in arrived wrapped in the assistant's own chatter — "Perfect! Here's your weekly check-in for Telegram", "I cannot send via Telegram directly", "Would you like me to format it differently?". The impossible numbers were a real bug, not the AI making things up: the calorie lookup only understood "today", "yesterday" and "this week", and any other period — the review asked for "last 7 days" — quietly returned the entire history instead (331 food items, which averaged over seven days gives the 18,000 figure). Three other lookups (spending, mood, study) had the same silent fall-through, which matters most for spending: asked the wrong way, Jarvis could report all-time spend as a week's. All four now reject a period they don't recognise rather than guessing, the calorie lookup gained proper "last 7 / last 30 days" support with a per-day average, and the workout lookup can now be limited to a date range instead of always returning the last five sessions regardless of when they happened. The chatter came from the job instructions saying the message "will be sent via Telegram": the AI read that as a person asking for a draft and replied to that person — and every word of its reply is forwarded. Every scheduled job now carries one shared rule (<code>_SCHEDULED_OUTPUT_RULES</code>) saying its reply is delivered as-is, so it must output only the message, never mention the delivery channel or its own limits, and leave out a section with no data rather than filling it from an older period. A smaller fix rode along: the habit reminder no longer asks "did you meditation today?".</p>
+  </div>
+
+  <div class="entry">
     <div class="entry-date">3 Oct 2026</div>
     <div class="entry-tags"><span class="tag new">New</span></div>
     <h3>A rotating hologram of your body — and the healthier version of it, drawn inside</h3>
